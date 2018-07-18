@@ -1,8 +1,8 @@
 -- MySQL dump 10.13  Distrib 5.7.17, for Win64 (x86_64)
 --
--- Host: 127.0.0.1    Database: demoacceleo
+-- Host: localhost    Database: demoacceleo
 -- ------------------------------------------------------
--- Server version	5.7.22-log
+-- Server version	5.7.21-log
 
 /*!40101 SET @OLD_CHARACTER_SET_CLIENT=@@CHARACTER_SET_CLIENT */;
 /*!40101 SET @OLD_CHARACTER_SET_RESULTS=@@CHARACTER_SET_RESULTS */;
@@ -42,7 +42,7 @@ CREATE TABLE `authority_privilege` (
 
 LOCK TABLES `authority_privilege` WRITE;
 /*!40000 ALTER TABLE `authority_privilege` DISABLE KEYS */;
-INSERT INTO `authority_privilege` VALUES (1,1,1,1),(1,2,2,1),(1,3,3,1),(1,4,4,1),(2,5,5,1),(2,6,6,1),(2,7,7,1),(2,8,8,1),(1,5,9,1),(1,6,10,1),(1,7,11,1),(1,8,12,1),(3,5,13,1),(3,6,14,1),(3,7,15,1),(3,8,16,1),(1,9,17,1),(1,10,18,1),(1,11,19,1),(1,12,20,1),(1,13,21,1),(1,14,22,1),(1,15,23,1),(1,16,24,1),(1,17,25,1),(1,18,26,1),(1,19,27,1),(1,20,28,1),(1,21,29,1),(1,22,30,1),(2,1,31,1),(2,2,32,1),(3,1,33,1),(3,2,34,1),(2,3,35,1),(3,3,36,1),(1,23,37,1),(1,24,38,1),(1,25,39,1),(1,26,40,1),(1,27,41,1),(1,28,42,1),(1,29,43,1),(1,30,44,1),(4,1,45,1),(4,11,46,1),(4,13,47,1),(2,30,48,1),(3,30,49,0),(6,30,50,1),(7,30,51,0),(7,1,52,1),(2,4,53,1),(8,1,54,1),(8,2,55,1),(8,3,56,1),(8,4,57,1),(8,12,58,1),(8,13,59,1),(8,14,60,1),(8,11,61,1);
+INSERT INTO `authority_privilege` VALUES (1,9,17,1),(1,10,18,1),(1,23,37,1),(1,24,38,1),(1,25,39,1),(1,26,40,1),(1,27,41,1),(1,28,42,1),(1,29,43,1),(1,30,44,1),(2,30,48,1),(3,30,49,0),(6,30,50,1),(7,30,51,0);
 /*!40000 ALTER TABLE `authority_privilege` ENABLE KEYS */;
 UNLOCK TABLES;
 /*!40103 SET TIME_ZONE=@OLD_TIME_ZONE */;
@@ -55,4 +55,4 @@ UNLOCK TABLES;
 /*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
 /*!40111 SET SQL_NOTES=@OLD_SQL_NOTES */;
 
--- Dump completed on 2018-07-09 13:03:55
+-- Dump completed on 2018-07-18  1:30:28

@@ -1,8 +1,8 @@
 -- MySQL dump 10.13  Distrib 5.7.17, for Win64 (x86_64)
 --
--- Host: 127.0.0.1    Database: demoacceleo
+-- Host: localhost    Database: demoacceleo
 -- ------------------------------------------------------
--- Server version	5.7.22-log
+-- Server version	5.7.21-log
 
 /*!40101 SET @OLD_CHARACTER_SET_CLIENT=@@CHARACTER_SET_CLIENT */;
 /*!40101 SET @OLD_CHARACTER_SET_RESULTS=@@CHARACTER_SET_RESULTS */;
@@ -35,7 +35,7 @@ CREATE TABLE `grupo` (
 
 LOCK TABLES `grupo` WRITE;
 /*!40000 ALTER TABLE `grupo` DISABLE KEYS */;
-INSERT INTO `grupo` VALUES (1,'AFILIADO'),(2,'PENSION'),(3,'MANAGE'),(4,'BENEFICIARIO'),(5,'SOLICITUDPENSION'),(6,'TIPOPENSION'),(7,'USER'),(8,'AUTHORITY');
+INSERT INTO `grupo` VALUES (3,'MANAGE'),(7,'USER'),(8,'AUTHORITY');
 /*!40000 ALTER TABLE `grupo` ENABLE KEYS */;
 UNLOCK TABLES;
 /*!40103 SET TIME_ZONE=@OLD_TIME_ZONE */;
@@ -48,4 +48,4 @@ UNLOCK TABLES;
 /*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
 /*!40111 SET SQL_NOTES=@OLD_SQL_NOTES */;
 
--- Dump completed on 2018-07-09 13:03:56
+-- Dump completed on 2018-07-18  1:30:16
