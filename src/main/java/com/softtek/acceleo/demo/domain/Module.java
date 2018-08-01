@@ -12,7 +12,7 @@ import javax.persistence.Id;
 import javax.persistence.Table;
 import java.util.Date;
 import javax.persistence.*;
-import com.sun.istack.internal.NotNull;
+import javax.validation.constraints.NotNull;
 
 @Entity
 @Table(name = "module")

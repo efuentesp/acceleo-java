@@ -12,7 +12,7 @@ import javax.persistence.Id;
 import javax.persistence.Table;
 import java.util.Date;
 import javax.persistence.*;
-import com.sun.istack.internal.NotNull;
+import javax.validation.constraints.NotNull;
 
 @Entity
 @Table(name = "functionalservice")
@@ -57,6 +57,8 @@ public class Functionalservice implements Serializable {
 	
 
 
+
+	@NotNull
 	@Column(name = "description") 
 	private String description;
 	
@@ -101,6 +103,7 @@ public class Functionalservice implements Serializable {
 	@Column(name = "reusabilityId", nullable = false)
 	@Enumerated(EnumType.STRING)
 	private Reusability reusabilityId;
+
 
 
 	public Integer getFunctionalserviceId() {
