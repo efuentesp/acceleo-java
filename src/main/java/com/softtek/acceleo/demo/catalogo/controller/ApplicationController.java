@@ -160,12 +160,21 @@ public class ApplicationController {
 	             return new ResponseEntity<Application>(HttpStatus.NOT_FOUND);
 	         }
 	  
-           
+           	 try{
 	             applicationService.deleteApplication(application);
-            	 return new ResponseEntity<Application>(HttpStatus.OK);
+	             return new ResponseEntity<Application>(HttpStatus.OK);
+	         }catch (Exception e) {
+	        	 HttpHeaders responseHeaders = new HttpHeaders();
+	        	 responseHeaders.set("Exception", "Exception: "+e);
+	        	 responseHeaders.set("Message", "Application no se puede eliminar debido a que esta asociado con otra entidad.");	  
+	             return new ResponseEntity<Application>(responseHeaders,HttpStatus.INTERNAL_SERVER_ERROR);
+			}
+
            	//} catch(GenericException e) {
             //	 return new ResponseEntity<Application>(HttpStatus.PRECONDITION_FAILED);
             //}
+
+
 		}
 
 	/**

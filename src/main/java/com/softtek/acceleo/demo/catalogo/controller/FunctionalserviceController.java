@@ -170,12 +170,21 @@ functionalserviceFound.setReusabilityId(functionalservice.getReusabilityId());
 	             return new ResponseEntity<Functionalservice>(HttpStatus.NOT_FOUND);
 	         }
 	  
-           
+           	 try{
 	             functionalserviceService.deleteFunctionalservice(functionalservice);
-            	 return new ResponseEntity<Functionalservice>(HttpStatus.OK);
+	             return new ResponseEntity<Functionalservice>(HttpStatus.OK);
+	         }catch (Exception e) {
+	        	 HttpHeaders responseHeaders = new HttpHeaders();
+	        	 responseHeaders.set("Exception", "Exception: "+e);
+	        	 responseHeaders.set("Message", "Functionalservice no se puede eliminar debido a que esta asociado con otra entidad.");	  
+	             return new ResponseEntity<Functionalservice>(responseHeaders,HttpStatus.INTERNAL_SERVER_ERROR);
+			}
+
            	//} catch(GenericException e) {
             //	 return new ResponseEntity<Functionalservice>(HttpStatus.PRECONDITION_FAILED);
             //}
+
+
 		}
 
 	/**

@@ -161,12 +161,21 @@ menuFound.setModuleId(menu.getModuleId());
 	             return new ResponseEntity<Menu>(HttpStatus.NOT_FOUND);
 	         }
 	  
-           
+           	 try{
 	             menuService.deleteMenu(menu);
-            	 return new ResponseEntity<Menu>(HttpStatus.OK);
+	             return new ResponseEntity<Menu>(HttpStatus.OK);
+	         }catch (Exception e) {
+	        	 HttpHeaders responseHeaders = new HttpHeaders();
+	        	 responseHeaders.set("Exception", "Exception: "+e);
+	        	 responseHeaders.set("Message", "Menu no se puede eliminar debido a que esta asociado con otra entidad.");	  
+	             return new ResponseEntity<Menu>(responseHeaders,HttpStatus.INTERNAL_SERVER_ERROR);
+			}
+
            	//} catch(GenericException e) {
             //	 return new ResponseEntity<Menu>(HttpStatus.PRECONDITION_FAILED);
             //}
+
+
 		}
 
 	/**

@@ -104,8 +104,6 @@ public class Functionalservice implements Serializable {
 	@Enumerated(EnumType.STRING)
 	private Reusability reusabilityId;
 
-
-
 	public Integer getFunctionalserviceId() {
 		return functionalserviceId;
 	}

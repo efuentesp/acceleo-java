@@ -18,6 +18,8 @@ import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
+import org.springframework.util.LinkedMultiValueMap;
+import org.springframework.util.MultiValueMap;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -34,6 +36,7 @@ import org.springframework.web.bind.annotation.RestController;
 import com.softtek.acceleo.demo.exception.GenericException;
 
 import com.softtek.acceleo.demo.catalogo.bean.ModuleBean;
+import com.softtek.acceleo.demo.domain.Menu;
 import com.softtek.acceleo.demo.domain.Module;
 import com.softtek.acceleo.demo.service.ModuleService;
 
@@ -161,9 +164,18 @@ moduleFound.setApplicationId(module.getApplicationId());
 	             return new ResponseEntity<Module>(HttpStatus.NOT_FOUND);
 	         }
 	  
-           
-	             moduleService.deleteModule(module);
-            	 return new ResponseEntity<Module>(HttpStatus.OK);
+	         try{
+	        	 System.out.println("Module try");
+	        	 moduleService.deleteModule(module);
+	             return new ResponseEntity<Module>(HttpStatus.OK);
+	         }catch (Exception e) {
+	        	 System.out.println("Module catch");
+	        	 HttpHeaders responseHeaders = new HttpHeaders();
+	        	 responseHeaders.set("Exception", "Exception: "+e);
+	        	 responseHeaders.set("Message", "Module no se puede eliminar debido a que esta asociado con otra entidad.");	  
+	             return new ResponseEntity<Module>(responseHeaders,HttpStatus.INTERNAL_SERVER_ERROR);
+			}
+
            	//} catch(GenericException e) {
             //	 return new ResponseEntity<Module>(HttpStatus.PRECONDITION_FAILED);
             //}
