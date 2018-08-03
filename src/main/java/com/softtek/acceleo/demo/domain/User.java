@@ -24,7 +24,7 @@ import org.hibernate.annotations.Where;
 import org.hibernate.annotations.WhereJoinTable;
 
 @Entity
-@Table(name = "user")
+@Table(name = "USER")
 public class User {
 
     @Id
