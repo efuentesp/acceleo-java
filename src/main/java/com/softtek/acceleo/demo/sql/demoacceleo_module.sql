@@ -25,6 +25,8 @@ CREATE TABLE `module` (
 `applicationId` int(11) DEFAULT NULL,
 `display_resultmoduleId` varchar(100) DEFAULT NULL,
 `exposed_filtermoduleId` varchar(100) DEFAULT NULL,
+`display_modalmoduleId` varchar(100) DEFAULT NULL,
+`entity_namemoduleId` varchar(100) DEFAULT NULL,
 `code` VARCHAR(100),
 `name` VARCHAR(100),
 `moduleId` INT NOT NULL AUTO_INCREMENT, PRIMARY KEY(`moduleId`)

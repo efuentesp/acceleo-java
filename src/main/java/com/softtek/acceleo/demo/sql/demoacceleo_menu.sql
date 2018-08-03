@@ -25,6 +25,8 @@ CREATE TABLE `menu` (
 `moduleId` int(11) DEFAULT NULL,
 `display_resultmenuId` varchar(100) DEFAULT NULL,
 `exposed_filtermenuId` varchar(100) DEFAULT NULL,
+`display_modalmenuId` varchar(100) DEFAULT NULL,
+`entity_namemenuId` varchar(100) DEFAULT NULL,
 `code` VARCHAR(100),
 `path` VARCHAR(100),
 `menuId` INT NOT NULL AUTO_INCREMENT, PRIMARY KEY(`menuId`)

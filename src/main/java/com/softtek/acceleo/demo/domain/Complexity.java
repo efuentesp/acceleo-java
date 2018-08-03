@@ -1,4 +1,4 @@
-	package com.softtek.acceleo.demo.domain;
-	public enum Complexity {
-	s,ms,mc,c,m
-	}
+			package com.softtek.acceleo.demo.domain;
+			public enum Complexity {
+			mc,ms,s,m,c
+			}

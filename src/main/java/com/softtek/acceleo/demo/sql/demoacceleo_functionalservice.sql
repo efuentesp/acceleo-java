@@ -23,6 +23,7 @@ DROP TABLE IF EXISTS `functionalservice`;
 /*!40101 SET character_set_client = utf8 */;
 CREATE TABLE `functionalservice` ( 
 `menuId` int(11) DEFAULT NULL,
+`notrequiredfunctionalserviceId` varchar(100) DEFAULT NULL,
 `radiocomplexityId` varchar(100) DEFAULT NULL,
 `radiorepositoryId` varchar(100) DEFAULT NULL,
 `radiodataId` varchar(100) DEFAULT NULL,
@@ -30,10 +31,10 @@ CREATE TABLE `functionalservice` (
 `radioreusabilityId` varchar(100) DEFAULT NULL,
 `display_resultfunctionalserviceId` varchar(100) DEFAULT NULL,
 `exposed_filterfunctionalserviceId` varchar(100) DEFAULT NULL,
-`requiredfunctionalserviceId` varchar(100) DEFAULT NULL,
+`display_modalfunctionalserviceId` varchar(100) DEFAULT NULL,
+`entity_namefunctionalserviceId` varchar(100) DEFAULT NULL,
 `code` VARCHAR(100),
 `name` VARCHAR(100),
-`description` VARCHAR(100),
 `functionalserviceId` INT NOT NULL AUTO_INCREMENT, PRIMARY KEY(`functionalserviceId`)
 )ENGINE=InnoDB AUTO_INCREMENT=9 DEFAULT CHARSET=latin1;
 /*!40101 SET character_set_client = @saved_cs_client */;

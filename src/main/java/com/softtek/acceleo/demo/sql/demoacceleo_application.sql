@@ -24,6 +24,8 @@ DROP TABLE IF EXISTS `application`;
 CREATE TABLE `application` ( 
 `display_resultapplicationId` varchar(100) DEFAULT NULL,
 `exposed_filterapplicationId` varchar(100) DEFAULT NULL,
+`display_modalapplicationId` varchar(100) DEFAULT NULL,
+`entity_nameapplicationId` varchar(100) DEFAULT NULL,
 `code` VARCHAR(100),
 `name` VARCHAR(100),
 `applicationId` INT NOT NULL AUTO_INCREMENT, PRIMARY KEY(`applicationId`)

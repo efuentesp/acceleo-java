@@ -59,11 +59,15 @@ public class ApplicationRepositoryImpl implements ApplicationRepository {
 		return (List<Application>) sessionFactory.getCurrentSession()
 			.createCriteria(Application.class).setFirstResult((page - 1) * size)
 			.add(					
-					Restrictions.or(Restrictions.or(Restrictions.or(	
+					Restrictions.or(Restrictions.or(Restrictions.or(Restrictions.or(Restrictions.or(	
 Restrictions.like("application", "%" + query +"%"),
+Restrictions.like("application", "%" + query +"%")),
+Restrictions.like("application", "%" + query +"%")),
 Restrictions.like("code", "%" + query +"%")),
 Restrictions.like("name", "%" + query +"%")),
 Restrictions.like("application", "%" + query +"%"))
+					
+					
 					
 					
 					
@@ -103,8 +107,10 @@ Restrictions.like("application", "%" + query +"%"))
 		totalRows = (Long) sessionFactory.getCurrentSession()
 		.createCriteria(Application.class).setProjection(Projections.rowCount())
 					.add(	
-							Restrictions.or(Restrictions.or(Restrictions.or(	
-						Restrictions.like("application", "%" + query +"%"),Restrictions.like("code", "%" + query +"%")),Restrictions.like("name", "%" + query +"%")),Restrictions.like("application", "%" + query +"%"))	
+							Restrictions.or(Restrictions.or(Restrictions.or(Restrictions.or(Restrictions.or(	
+						Restrictions.like("application", "%" + query +"%"),Restrictions.like("application", "%" + query +"%")),Restrictions.like("application", "%" + query +"%")),Restrictions.like("code", "%" + query +"%")),Restrictions.like("name", "%" + query +"%")),Restrictions.like("application", "%" + query +"%"))	
+	
+	
 	
 	
 	

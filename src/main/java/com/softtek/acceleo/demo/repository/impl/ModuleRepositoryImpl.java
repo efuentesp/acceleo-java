@@ -59,12 +59,16 @@ public class ModuleRepositoryImpl implements ModuleRepository {
 		return (List<Module>) sessionFactory.getCurrentSession()
 			.createCriteria(Module.class).setFirstResult((page - 1) * size)
 			.add(					
-					Restrictions.or(Restrictions.or(Restrictions.or(Restrictions.or(	
-Restrictions.like("application", "%" + query +"%"),
+					Restrictions.or(Restrictions.or(Restrictions.or(Restrictions.or(Restrictions.or(Restrictions.or(	
+Restrictions.like("name", "%" + query +"%"),
+Restrictions.like("module", "%" + query +"%")),
 Restrictions.like("code", "%" + query +"%")),
 Restrictions.like("module", "%" + query +"%")),
 Restrictions.like("module", "%" + query +"%")),
-Restrictions.like("name", "%" + query +"%"))
+Restrictions.like("application", "%" + query +"%")),
+Restrictions.like("module", "%" + query +"%"))
+					
+					
 					
 					
 					
@@ -105,8 +109,10 @@ Restrictions.like("name", "%" + query +"%"))
 		totalRows = (Long) sessionFactory.getCurrentSession()
 		.createCriteria(Module.class).setProjection(Projections.rowCount())
 					.add(	
-							Restrictions.or(Restrictions.or(Restrictions.or(Restrictions.or(	
-						Restrictions.like("application", "%" + query +"%"),Restrictions.like("code", "%" + query +"%")),Restrictions.like("module", "%" + query +"%")),Restrictions.like("module", "%" + query +"%")),Restrictions.like("name", "%" + query +"%"))	
+							Restrictions.or(Restrictions.or(Restrictions.or(Restrictions.or(Restrictions.or(Restrictions.or(	
+						Restrictions.like("name", "%" + query +"%"),Restrictions.like("module", "%" + query +"%")),Restrictions.like("code", "%" + query +"%")),Restrictions.like("module", "%" + query +"%")),Restrictions.like("module", "%" + query +"%")),Restrictions.like("application", "%" + query +"%")),Restrictions.like("module", "%" + query +"%"))	
+	
+	
 	
 	
 	

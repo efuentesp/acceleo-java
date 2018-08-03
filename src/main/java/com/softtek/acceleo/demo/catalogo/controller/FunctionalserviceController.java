@@ -134,21 +134,19 @@ public class FunctionalserviceController {
 	            return new ResponseEntity<Functionalservice>(HttpStatus.NOT_FOUND);
 	        }
 	
-	functionalserviceFound.setRepetitions(functionalservice.getRepetitions());
+	functionalserviceFound.setSize(functionalservice.getSize());
 	functionalserviceFound.setName(functionalservice.getName());
 	functionalserviceFound.setCode(functionalservice.getCode());
-	functionalserviceFound.setSize(functionalservice.getSize());
-	functionalserviceFound.setDescription(functionalservice.getDescription());
+	functionalserviceFound.setRepetitions(functionalservice.getRepetitions());
 	functionalserviceFound.setComments(functionalservice.getComments());
-functionalserviceFound.setMenuId(functionalservice.getMenuId());
-functionalserviceFound.setComplexityId(functionalservice.getComplexityId());
-functionalserviceFound.setRepositoryId(functionalservice.getRepositoryId());
-functionalserviceFound.setDataId(functionalservice.getDataId());
-functionalserviceFound.setAlgorithmtypeId(functionalservice.getAlgorithmtypeId());
-functionalserviceFound.setReusabilityId(functionalservice.getReusabilityId());
-
-			
-			functionalserviceFound.setFunctionalserviceId(functionalservice.getFunctionalserviceId());
+	functionalserviceFound.setMenuId(functionalservice.getMenuId());
+	functionalserviceFound.setDescription(functionalservice.getDescription());
+	functionalserviceFound.setComplexityId(functionalservice.getComplexityId());
+	functionalserviceFound.setRepositoryId(functionalservice.getRepositoryId());
+	functionalserviceFound.setDataId(functionalservice.getDataId());
+	functionalserviceFound.setAlgorithmtypeId(functionalservice.getAlgorithmtypeId());
+	functionalserviceFound.setReusabilityId(functionalservice.getReusabilityId());
+	functionalserviceFound.setFunctionalserviceId(functionalservice.getFunctionalserviceId());
 
 		    functionalserviceService.editFunctionalservice(functionalserviceFound);
 	        return new ResponseEntity<Functionalservice>(functionalserviceFound, HttpStatus.OK);
@@ -183,8 +181,6 @@ functionalserviceFound.setReusabilityId(functionalservice.getReusabilityId());
            	//} catch(GenericException e) {
             //	 return new ResponseEntity<Functionalservice>(HttpStatus.PRECONDITION_FAILED);
             //}
-
-
 		}
 
 	/**
@@ -274,6 +270,7 @@ functionalserviceFound.setReusabilityId(functionalservice.getReusabilityId());
 		Functionalservice functionalservice = new Functionalservice();
 
 		functionalservice.setMenuId(functionalserviceBean.getMenuId());
+		//functionalservice.setNotrequiredfunctionalserviceId(functionalserviceBean.getDescriptionId());
 		//functionalservice.setHDoubleId(functionalserviceBean.getSizeId());
 		//functionalservice.setRadiocomplexityId(functionalserviceBean.getComplexityId());
 		//functionalservice.setHIntegerId(functionalserviceBean.getRepetitionsId());
@@ -284,10 +281,10 @@ functionalserviceFound.setReusabilityId(functionalservice.getReusabilityId());
 		//functionalservice.setHTextLongId(functionalserviceBean.getCommentsId());
 		//functionalservice.setDisplay_resultfunctionalserviceId(functionalserviceBean.getFunctionalserviceId());
 		//functionalservice.setExposed_filterfunctionalserviceId(functionalserviceBean.getFunctionalserviceId());
-		//functionalservice.setRequiredfunctionalserviceId(functionalserviceBean.getFunctionalserviceId());
+		//functionalservice.setDisplay_modalfunctionalserviceId(functionalserviceBean.getFunctionalserviceId());
+		//functionalservice.setEntity_namefunctionalserviceId(functionalserviceBean.getFunctionalserviceId());
 		functionalservice.setCode(functionalserviceBean.getCode());
 		functionalservice.setName(functionalserviceBean.getName());
-		functionalservice.setDescription(functionalserviceBean.getDescription());
 		functionalservice.setFunctionalserviceId(functionalserviceBean.getFunctionalserviceId());
 		functionalserviceBean.setFunctionalserviceId(null);
 
@@ -308,6 +305,7 @@ functionalserviceFound.setReusabilityId(functionalservice.getReusabilityId());
 				bean = new FunctionalserviceBean();
 
 				bean.setMenuId(functionalservice.getMenuId());
+				//bean.setNotrequiredfunctionalserviceId(functionalservice.getDescriptionId());
 				//bean.setRadiocomplexityId(functionalservice.getComplexityId());
 				//bean.setRadiorepositoryId(functionalservice.getRepositoryId());
 				//bean.setRadiodataId(functionalservice.getDataId());
@@ -315,10 +313,10 @@ functionalserviceFound.setReusabilityId(functionalservice.getReusabilityId());
 				//bean.setRadioreusabilityId(functionalservice.getReusabilityId());
 				//bean.setDisplay_resultfunctionalserviceId(functionalservice.getFunctionalserviceId());
 				//bean.setExposed_filterfunctionalserviceId(functionalservice.getFunctionalserviceId());
-				//bean.setRequiredfunctionalserviceId(functionalservice.getFunctionalserviceId());
+				//bean.setDisplay_modalfunctionalserviceId(functionalservice.getFunctionalserviceId());
+				//bean.setEntity_namefunctionalserviceId(functionalservice.getFunctionalserviceId());
 				bean.setCode(functionalservice.getCode());
 				bean.setName(functionalservice.getName());
-				bean.setDescription(functionalservice.getDescription());
 				bean.setFunctionalserviceId(functionalservice.getFunctionalserviceId());
 				beans.add(bean);
 			}
