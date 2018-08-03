@@ -13,7 +13,7 @@ import javax.persistence.Table;
 import org.hibernate.annotations.Where;
 
 @Entity
-@Table(name = "user_authority")
+@Table(name = "USER_AUTHORITY")
 public class UserAuthority {
     @Id
     @Column(name = "ID_USER_AUTH")
