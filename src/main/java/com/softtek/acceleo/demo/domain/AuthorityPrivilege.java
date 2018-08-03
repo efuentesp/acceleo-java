@@ -17,7 +17,7 @@ import javax.persistence.Table;
 import javax.validation.constraints.NotNull;
 
 @Entity
-@Table(name = "authority_privilege")
+@Table(name = "AUTHORITY_PRIVILEGE")
 public class AuthorityPrivilege {
     @Id
     @Column(name = "ID_AUT_PRIV")
