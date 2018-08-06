@@ -58,7 +58,7 @@ public class Functionalservice implements Serializable {
 
 
 
-	@NotNull
+	
 	@Column(name = "description") 
 	private String description;
 	
