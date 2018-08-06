@@ -17,27 +17,27 @@ import javax.persistence.Table;
 import javax.validation.constraints.NotNull;
 
 @Entity
-@Table(name = "AUTHORITY_PRIVILEGE")
+@Table(name = "authority_privilege")
 public class AuthorityPrivilege {
     @Id
-    @Column(name = "ID_AUT_PRIV")
+    @Column(name = "id_aut_priv")
     @GeneratedValue(strategy = GenerationType.AUTO)
 	private Long idAutorityPrivilege;
     
-    @Column(name = "ENABLED")    
+    @Column(name = "enabled")    
     private Boolean enabled;
     
     
 //	@Column(name = "ID_PRIVILEGE")
 //  @NotNull
 	@OneToOne(cascade = CascadeType.ALL)
-    @JoinColumn(name = "ID_PRIVILEGE")    
+    @JoinColumn(name = "id_privilege")    
     private Privilege idPrivilege;
     
 //  @Column(name = "ID_AUTHORITY")
 //  @NotNull
 	@OneToOne(cascade = CascadeType.ALL)
-    @JoinColumn(name = "ID_AUTHORITY")    
+    @JoinColumn(name = "id_authority")    
     private Authority idAuthority;
     
 	public Long getIdAutorityPrivilege() {
