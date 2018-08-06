@@ -16,19 +16,19 @@ import org.hibernate.annotations.Where;
 @Table(name = "user_authority")
 public class UserAuthority {
     @Id
-    @Column(name = "ID_USER_AUTH")
+    @Column(name = "id_user_auth")
     @GeneratedValue(strategy = GenerationType.AUTO)
     private long idUserAuthority;
 		
-    @Column(name = "ENABLED")    
+    @Column(name = "enabled")    
     private Boolean enabled;
     
 	@OneToOne(cascade = CascadeType.ALL)
-    @JoinColumn(name = "ID_USER")
+    @JoinColumn(name = "id_user")
 	private User idUser;
     
     @OneToOne(cascade = CascadeType.ALL)
-    @JoinColumn(name = "ID_AUTHORITY")
+    @JoinColumn(name = "id_authority")
     //@Where(clause = "ENABLED = '1'")
 	private Authority idAuthority;
 	

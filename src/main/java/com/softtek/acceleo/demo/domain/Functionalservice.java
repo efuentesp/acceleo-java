@@ -29,42 +29,51 @@ public class Functionalservice implements Serializable {
 	@NotNull
 	@Column(name = "size") 
 	private Double size;
-	@NotNull
+	
+  @NotNull
 	@Column(name = "name") 
 	private String name;
-	@NotNull
+	
+  @NotNull
 	@Column(name = "code") 
 	private String code;
+  
 	@NotNull
 	@Column(name = "repetitions") 
 	private Integer repetitions;
+  
 	@NotNull
 	@Column(name = "comments") 
 	private String comments;
 
-
 	@NotNull
 	@Column(name = "menuId") 
 	private Integer menuId;
-	@Column(name = "description") 
+
+  @Column(name = "description") 
 	private String description;
-	@NotNull
+	
+  @NotNull
 	@Column(name = "complexityId", nullable = false)
 	@Enumerated(EnumType.STRING)
 	private Complexity complexityId;
-	@NotNull
+	
+  @NotNull
 	@Column(name = "repositoryId", nullable = false)
 	@Enumerated(EnumType.STRING)
 	private Repository repositoryId;
-	@NotNull
+	
+  @NotNull
 	@Column(name = "dataId", nullable = false)
 	@Enumerated(EnumType.STRING)
 	private Data dataId;
-	@NotNull
+	
+  @NotNull
 	@Column(name = "algorithmtypeId", nullable = false)
 	@Enumerated(EnumType.STRING)
 	private Algorithmtype algorithmtypeId;
-	@NotNull
+	
+  @NotNull
 	@Column(name = "reusabilityId", nullable = false)
 	@Enumerated(EnumType.STRING)
 	private Reusability reusabilityId;

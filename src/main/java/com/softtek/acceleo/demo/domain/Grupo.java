@@ -15,11 +15,11 @@ import javax.validation.constraints.Size;
 public class Grupo {
 
     @Id
-    @Column(name = "ID_GRUPO")
+    @Column(name = "id_grupo")
     @GeneratedValue(strategy = GenerationType.AUTO)
     private Long idGrupo;
 
-    @Column(name = "NAME", length = 30, unique = true)
+    @Column(name = "name", length = 30, unique = true)
     @NotNull
     @Size(min = 4, max = 30)
     private String name;
