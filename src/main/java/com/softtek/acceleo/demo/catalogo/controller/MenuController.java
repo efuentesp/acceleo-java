@@ -136,10 +136,8 @@ public class MenuController {
 	
 	menuFound.setPath(menu.getPath());
 	menuFound.setCode(menu.getCode());
-menuFound.setModuleId(menu.getModuleId());
-
-			
-			menuFound.setMenuId(menu.getMenuId());
+	menuFound.setModuleId(menu.getModuleId());
+	menuFound.setMenuId(menu.getMenuId());
 
 		    menuService.editMenu(menuFound);
 	        return new ResponseEntity<Menu>(menuFound, HttpStatus.OK);
@@ -174,8 +172,6 @@ menuFound.setModuleId(menu.getModuleId());
            	//} catch(GenericException e) {
             //	 return new ResponseEntity<Menu>(HttpStatus.PRECONDITION_FAILED);
             //}
-
-
 		}
 
 	/**
@@ -267,6 +263,8 @@ menuFound.setModuleId(menu.getModuleId());
 		menu.setModuleId(menuBean.getModuleId());
 		//menu.setDisplay_resultmenuId(menuBean.getMenuId());
 		//menu.setExposed_filtermenuId(menuBean.getMenuId());
+		//menu.setDisplay_modalmenuId(menuBean.getMenuId());
+		//menu.setEntity_namemenuId(menuBean.getMenuId());
 		menu.setCode(menuBean.getCode());
 		menu.setPath(menuBean.getPath());
 		menu.setMenuId(menuBean.getMenuId());
@@ -291,6 +289,8 @@ menuFound.setModuleId(menu.getModuleId());
 				bean.setModuleId(menu.getModuleId());
 				//bean.setDisplay_resultmenuId(menu.getMenuId());
 				//bean.setExposed_filtermenuId(menu.getMenuId());
+				//bean.setDisplay_modalmenuId(menu.getMenuId());
+				//bean.setEntity_namemenuId(menu.getMenuId());
 				bean.setCode(menu.getCode());
 				bean.setPath(menu.getPath());
 				bean.setMenuId(menu.getMenuId());

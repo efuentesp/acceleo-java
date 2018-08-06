@@ -59,22 +59,24 @@ public class FunctionalserviceRepositoryImpl implements FunctionalserviceReposit
 		return (List<Functionalservice>) sessionFactory.getCurrentSession()
 			.createCriteria(Functionalservice.class).setFirstResult((page - 1) * size)
 			.add(					
-					Restrictions.or(Restrictions.or(Restrictions.or(Restrictions.or(Restrictions.or(Restrictions.or(Restrictions.or(Restrictions.or(Restrictions.or(Restrictions.or(Restrictions.or(Restrictions.or(Restrictions.or(Restrictions.or(	
-Restrictions.like("repetitions", "%" + query +"%"),
-Restrictions.like("functionalservice", "%" + query +"%")),
-Restrictions.like("complexity", "%" + query +"%")),
-Restrictions.like("name", "%" + query +"%")),
-Restrictions.like("code", "%" + query +"%")),
+					Restrictions.or(Restrictions.or(Restrictions.or(Restrictions.or(Restrictions.or(Restrictions.or(Restrictions.or(Restrictions.or(Restrictions.or(Restrictions.or(Restrictions.or(Restrictions.or(Restrictions.or(Restrictions.or(Restrictions.or(	
+Restrictions.like("functionalservice", "%" + query +"%"),
 Restrictions.like("size", "%" + query +"%")),
-Restrictions.like("functionalservice", "%" + query +"%")),
-Restrictions.like("algorithmtype", "%" + query +"%")),
+Restrictions.like("description", "%" + query +"%")),
 Restrictions.like("functionalservice", "%" + query +"%")),
 Restrictions.like("menu", "%" + query +"%")),
-Restrictions.like("description", "%" + query +"%")),
+Restrictions.like("name", "%" + query +"%")),
 Restrictions.like("repository", "%" + query +"%")),
 Restrictions.like("reusability", "%" + query +"%")),
-Restrictions.like("comments", "%" + query +"%")),
-Restrictions.like("data", "%" + query +"%"))
+Restrictions.like("functionalservice", "%" + query +"%")),
+Restrictions.like("code", "%" + query +"%")),
+Restrictions.like("complexity", "%" + query +"%")),
+Restrictions.like("data", "%" + query +"%")),
+Restrictions.like("algorithmtype", "%" + query +"%")),
+Restrictions.like("repetitions", "%" + query +"%")),
+Restrictions.like("functionalservice", "%" + query +"%")),
+Restrictions.like("comments", "%" + query +"%"))
+					
 					
 					
 					
@@ -125,8 +127,9 @@ Restrictions.like("data", "%" + query +"%"))
 		totalRows = (Long) sessionFactory.getCurrentSession()
 		.createCriteria(Functionalservice.class).setProjection(Projections.rowCount())
 					.add(	
-							Restrictions.or(Restrictions.or(Restrictions.or(Restrictions.or(Restrictions.or(Restrictions.or(Restrictions.or(Restrictions.or(Restrictions.or(Restrictions.or(Restrictions.or(Restrictions.or(Restrictions.or(Restrictions.or(	
-						Restrictions.like("repetitions", "%" + query +"%"),Restrictions.like("functionalservice", "%" + query +"%")),Restrictions.like("complexity", "%" + query +"%")),Restrictions.like("name", "%" + query +"%")),Restrictions.like("code", "%" + query +"%")),Restrictions.like("size", "%" + query +"%")),Restrictions.like("functionalservice", "%" + query +"%")),Restrictions.like("algorithmtype", "%" + query +"%")),Restrictions.like("functionalservice", "%" + query +"%")),Restrictions.like("menu", "%" + query +"%")),Restrictions.like("description", "%" + query +"%")),Restrictions.like("repository", "%" + query +"%")),Restrictions.like("reusability", "%" + query +"%")),Restrictions.like("comments", "%" + query +"%")),Restrictions.like("data", "%" + query +"%"))	
+							Restrictions.or(Restrictions.or(Restrictions.or(Restrictions.or(Restrictions.or(Restrictions.or(Restrictions.or(Restrictions.or(Restrictions.or(Restrictions.or(Restrictions.or(Restrictions.or(Restrictions.or(Restrictions.or(Restrictions.or(	
+						Restrictions.like("functionalservice", "%" + query +"%"),Restrictions.like("size", "%" + query +"%")),Restrictions.like("description", "%" + query +"%")),Restrictions.like("functionalservice", "%" + query +"%")),Restrictions.like("menu", "%" + query +"%")),Restrictions.like("name", "%" + query +"%")),Restrictions.like("repository", "%" + query +"%")),Restrictions.like("reusability", "%" + query +"%")),Restrictions.like("functionalservice", "%" + query +"%")),Restrictions.like("code", "%" + query +"%")),Restrictions.like("complexity", "%" + query +"%")),Restrictions.like("data", "%" + query +"%")),Restrictions.like("algorithmtype", "%" + query +"%")),Restrictions.like("repetitions", "%" + query +"%")),Restrictions.like("functionalservice", "%" + query +"%")),Restrictions.like("comments", "%" + query +"%"))	
+	
 	
 	
 	

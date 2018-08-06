@@ -59,12 +59,16 @@ public class MenuRepositoryImpl implements MenuRepository {
 		return (List<Menu>) sessionFactory.getCurrentSession()
 			.createCriteria(Menu.class).setFirstResult((page - 1) * size)
 			.add(					
-					Restrictions.or(Restrictions.or(Restrictions.or(Restrictions.or(	
-Restrictions.like("menu", "%" + query +"%"),
-Restrictions.like("path", "%" + query +"%")),
+					Restrictions.or(Restrictions.or(Restrictions.or(Restrictions.or(Restrictions.or(Restrictions.or(	
+Restrictions.like("module", "%" + query +"%"),
 Restrictions.like("menu", "%" + query +"%")),
+Restrictions.like("menu", "%" + query +"%")),
+Restrictions.like("path", "%" + query +"%")),
 Restrictions.like("code", "%" + query +"%")),
-Restrictions.like("module", "%" + query +"%"))
+Restrictions.like("menu", "%" + query +"%")),
+Restrictions.like("menu", "%" + query +"%"))
+					
+					
 					
 					
 					
@@ -105,8 +109,10 @@ Restrictions.like("module", "%" + query +"%"))
 		totalRows = (Long) sessionFactory.getCurrentSession()
 		.createCriteria(Menu.class).setProjection(Projections.rowCount())
 					.add(	
-							Restrictions.or(Restrictions.or(Restrictions.or(Restrictions.or(	
-						Restrictions.like("menu", "%" + query +"%"),Restrictions.like("path", "%" + query +"%")),Restrictions.like("menu", "%" + query +"%")),Restrictions.like("code", "%" + query +"%")),Restrictions.like("module", "%" + query +"%"))	
+							Restrictions.or(Restrictions.or(Restrictions.or(Restrictions.or(Restrictions.or(Restrictions.or(	
+						Restrictions.like("module", "%" + query +"%"),Restrictions.like("menu", "%" + query +"%")),Restrictions.like("menu", "%" + query +"%")),Restrictions.like("path", "%" + query +"%")),Restrictions.like("code", "%" + query +"%")),Restrictions.like("menu", "%" + query +"%")),Restrictions.like("menu", "%" + query +"%"))	
+	
+	
 	
 	
 	

@@ -1,4 +1,4 @@
-	package com.softtek.acceleo.demo.domain;
-	public enum Reusability {
-	r1,r2
-	}
+			package com.softtek.acceleo.demo.domain;
+			public enum Reusability {
+			r2,r1
+			}

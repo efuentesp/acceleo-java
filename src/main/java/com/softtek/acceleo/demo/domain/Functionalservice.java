@@ -26,80 +26,54 @@ public class Functionalservice implements Serializable {
 	private Integer  functionalserviceId;
 
 
-	
-
-
-
-	@NotNull
-	@Column(name = "repetitions") 
-	private Integer repetitions;
-	
-
-
-
-	@NotNull
-	@Column(name = "name") 
-	private String name;
-	
-
-
-
-	@NotNull
-	@Column(name = "code") 
-	private String code;
-	
-
-
-
 	@NotNull
 	@Column(name = "size") 
 	private Double size;
 	
-
-
-
+  @NotNull
+	@Column(name = "name") 
+	private String name;
 	
-	@Column(name = "description") 
-	private String description;
-	
-
-
-
+  @NotNull
+	@Column(name = "code") 
+	private String code;
+  
+	@NotNull
+	@Column(name = "repetitions") 
+	private Integer repetitions;
+  
 	@NotNull
 	@Column(name = "comments") 
 	private String comments;
-
 
 	@NotNull
 	@Column(name = "menuId") 
 	private Integer menuId;
 
-
-
-
-
-	@NotNull
+  @Column(name = "description") 
+	private String description;
+	
+  @NotNull
 	@Column(name = "complexityId", nullable = false)
 	@Enumerated(EnumType.STRING)
 	private Complexity complexityId;
-
-
-	@NotNull
+	
+  @NotNull
 	@Column(name = "repositoryId", nullable = false)
 	@Enumerated(EnumType.STRING)
 	private Repository repositoryId;
-
-	@NotNull
+	
+  @NotNull
 	@Column(name = "dataId", nullable = false)
 	@Enumerated(EnumType.STRING)
 	private Data dataId;
-
-	@NotNull
+	
+  @NotNull
 	@Column(name = "algorithmtypeId", nullable = false)
 	@Enumerated(EnumType.STRING)
 	private Algorithmtype algorithmtypeId;
-
-	@NotNull
+	
+  @NotNull
 	@Column(name = "reusabilityId", nullable = false)
 	@Enumerated(EnumType.STRING)
 	private Reusability reusabilityId;
@@ -113,11 +87,11 @@ public class Functionalservice implements Serializable {
 	}
 
 	
-	public Integer getRepetitions () {
-	    return repetitions;  		
+	public Double getSize () {
+	    return size;  		
     }
-	public void setRepetitions(Integer repetitions) {
-		this.repetitions = repetitions;
+	public void setSize(Double size) {
+		this.size = size;
 	}
 	
 	public String getName () {
@@ -134,18 +108,11 @@ public class Functionalservice implements Serializable {
 		this.code = code;
 	}
 	
-	public Double getSize () {
-	    return size;  		
+	public Integer getRepetitions () {
+	    return repetitions;  		
     }
-	public void setSize(Double size) {
-		this.size = size;
-	}
-	
-	public String getDescription () {
-	    return description;  		
-    }
-	public void setDescription(String description) {
-		this.description = description;
+	public void setRepetitions(Integer repetitions) {
+		this.repetitions = repetitions;
 	}
 	
 	public String getComments () {
@@ -159,6 +126,12 @@ public class Functionalservice implements Serializable {
     }
 	public void setMenuId (Integer menuId) {
 		this.menuId = menuId;
+	}
+	public String getDescription () {
+	    return description;  		
+    }
+	public void setDescription (String description) {
+		this.description = description;
 	}
 	public Complexity getComplexityId () {
 	    return complexityId;  		

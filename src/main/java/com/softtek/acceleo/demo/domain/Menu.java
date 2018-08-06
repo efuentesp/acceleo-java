@@ -26,17 +26,9 @@ public class Menu implements Serializable {
 	private Integer  menuId;
 
 
-	
-
-
-
 	@NotNull
 	@Column(name = "path") 
 	private String path;
-	
-
-
-
 	@NotNull
 	@Column(name = "code") 
 	private String code;
@@ -45,11 +37,6 @@ public class Menu implements Serializable {
 	@NotNull
 	@Column(name = "moduleId") 
 	private Integer moduleId;
-
-
-
-
-
 
 	public Integer getMenuId() {
 		return menuId;

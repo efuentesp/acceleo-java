@@ -16,23 +16,23 @@ public class FunctionalserviceBean {
  */
 	private Integer functionalserviceId;
 
-	private Integer repetitions;
+	private Double size;
 	private String name;
 	private String code;
-	private Double size;
-	private String description;
+	private Integer repetitions;
 	private String comments;
 	private Integer menuId;
+	private String description;
 	private Complexity complexityId;
-	private enum Complexity { s,ms,mc,c,m}
+	private enum Complexity { mc,ms,s,m,c}
 	private Repository repositoryId;
-	private enum Repository { e5_7,e8_10,e11_25,e2_4}
+	private enum Repository { e5_7,e11_25,e2_4,e8_10}
 	private Data dataId;
-	private enum Data { d41_100,d10_25,d26_40,d0_10}
+	private enum Data { d10_25,d0_10,d26_40,d41_100}
 	private Algorithmtype algorithmtypeId;
 	private enum Algorithmtype { a1,a2}
 	private Reusability reusabilityId;
-	private enum Reusability { r1,r2}
+	private enum Reusability { r2,r1}
 
 	public Integer getFunctionalserviceId() {
 		return functionalserviceId;
@@ -41,11 +41,11 @@ public class FunctionalserviceBean {
 		this.functionalserviceId = functionalserviceId;
 	}
 	
-	public Integer getRepetitions () {
-	    return repetitions;  		
+	public Double getSize () {
+	    return size;  		
     }
-	public void setRepetitions(Integer repetitions) {
-		this.repetitions = repetitions;
+	public void setSize(Double size) {
+		this.size = size;
 	}
 	
 	public String getName () {
@@ -62,18 +62,11 @@ public class FunctionalserviceBean {
 		this.code = code;
 	}
 	
-	public Double getSize () {
-	    return size;  		
+	public Integer getRepetitions () {
+	    return repetitions;  		
     }
-	public void setSize(Double size) {
-		this.size = size;
-	}
-	
-	public String getDescription () {
-	    return description;  		
-    }
-	public void setDescription(String description) {
-		this.description = description;
+	public void setRepetitions(Integer repetitions) {
+		this.repetitions = repetitions;
 	}
 	
 	public String getComments () {
@@ -87,6 +80,12 @@ public class FunctionalserviceBean {
     }
 	public void setMenuId (Integer menuId) {
 		this.menuId = menuId;
+	}
+	public String getDescription () {
+	    return description;  		
+    }
+	public void setDescription (String description) {
+		this.description = description;
 	}
 	public Complexity getComplexityId () {
 	    return complexityId;  		

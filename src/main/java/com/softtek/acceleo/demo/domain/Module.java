@@ -26,30 +26,17 @@ public class Module implements Serializable {
 	private Integer  moduleId;
 
 
-	
-
-
-
-	@NotNull
-	@Column(name = "code") 
-	private String code;
-	
-
-
-
 	@NotNull
 	@Column(name = "name") 
 	private String name;
+	@NotNull
+	@Column(name = "code") 
+	private String code;
 
 
 	@NotNull
 	@Column(name = "applicationId") 
 	private Integer applicationId;
-
-
-
-
-
 
 	public Integer getModuleId() {
 		return moduleId;
@@ -60,18 +47,18 @@ public class Module implements Serializable {
 	}
 
 	
-	public String getCode () {
-	    return code;  		
-    }
-	public void setCode(String code) {
-		this.code = code;
-	}
-	
 	public String getName () {
 	    return name;  		
     }
 	public void setName(String name) {
 		this.name = name;
+	}
+	
+	public String getCode () {
+	    return code;  		
+    }
+	public void setCode(String code) {
+		this.code = code;
 	}
 	public Integer getApplicationId () {
 	    return applicationId;  		

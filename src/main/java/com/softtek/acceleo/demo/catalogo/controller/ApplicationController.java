@@ -136,9 +136,7 @@ public class ApplicationController {
 	
 	applicationFound.setCode(application.getCode());
 	applicationFound.setName(application.getName());
-
-			
-			applicationFound.setApplicationId(application.getApplicationId());
+	applicationFound.setApplicationId(application.getApplicationId());
 
 		    applicationService.editApplication(applicationFound);
 	        return new ResponseEntity<Application>(applicationFound, HttpStatus.OK);
@@ -173,8 +171,6 @@ public class ApplicationController {
            	//} catch(GenericException e) {
             //	 return new ResponseEntity<Application>(HttpStatus.PRECONDITION_FAILED);
             //}
-
-
 		}
 
 	/**
@@ -265,6 +261,8 @@ public class ApplicationController {
 
 		//application.setDisplay_resultapplicationId(applicationBean.getApplicationId());
 		//application.setExposed_filterapplicationId(applicationBean.getApplicationId());
+		//application.setDisplay_modalapplicationId(applicationBean.getApplicationId());
+		//application.setEntity_nameapplicationId(applicationBean.getApplicationId());
 		application.setCode(applicationBean.getCode());
 		application.setName(applicationBean.getName());
 		application.setApplicationId(applicationBean.getApplicationId());
@@ -288,6 +286,8 @@ public class ApplicationController {
 
 				//bean.setDisplay_resultapplicationId(application.getApplicationId());
 				//bean.setExposed_filterapplicationId(application.getApplicationId());
+				//bean.setDisplay_modalapplicationId(application.getApplicationId());
+				//bean.setEntity_nameapplicationId(application.getApplicationId());
 				bean.setCode(application.getCode());
 				bean.setName(application.getName());
 				bean.setApplicationId(application.getApplicationId());

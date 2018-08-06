@@ -26,24 +26,12 @@ public class Application implements Serializable {
 	private Integer  applicationId;
 
 
-	
-
-
-
 	@NotNull
 	@Column(name = "code") 
 	private String code;
-	
-
-
-
 	@NotNull
 	@Column(name = "name") 
 	private String name;
-
-
-
-
 
 
 
