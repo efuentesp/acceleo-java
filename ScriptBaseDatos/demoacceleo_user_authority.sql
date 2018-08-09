@@ -1,8 +1,8 @@
--- MySQL dump 10.13  Distrib 5.7.17, for Win64 (x86_64)
+-- MySQL dump 10.13  Distrib 5.7.12, for Win32 (AMD64)
 --
 -- Host: 127.0.0.1    Database: demoacceleo
 -- ------------------------------------------------------
--- Server version	5.7.22-log
+-- Server version	5.7.18-log
 
 /*!40101 SET @OLD_CHARACTER_SET_CLIENT=@@CHARACTER_SET_CLIENT */;
 /*!40101 SET @OLD_CHARACTER_SET_RESULTS=@@CHARACTER_SET_RESULTS */;
@@ -23,16 +23,16 @@ DROP TABLE IF EXISTS `user_authority`;
 /*!40101 SET @saved_cs_client     = @@character_set_client */;
 /*!40101 SET character_set_client = utf8 */;
 CREATE TABLE `user_authority` (
-  `ID_USER` int(11) NOT NULL,
-  `ID_AUTHORITY` int(11) NOT NULL,
-  `ID_USER_AUTH` int(11) NOT NULL AUTO_INCREMENT,
-  `ENABLED` tinyint(4) NOT NULL DEFAULT '1',
-  PRIMARY KEY (`ID_USER_AUTH`),
-  KEY `ID_AUTHORITY_idx` (`ID_AUTHORITY`),
-  KEY `ID_USER_idx` (`ID_USER`),
-  CONSTRAINT `ID_AUTHORITY` FOREIGN KEY (`ID_AUTHORITY`) REFERENCES `authority` (`ID_AUTHORITY`) ON DELETE NO ACTION ON UPDATE NO ACTION,
-  CONSTRAINT `ID_USER` FOREIGN KEY (`ID_USER`) REFERENCES `user` (`ID_USER`) ON DELETE NO ACTION ON UPDATE NO ACTION
-) ENGINE=InnoDB AUTO_INCREMENT=63 DEFAULT CHARSET=utf8;
+  `id_user` int(11) NOT NULL,
+  `id_authority` int(11) NOT NULL,
+  `id_user_auth` int(11) NOT NULL AUTO_INCREMENT,
+  `enabled` tinyint(4) NOT NULL DEFAULT '1',
+  PRIMARY KEY (`id_user_auth`),
+  KEY `id_authority_idx` (`id_authority`),
+  KEY `id_user_idx` (`id_user`),
+  CONSTRAINT `id_authority` FOREIGN KEY (`id_authority`) REFERENCES `authority` (`id_authority`) ON DELETE NO ACTION ON UPDATE NO ACTION,
+  CONSTRAINT `id_user` FOREIGN KEY (`id_user`) REFERENCES `user` (`id_user`) ON DELETE NO ACTION ON UPDATE NO ACTION
+) ENGINE=InnoDB AUTO_INCREMENT=1 DEFAULT CHARSET=utf8;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -41,7 +41,7 @@ CREATE TABLE `user_authority` (
 
 LOCK TABLES `user_authority` WRITE;
 /*!40000 ALTER TABLE `user_authority` DISABLE KEYS */;
-INSERT INTO `user_authority` VALUES (1,1,1,1),(22,8,55,1),(6,2,58,1),(2,8,59,1),(24,2,62,1);
+INSERT INTO `user_authority` VALUES (1,1,1,1),(21,8,67,1),(6,1,72,1),(2,2,73,1),(22,2,74,1);
 /*!40000 ALTER TABLE `user_authority` ENABLE KEYS */;
 UNLOCK TABLES;
 /*!40103 SET TIME_ZONE=@OLD_TIME_ZONE */;
@@ -54,4 +54,4 @@ UNLOCK TABLES;
 /*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
 /*!40111 SET SQL_NOTES=@OLD_SQL_NOTES */;
 
--- Dump completed on 2018-07-10 16:50:37
+-- Dump completed on 2018-08-06 12:00:14

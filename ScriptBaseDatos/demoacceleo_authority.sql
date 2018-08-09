@@ -1,8 +1,8 @@
--- MySQL dump 10.13  Distrib 5.7.17, for Win64 (x86_64)
+-- MySQL dump 10.13  Distrib 5.7.12, for Win32 (AMD64)
 --
 -- Host: 127.0.0.1    Database: demoacceleo
 -- ------------------------------------------------------
--- Server version	5.7.22-log
+-- Server version	5.7.18-log
 
 /*!40101 SET @OLD_CHARACTER_SET_CLIENT=@@CHARACTER_SET_CLIENT */;
 /*!40101 SET @OLD_CHARACTER_SET_RESULTS=@@CHARACTER_SET_RESULTS */;
@@ -23,13 +23,13 @@ DROP TABLE IF EXISTS `authority`;
 /*!40101 SET @saved_cs_client     = @@character_set_client */;
 /*!40101 SET character_set_client = utf8 */;
 CREATE TABLE `authority` (
-  `ID_AUTHORITY` int(11) NOT NULL AUTO_INCREMENT,
-  `NAME` varchar(50) NOT NULL,
-  `ENABLED` tinyint(4) NOT NULL,
-  `CREATIONDATE` date NOT NULL,
-  `MODIFIEDDATE` date DEFAULT NULL,
-  PRIMARY KEY (`ID_AUTHORITY`)
-) ENGINE=InnoDB AUTO_INCREMENT=9 DEFAULT CHARSET=utf8;
+  `id_authority` int(11) NOT NULL AUTO_INCREMENT,
+  `name` varchar(50) NOT NULL,
+  `enabled` tinyint(4) NOT NULL,
+  `creationdate` date NOT NULL,
+  `modifieddate` date DEFAULT NULL,
+  PRIMARY KEY (`id_authority`)
+) ENGINE=InnoDB AUTO_INCREMENT=1 DEFAULT CHARSET=utf8;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -38,10 +38,9 @@ CREATE TABLE `authority` (
 
 LOCK TABLES `authority` WRITE;
 /*!40000 ALTER TABLE `authority` DISABLE KEYS */;
-INSERT INTO `authority` VALUES (1,'ADMIN',1,'2018-06-25',NULL),(2,'USER',1,'2018-06-25',NULL),(3,'ANONYMOUS',1,'2018-06-25',NULL),(4,'BASICO',1,'2018-06-25',NULL),(5,'TEST2',0,'2018-07-03',NULL),(6,'TEST',0,'2018-07-04',NULL),(7,'USER TEST',1,'2018-07-05',NULL),(8,'BASICO2',1,'2018-07-06','2018-07-06');
+INSERT INTO `authority` VALUES (1,'ADMIN',1,'2018-06-25',NULL),(2,'USER',1,'2018-06-25',NULL),(3,'ANONYMOUS',1,'2018-06-25',NULL),(4,'BASICO',1,'2018-06-25',NULL),(5,'TEST2',0,'2018-07-03',NULL),(6,'TEST',0,'2018-07-04',NULL),(7,'USER TEST',1,'2018-07-05',NULL),(8,'BASICO2',0,'2018-07-13','2018-07-13');
 /*!40000 ALTER TABLE `authority` ENABLE KEYS */;
 UNLOCK TABLES;
-/*!40103 SET TIME_ZONE=@OLD_TIME_ZONE */;
 
 /*!40101 SET SQL_MODE=@OLD_SQL_MODE */;
 /*!40014 SET FOREIGN_KEY_CHECKS=@OLD_FOREIGN_KEY_CHECKS */;
@@ -51,4 +50,4 @@ UNLOCK TABLES;
 /*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
 /*!40111 SET SQL_NOTES=@OLD_SQL_NOTES */;
 
--- Dump completed on 2018-07-09 13:03:55
+-- Dump completed on 2018-08-06 12:00:14
