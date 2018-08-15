@@ -16,18 +16,21 @@
 /*!40111 SET @OLD_SQL_NOTES=@@SQL_NOTES, SQL_NOTES=0 */;
 
 --
--- Table structure for table `aportacion`
+-- Table structure for table `beneficiario`
 --
-DROP TABLE IF EXISTS `aportacion`;
+DROP TABLE IF EXISTS `beneficiario`;
 /*!40101 SET @saved_cs_client     = @@character_set_client */;
 /*!40101 SET character_set_client = utf8 */;
-CREATE TABLE `aportacion` ( 
-`monto` DECIMAL DEFAULT NULL,
-`fecha` DATE DEFAULT NULL,
+CREATE TABLE `beneficiario` ( 
+`nombre` VARCHAR(100) DEFAULT NULL,
+`apellidopaterno` VARCHAR(100) DEFAULT NULL,
+`apellidomaterno` VARCHAR(100) DEFAULT NULL,
+`fechanacimiento` DATE DEFAULT NULL,
 `cuentadeahorroId` int(11) DEFAULT NULL,
-`tipoaportacionId` varchar(100) DEFAULT NULL,
-`aportacionId` INT NOT NULL AUTO_INCREMENT, 
-PRIMARY KEY(`aportacionId`),
+`generoId` varchar(100) DEFAULT NULL,
+`parentescoId` varchar(100) DEFAULT NULL,
+`beneficiarioId` INT NOT NULL AUTO_INCREMENT, 
+PRIMARY KEY(`beneficiarioId`),
 KEY `cuentadeahorroId_idx` (`cuentadeahorroId`),
 CONSTRAINT `cuentadeahorroId` FOREIGN KEY (`cuentadeahorroId`) 
 REFERENCES `cuentadeahorro` (`cuentadeahorroId`) ON DELETE NO ACTION ON UPDATE NO ACTION
@@ -36,11 +39,11 @@ REFERENCES `cuentadeahorro` (`cuentadeahorroId`) ON DELETE NO ACTION ON UPDATE N
 
 
 /* Table Insert */
-INSERT INTO `grupo` (NAME) VALUES ('APORTACION');
+INSERT INTO `grupo` (NAME) VALUES ('BENEFICIARIO');
 COMMIT;
-INSERT INTO `privilege` (NAME, ID_GRUPO, ENABLED, CREATIONDATE) VALUES ('APORTACIONSEARCH',(SELECT ID_GRUPO FROM `grupo` WHERE NAME = 'APORTACION'),1,now());
-INSERT INTO `privilege` (NAME, ID_GRUPO, ENABLED, CREATIONDATE) VALUES ('APORTACIONUPDATE',(SELECT ID_GRUPO FROM `grupo` WHERE NAME = 'APORTACION'),1,now());
-INSERT INTO `privilege` (NAME, ID_GRUPO, ENABLED, CREATIONDATE) VALUES ('APORTACIONDELETE',(SELECT ID_GRUPO FROM `grupo` WHERE NAME = 'APORTACION'),1,now());
-INSERT INTO `privilege` (NAME, ID_GRUPO, ENABLED, CREATIONDATE) VALUES ('APORTACIONCREATE',(SELECT ID_GRUPO FROM `grupo` WHERE NAME = 'APORTACION'),1,now());
+INSERT INTO `privilege` (NAME, ID_GRUPO, ENABLED, CREATIONDATE) VALUES ('BENEFICIARIOSEARCH',(SELECT ID_GRUPO FROM `grupo` WHERE NAME = 'BENEFICIARIO'),1,now());
+INSERT INTO `privilege` (NAME, ID_GRUPO, ENABLED, CREATIONDATE) VALUES ('BENEFICIARIOUPDATE',(SELECT ID_GRUPO FROM `grupo` WHERE NAME = 'BENEFICIARIO'),1,now());
+INSERT INTO `privilege` (NAME, ID_GRUPO, ENABLED, CREATIONDATE) VALUES ('BENEFICIARIODELETE',(SELECT ID_GRUPO FROM `grupo` WHERE NAME = 'BENEFICIARIO'),1,now());
+INSERT INTO `privilege` (NAME, ID_GRUPO, ENABLED, CREATIONDATE) VALUES ('BENEFICIARIOCREATE',(SELECT ID_GRUPO FROM `grupo` WHERE NAME = 'BENEFICIARIO'),1,now());
 COMMIT;
 

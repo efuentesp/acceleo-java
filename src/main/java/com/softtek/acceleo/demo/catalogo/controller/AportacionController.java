@@ -134,8 +134,8 @@ public class AportacionController {
 	            return new ResponseEntity<Aportacion>(HttpStatus.NOT_FOUND);
 	        }
 	
-	aportacionFound.setMonto(aportacion.getMonto());
 	aportacionFound.setFecha(aportacion.getFecha());
+	aportacionFound.setMonto(aportacion.getMonto());
 	aportacionFound.setCuentadeahorroId(aportacion.getCuentadeahorroId());
 	aportacionFound.setTipoaportacionId(aportacion.getTipoaportacionId());
 	aportacionFound.setAportacionId(aportacion.getAportacionId());

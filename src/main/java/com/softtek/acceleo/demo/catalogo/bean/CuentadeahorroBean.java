@@ -16,10 +16,11 @@ public class CuentadeahorroBean {
  */
 	private Integer cuentadeahorroId;
 
-	private Date fechadisponibilidad;
-	private Date fechacontratacion;
 	private Integer numero;
+	private Date fechadisponibilidad;
 	private Date fechavencimiento;
+	private Date fechacontratacion;
+	private Integer socioId;
 	private Tipoahorro tipoId;
 	private enum Tipoahorro { v,m6,m3,nov,m1,esp2,esp1,fap}
 
@@ -29,23 +30,17 @@ public class CuentadeahorroBean {
 	public void setCuentadeahorroId(Integer cuentadeahorroId) {
 		this.cuentadeahorroId = cuentadeahorroId;
 	}
-	public Date getFechadisponibilidad () {
-	    return fechadisponibilidad;  		
-    }
-	public void setFechadisponibilidad(Date fechadisponibilidad) {
-		this.fechadisponibilidad = fechadisponibilidad;
-	}
-	public Date getFechacontratacion () {
-	    return fechacontratacion;  		
-    }
-	public void setFechacontratacion(Date fechacontratacion) {
-		this.fechacontratacion = fechacontratacion;
-	}
 	public Integer getNumero () {
 	    return numero;  		
     }
 	public void setNumero(Integer numero) {
 		this.numero = numero;
+	}
+	public Date getFechadisponibilidad () {
+	    return fechadisponibilidad;  		
+    }
+	public void setFechadisponibilidad(Date fechadisponibilidad) {
+		this.fechadisponibilidad = fechadisponibilidad;
 	}
 	public Date getFechavencimiento () {
 	    return fechavencimiento;  		
@@ -53,7 +48,19 @@ public class CuentadeahorroBean {
 	public void setFechavencimiento(Date fechavencimiento) {
 		this.fechavencimiento = fechavencimiento;
 	}
+	public Date getFechacontratacion () {
+	    return fechacontratacion;  		
+    }
+	public void setFechacontratacion(Date fechacontratacion) {
+		this.fechacontratacion = fechacontratacion;
+	}
 
+	public Integer getSocioId () {
+	    return socioId;  		
+    }
+	public void setSocioId (Integer socioId) {
+		this.socioId = socioId;
+	}
 	public Tipoahorro getTipoId () {
 	    return tipoId;  		
     }

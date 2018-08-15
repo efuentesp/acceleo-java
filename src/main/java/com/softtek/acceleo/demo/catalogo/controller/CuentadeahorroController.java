@@ -134,10 +134,11 @@ public class CuentadeahorroController {
 	            return new ResponseEntity<Cuentadeahorro>(HttpStatus.NOT_FOUND);
 	        }
 	
-	cuentadeahorroFound.setFechadisponibilidad(cuentadeahorro.getFechadisponibilidad());
-	cuentadeahorroFound.setFechacontratacion(cuentadeahorro.getFechacontratacion());
 	cuentadeahorroFound.setNumero(cuentadeahorro.getNumero());
+	cuentadeahorroFound.setFechadisponibilidad(cuentadeahorro.getFechadisponibilidad());
 	cuentadeahorroFound.setFechavencimiento(cuentadeahorro.getFechavencimiento());
+	cuentadeahorroFound.setFechacontratacion(cuentadeahorro.getFechacontratacion());
+	cuentadeahorroFound.setSocioId(cuentadeahorro.getSocioId());
 	cuentadeahorroFound.setTipoahorroId(cuentadeahorro.getTipoahorroId());
 	cuentadeahorroFound.setCuentadeahorroId(cuentadeahorro.getCuentadeahorroId());
 
@@ -262,6 +263,7 @@ public class CuentadeahorroController {
 	private Cuentadeahorro prepareModel(CuentadeahorroBean cuentadeahorroBean) {
 		Cuentadeahorro cuentadeahorro = new Cuentadeahorro();
 
+		//cuentadeahorro.setDeId(cuentadeahorroBean.getDeId());
 		//cuentadeahorro.setHIntegerId(cuentadeahorroBean.getNumeroId());
 		//cuentadeahorro.setRadiotipoahorroId(cuentadeahorroBean.getTipoId());
 		//cuentadeahorro.setHDateId(cuentadeahorroBean.getFechacontratacionId());
@@ -291,6 +293,7 @@ public class CuentadeahorroController {
 			for (Cuentadeahorro cuentadeahorro : cuentadeahorros) {
 				bean = new CuentadeahorroBean();
 
+				//bean.setDeId(cuentadeahorro.getDeId());
 				//bean.setRadiotipoahorroId(cuentadeahorro.getTipoId());
 				//bean.setDisplayresultcuentadeahorroId(cuentadeahorro.getCuentadeahorroId());
 				//bean.setExposedfiltercuentadeahorroId(cuentadeahorro.getCuentadeahorroId());

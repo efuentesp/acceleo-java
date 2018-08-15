@@ -14,15 +14,15 @@ import javax.persistence.*;
 import javax.validation.constraints.NotNull;
 
 @Entity
-@Table(name = "aportacion")
-public class Aportacion implements Serializable {
+@Table(name = "interes")
+public class Interes implements Serializable {
 
 	private static final long serialVersionUID = 1L;
 
 	@Id
 	@GeneratedValue(strategy = GenerationType.AUTO)
-	@Column(name = "aportacionId")
-	private Integer  aportacionId;
+	@Column(name = "interesId")
+	private Integer  interesId;
 
 
 	@NotNull
@@ -40,17 +40,13 @@ public class Aportacion implements Serializable {
 //	@JoinColumn(name="cuentadeahorroId")
 //	@IndexColumn(name="idx")
 //	private List<CuentadeahorroId> cuentadeahorroList;
-	@NotNull
-	@Column(name = "tipoaportacionId", nullable = false)
-	@Enumerated(EnumType.STRING)
-	private Tipoaportacion tipoaportacionId;
 
-	public Integer getAportacionId() {
-		return aportacionId;
+	public Integer getInteresId() {
+		return interesId;
 	}
 
-	public void setAportacionId(Integer aportacionId) {
-		this.aportacionId = aportacionId;
+	public void setInteresId(Integer interesId) {
+		this.interesId = interesId;
 	}
 
 	
@@ -78,12 +74,6 @@ public class Aportacion implements Serializable {
     }
 	public void setCuentadeahorroId (Integer cuentadeahorroId) {
 		this.cuentadeahorroId = cuentadeahorroId;
-	}
-	public Tipoaportacion getTipoaportacionId () {
-	    return tipoaportacionId;  		
-    }
-	public void setTipoaportacionId (Tipoaportacion tipoaportacionId) {
-		this.tipoaportacionId = tipoaportacionId;
 	}
 
 }			

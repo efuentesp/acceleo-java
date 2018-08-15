@@ -26,19 +26,26 @@ public class Cuentadeahorro implements Serializable {
 
 
 	@NotNull
-	@Column(name = "fechadisponibilidad") 
-	private Date fechadisponibilidad;
-	@NotNull
-	@Column(name = "fechacontratacion") 
-	private Date fechacontratacion;
-	@NotNull
 	@Column(name = "numero") 
 	private Integer numero;
 	@NotNull
+	@Column(name = "fechadisponibilidad") 
+	private Date fechadisponibilidad;
+	@NotNull
 	@Column(name = "fechavencimiento") 
 	private Date fechavencimiento;
+	@NotNull
+	@Column(name = "fechacontratacion") 
+	private Date fechacontratacion;
 
 
+	@NotNull
+	@Column(name = "socioId") 
+	private Integer socioId;
+//	@OneToMany(cascade= CascadeType.ALL)
+//	@JoinColumn(name="socioId")
+//	@IndexColumn(name="idx")
+//	private List<SocioId> socioList;
 	@NotNull
 	@Column(name = "tipoahorroId", nullable = false)
 	@Enumerated(EnumType.STRING)
@@ -53,11 +60,25 @@ public class Cuentadeahorro implements Serializable {
 	}
 
 	
+	public Integer getNumero () {
+	    return numero;  		
+    }
+	public void setNumero(Integer numero) {
+		this.numero = numero;
+	}
+	
 	public Date getFechadisponibilidad () {
 	    return fechadisponibilidad;  		
     }
 	public void setFechadisponibilidad(Date fechadisponibilidad) {
 		this.fechadisponibilidad = fechadisponibilidad;
+	}
+	
+	public Date getFechavencimiento () {
+	    return fechavencimiento;  		
+    }
+	public void setFechavencimiento(Date fechavencimiento) {
+		this.fechavencimiento = fechavencimiento;
 	}
 	
 	public Date getFechacontratacion () {
@@ -66,19 +87,17 @@ public class Cuentadeahorro implements Serializable {
 	public void setFechacontratacion(Date fechacontratacion) {
 		this.fechacontratacion = fechacontratacion;
 	}
-	
-	public Integer getNumero () {
-	    return numero;  		
+	//public List<Socio> getSocioList () {
+	//    return socioList;  		
+    //}
+	//public void setSocioList (List<Socio> socioList) {
+	//	this.socioList = socioList;
+	//}
+	public Integer getSocioId () {
+	    return socioId;  		
     }
-	public void setNumero(Integer numero) {
-		this.numero = numero;
-	}
-	
-	public Date getFechavencimiento () {
-	    return fechavencimiento;  		
-    }
-	public void setFechavencimiento(Date fechavencimiento) {
-		this.fechavencimiento = fechavencimiento;
+	public void setSocioId (Integer socioId) {
+		this.socioId = socioId;
 	}
 	public Tipoahorro getTipoahorroId () {
 	    return tipoahorroId;  		

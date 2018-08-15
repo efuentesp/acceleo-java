@@ -59,17 +59,19 @@ public class CuentadeahorroRepositoryImpl implements CuentadeahorroRepository {
 		return (List<Cuentadeahorro>) sessionFactory.getCurrentSession()
 			.createCriteria(Cuentadeahorro.class).setFirstResult((page - 1) * size)
 			.add(					
-					Restrictions.or(Restrictions.or(Restrictions.or(Restrictions.or(Restrictions.or(Restrictions.or(Restrictions.or(Restrictions.or(Restrictions.or(	
-Restrictions.like("fechadisponibilidad", "%" + query +"%"),
+					Restrictions.or(Restrictions.or(Restrictions.or(Restrictions.or(Restrictions.or(Restrictions.or(Restrictions.or(Restrictions.or(Restrictions.or(Restrictions.or(	
+Restrictions.like("numero", "%" + query +"%"),
 Restrictions.like("cuentadeahorro", "%" + query +"%")),
-Restrictions.like("fechacontratacion", "%" + query +"%")),
+Restrictions.like("fechadisponibilidad", "%" + query +"%")),
+Restrictions.like("de", "%" + query +"%")),
 Restrictions.like("cuentadeahorro", "%" + query +"%")),
-Restrictions.like("cuentadeahorro", "%" + query +"%")),
-Restrictions.like("numero", "%" + query +"%")),
-Restrictions.like("tipo", "%" + query +"%")),
 Restrictions.like("fechavencimiento", "%" + query +"%")),
 Restrictions.like("cuentadeahorro", "%" + query +"%")),
+Restrictions.like("cuentadeahorro", "%" + query +"%")),
+Restrictions.like("tipo", "%" + query +"%")),
+Restrictions.like("fechacontratacion", "%" + query +"%")),
 Restrictions.like("cuentadeahorro", "%" + query +"%"))
+					
 					
 					
 					
@@ -115,8 +117,9 @@ Restrictions.like("cuentadeahorro", "%" + query +"%"))
 		totalRows = (Long) sessionFactory.getCurrentSession()
 		.createCriteria(Cuentadeahorro.class).setProjection(Projections.rowCount())
 					.add(	
-							Restrictions.or(Restrictions.or(Restrictions.or(Restrictions.or(Restrictions.or(Restrictions.or(Restrictions.or(Restrictions.or(Restrictions.or(	
-						Restrictions.like("fechadisponibilidad", "%" + query +"%"),Restrictions.like("cuentadeahorro", "%" + query +"%")),Restrictions.like("fechacontratacion", "%" + query +"%")),Restrictions.like("cuentadeahorro", "%" + query +"%")),Restrictions.like("cuentadeahorro", "%" + query +"%")),Restrictions.like("numero", "%" + query +"%")),Restrictions.like("tipo", "%" + query +"%")),Restrictions.like("fechavencimiento", "%" + query +"%")),Restrictions.like("cuentadeahorro", "%" + query +"%")),Restrictions.like("cuentadeahorro", "%" + query +"%"))	
+							Restrictions.or(Restrictions.or(Restrictions.or(Restrictions.or(Restrictions.or(Restrictions.or(Restrictions.or(Restrictions.or(Restrictions.or(Restrictions.or(	
+						Restrictions.like("numero", "%" + query +"%"),Restrictions.like("cuentadeahorro", "%" + query +"%")),Restrictions.like("fechadisponibilidad", "%" + query +"%")),Restrictions.like("de", "%" + query +"%")),Restrictions.like("cuentadeahorro", "%" + query +"%")),Restrictions.like("fechavencimiento", "%" + query +"%")),Restrictions.like("cuentadeahorro", "%" + query +"%")),Restrictions.like("cuentadeahorro", "%" + query +"%")),Restrictions.like("tipo", "%" + query +"%")),Restrictions.like("fechacontratacion", "%" + query +"%")),Restrictions.like("cuentadeahorro", "%" + query +"%"))	
+	
 	
 	
 	

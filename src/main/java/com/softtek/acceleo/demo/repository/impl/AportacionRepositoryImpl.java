@@ -60,14 +60,14 @@ public class AportacionRepositoryImpl implements AportacionRepository {
 			.createCriteria(Aportacion.class).setFirstResult((page - 1) * size)
 			.add(					
 					Restrictions.or(Restrictions.or(Restrictions.or(Restrictions.or(Restrictions.or(Restrictions.or(Restrictions.or(Restrictions.or(	
-Restrictions.like("para", "%" + query +"%"),
+Restrictions.like("concepto", "%" + query +"%"),
+Restrictions.like("para", "%" + query +"%")),
+Restrictions.like("fecha", "%" + query +"%")),
 Restrictions.like("aportacion", "%" + query +"%")),
-Restrictions.like("aportacion", "%" + query +"%")),
-Restrictions.like("aportacion", "%" + query +"%")),
-Restrictions.like("concepto", "%" + query +"%")),
 Restrictions.like("monto", "%" + query +"%")),
 Restrictions.like("aportacion", "%" + query +"%")),
-Restrictions.like("fecha", "%" + query +"%")),
+Restrictions.like("aportacion", "%" + query +"%")),
+Restrictions.like("aportacion", "%" + query +"%")),
 Restrictions.like("aportacion", "%" + query +"%"))
 					
 					
@@ -114,7 +114,7 @@ Restrictions.like("aportacion", "%" + query +"%"))
 		.createCriteria(Aportacion.class).setProjection(Projections.rowCount())
 					.add(	
 							Restrictions.or(Restrictions.or(Restrictions.or(Restrictions.or(Restrictions.or(Restrictions.or(Restrictions.or(Restrictions.or(	
-						Restrictions.like("para", "%" + query +"%"),Restrictions.like("aportacion", "%" + query +"%")),Restrictions.like("aportacion", "%" + query +"%")),Restrictions.like("aportacion", "%" + query +"%")),Restrictions.like("concepto", "%" + query +"%")),Restrictions.like("monto", "%" + query +"%")),Restrictions.like("aportacion", "%" + query +"%")),Restrictions.like("fecha", "%" + query +"%")),Restrictions.like("aportacion", "%" + query +"%"))	
+						Restrictions.like("concepto", "%" + query +"%"),Restrictions.like("para", "%" + query +"%")),Restrictions.like("fecha", "%" + query +"%")),Restrictions.like("aportacion", "%" + query +"%")),Restrictions.like("monto", "%" + query +"%")),Restrictions.like("aportacion", "%" + query +"%")),Restrictions.like("aportacion", "%" + query +"%")),Restrictions.like("aportacion", "%" + query +"%")),Restrictions.like("aportacion", "%" + query +"%"))	
 	
 	
 	

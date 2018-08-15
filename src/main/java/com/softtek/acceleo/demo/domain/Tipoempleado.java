@@ -1,4 +1,4 @@
 			package com.softtek.acceleo.demo.domain;
-			public enum Genero {
-			mas,fem
+			public enum Tipoempleado {
+			c,b,t,p
 			}

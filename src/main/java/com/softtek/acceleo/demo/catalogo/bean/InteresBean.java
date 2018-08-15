@@ -2,31 +2,29 @@
  * Autor: PSG.
  * Proyecto:
  * Version: 0.1 
- * Clase para encapsular informacion de un Aportacion.
+ * Clase para encapsular informacion de un Interes.
  */
 package com.softtek.acceleo.demo.catalogo.bean;
 
 import java.util.Date;
 
-public class AportacionBean {
+public class InteresBean {
 /**
- * Clase AportacionBean.
+ * Clase InteresBean.
  * @author PSG.
  *
  */
-	private Integer aportacionId;
+	private Integer interesId;
 
 	private Date fecha;
 	private Double monto;
 	private Integer cuentadeahorroId;
-	private Tipoaportacion conceptoId;
-	private enum Tipoaportacion { ag,ut,fa,cf}
 
-	public Integer getAportacionId() {
-		return aportacionId;
+	public Integer getInteresId() {
+		return interesId;
 	}
-	public void setAportacionId(Integer aportacionId) {
-		this.aportacionId = aportacionId;
+	public void setInteresId(Integer interesId) {
+		this.interesId = interesId;
 	}
 	public Date getFecha () {
 	    return fecha;  		
@@ -46,12 +44,6 @@ public class AportacionBean {
     }
 	public void setCuentadeahorroId (Integer cuentadeahorroId) {
 		this.cuentadeahorroId = cuentadeahorroId;
-	}
-	public Tipoaportacion getConceptoId () {
-	    return conceptoId;  		
-    }
-	public void setConceptoId (Tipoaportacion conceptoId) {
-		this.conceptoId = conceptoId;
 	}
 
 
