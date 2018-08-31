@@ -24,7 +24,6 @@ public class Ordensimplificada implements Serializable {
 	@Column(name = "ordensimplificadaId")
 	private Integer  ordensimplificadaId;
 
-
 	@NotNull
 	@Column(name = "sap") 
 	private Integer sap;
@@ -44,11 +43,11 @@ public class Ordensimplificada implements Serializable {
 	@Column(name = "fechainicial") 
 	private Date fechainicial;
 	@NotNull
-	@Column(name = "lineaId", nullable = false)
+	@Column(name = "linea1Id", nullable = false)
 	@Enumerated(EnumType.STRING)
 	private Linea lineaId;
 	@NotNull
-	@Column(name = "destinoId", nullable = false)
+	@Column(name = "destino1Id", nullable = false)
 	@Enumerated(EnumType.STRING)
 	private Destino destinoId;
 	@NotNull
@@ -66,8 +65,8 @@ public class Ordensimplificada implements Serializable {
 	@Column(name = "operadorproduccion2Id") 
 	private Operadorproduccion operadorproduccion2Id;
 	@NotNull
-	@Column(name = "clienteId") 
-	private Integer clienteId;
+	@Column(name = "cliente1Id") 
+	private Integer cliente1Id;
 
 	@Column(name = "comentario") 
 	private String comentario;
@@ -80,58 +79,67 @@ public class Ordensimplificada implements Serializable {
 		this.ordensimplificadaId = ordensimplificadaId;
 	}
 
-	
-	public Integer getSap () {
-	    return sap;  		
-    }
+	public Integer getSap() {
+		return sap;
+	}
+
 	public void setSap(Integer sap) {
 		this.sap = sap;
 	}
-	
-	public Integer getCantidadprogramada () {
-	    return cantidadprogramada;  		
-    }
+
+	public Integer getCantidadprogramada() {
+		return cantidadprogramada;
+	}
+
 	public void setCantidadprogramada(Integer cantidadprogramada) {
 		this.cantidadprogramada = cantidadprogramada;
 	}
-	
-	public Integer getOrdentrabajo () {
-	    return ordentrabajo;  		
-    }
+
+	public Integer getOrdentrabajo() {
+		return ordentrabajo;
+	}
+
 	public void setOrdentrabajo(Integer ordentrabajo) {
 		this.ordentrabajo = ordentrabajo;
 	}
-	
-	public Date getFechafinal () {
-	    return fechafinal;  		
-    }
+
+	public Date getFechafinal() {
+		return fechafinal;
+	}
+
 	public void setFechafinal(Date fechafinal) {
 		this.fechafinal = fechafinal;
 	}
-	
-	public Integer getCantidadproducida () {
-	    return cantidadproducida;  		
-    }
+
+	public Integer getCantidadproducida() {
+		return cantidadproducida;
+	}
+
 	public void setCantidadproducida(Integer cantidadproducida) {
 		this.cantidadproducida = cantidadproducida;
 	}
-	
-	public Date getFechainicial () {
-	    return fechainicial;  		
-    }
+
+	public Date getFechainicial() {
+		return fechainicial;
+	}
+
 	public void setFechainicial(Date fechainicial) {
 		this.fechainicial = fechainicial;
 	}
-	public Linea getLineaId () {
-	    return lineaId;  		
-    }
-	public void setLineaId (Linea lineaId) {
+
+	public Linea getLineaId() {
+		return lineaId;
+	}
+
+	public void setLineaId(Linea lineaId) {
 		this.lineaId = lineaId;
 	}
-	public Destino getDestinoId () {
-	    return destinoId;  		
-    }
-	public void setDestinoId (Destino destinoId) {
+
+	public Destino getDestinoId() {
+		return destinoId;
+	}
+
+	public void setDestinoId(Destino destinoId) {
 		this.destinoId = destinoId;
 	}
 
@@ -151,19 +159,6 @@ public class Ordensimplificada implements Serializable {
 		this.estadoorden2Id = estadoorden2Id;
 	}
 
-	public Integer getClienteId () {
-	    return clienteId;  		
-    }
-	public void setClienteId (Integer clienteId) {
-		this.clienteId = clienteId;
-	}
-	public String  getComentario () {
-	    return comentario;  		
-    }
-	public void setComentario (String comentario) {
-		this.comentario = comentario;
-	}
-
 	public Operadorproduccion getOperadorproduccion1Id() {
 		return operadorproduccion1Id;
 	}
@@ -180,5 +175,24 @@ public class Ordensimplificada implements Serializable {
 		this.operadorproduccion2Id = operadorproduccion2Id;
 	}
 
+	public Integer getCliente1Id() {
+		return cliente1Id;
+	}
+
+	public void setCliente1Id(Integer cliente1Id) {
+		this.cliente1Id = cliente1Id;
+	}
+
+	public String getComentario() {
+		return comentario;
+	}
+
+	public void setComentario(String comentario) {
+		this.comentario = comentario;
+	}
+
+	public static long getSerialversionuid() {
+		return serialVersionUID;
+	}
 
 }			

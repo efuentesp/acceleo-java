@@ -147,7 +147,7 @@ public class OrdensimplificadaController {
 //	ordensimplificadaFound.setOperadorproduccionId(ordensimplificada.getOperadorproduccionId());
 //	ordensimplificadaFound.setOperadorproduccionId(ordensimplificada.getOperadorproduccionId());
 	ordensimplificadaFound.setComentario(ordensimplificada.getComentario());
-	ordensimplificadaFound.setClienteId(ordensimplificada.getClienteId());
+//	ordensimplificadaFound.setClienteId(ordensimplificada.getClienteId());
 	ordensimplificadaFound.setOrdensimplificadaId(ordensimplificada.getOrdensimplificadaId());
 
 		    ordensimplificadaService.editOrdensimplificada(ordensimplificadaFound);

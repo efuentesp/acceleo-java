@@ -43,11 +43,11 @@ public class Etiquetaasignada implements Serializable {
 	@Column(name = "multiplo3") 
 	private Integer multiplo3;
 	@NotNull
-	@Column(name = "clienteId") 
-	private Cliente clienteId;
+	@Column(name = "cliente1Id") 
+	private Cliente cliente1Id;
 	@NotNull
-	@Column(name = "ordenSimplificadaId") 
-	private Ordensimplificada ordenSimplificadaId;
+	@Column(name = "ordenSimplificada1Id") 
+	private Ordensimplificada ordenSimplificada1Id;
 	
 	public Integer getEtiquetaasignadaId() {
 		return etiquetaasignadaId;
@@ -91,17 +91,26 @@ public class Etiquetaasignada implements Serializable {
 	public void setMultiplo3(Integer multiplo3) {
 		this.multiplo3 = multiplo3;
 	}
-	public Cliente getClienteId() {
-		return clienteId;
+	
+	public Ordensimplificada getOrdenSimplificada1Id() {
+		return ordenSimplificada1Id;
 	}
-	public void setClienteId(Cliente clienteId) {
-		this.clienteId = clienteId;
+	public void setOrdenSimplificada1Id(Ordensimplificada ordenSimplificada1Id) {
+		this.ordenSimplificada1Id = ordenSimplificada1Id;
 	}
-	public Ordensimplificada getOrdenSimplificadaId() {
-		return ordenSimplificadaId;
+	public Cliente getCliente1Id() {
+		return cliente1Id;
 	}
-	public void setOrdenSimplificadaId(Ordensimplificada ordenSimplificadaId) {
-		this.ordenSimplificadaId = ordenSimplificadaId;
+	public void setCliente1Id(Cliente cliente1Id) {
+		this.cliente1Id = cliente1Id;
+	}
+	
+	@Override
+	public String toString() {
+		return "Etiquetaasignada [etiquetaasignadaId=" + etiquetaasignadaId + ", f5=" + f5 + ", sap=" + sap
+				+ ", etiquetaasignadasxpalet=" + etiquetaasignadasxpalet + ", multiplo1=" + multiplo1 + ", multiplo2="
+				+ multiplo2 + ", multiplo3=" + multiplo3 + ", cliente1Id=" + cliente1Id + ", ordenSimplificada1Id="
+				+ ordenSimplificada1Id + "]";
 	}
 
 }			

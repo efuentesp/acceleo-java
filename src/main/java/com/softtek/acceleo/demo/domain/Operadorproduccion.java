@@ -57,4 +57,11 @@ public class Operadorproduccion implements Serializable {
 		this.numeroempleado = numeroempleado;
 	}
 
+	@Override
+	public String toString() {
+		return "Operadorproduccion [operadorproduccionId=" + operadorproduccionId + ", nombre=" + nombre
+				+ ", numeroempleado=" + numeroempleado + "]";
+	}
+
+	
 }			

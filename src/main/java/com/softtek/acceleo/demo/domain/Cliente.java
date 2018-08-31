@@ -33,14 +33,14 @@ public class Cliente implements Serializable {
 	@Column(name = "clave") 
 	private Integer clave;
 	
-	@Column (name = "clienteIdS")
-	private Cliente clienteIdS;
+	@Column (name = "cliente1Id")
+	private Cliente cliente1Id;
 	
-	@Column (name = "etiquetaasignadaId")
-	private List<Etiquetaasignada> etiquetaasignadas;
+	@Column (name = "etiquetaasignada1Id")
+	private List<Etiquetaasignada> etiquetaasignadas1Id;
 	
-	@Column (name = "ordensimplificada")
-	private List<Ordensimplificada> ordensimplificada;
+	@Column (name = "ordensimplificada1Id")
+	private List<Ordensimplificada> ordensimplificada1Id;
 
 	public Integer getClienteId() {
 		return clienteId;
@@ -66,28 +66,36 @@ public class Cliente implements Serializable {
 		this.clave = clave;
 	}
 
-	public Cliente getClienteIdS() {
-		return clienteIdS;
+	public Cliente getCliente1Id() {
+		return cliente1Id;
 	}
 
-	public void setClienteIdS(Cliente clienteIdS) {
-		this.clienteIdS = clienteIdS;
+	public void setCliente1Id(Cliente cliente1Id) {
+		this.cliente1Id = cliente1Id;
 	}
 
-	public List<Etiquetaasignada> getEtiquetaasignadas() {
-		return etiquetaasignadas;
+	public List<Etiquetaasignada> getEtiquetaasignadas1Id() {
+		return etiquetaasignadas1Id;
 	}
 
-	public void setEtiquetaasignadas(List<Etiquetaasignada> etiquetaasignadas) {
-		this.etiquetaasignadas = etiquetaasignadas;
+	public void setEtiquetaasignadas1Id(List<Etiquetaasignada> etiquetaasignadas1Id) {
+		this.etiquetaasignadas1Id = etiquetaasignadas1Id;
 	}
 
-	public List<Ordensimplificada> getOrdensimplificada() {
-		return ordensimplificada;
+	public List<Ordensimplificada> getOrdensimplificada1Id() {
+		return ordensimplificada1Id;
 	}
 
-	public void setOrdensimplificada(List<Ordensimplificada> ordensimplificada) {
-		this.ordensimplificada = ordensimplificada;
+	public void setOrdensimplificada1Id(List<Ordensimplificada> ordensimplificada1Id) {
+		this.ordensimplificada1Id = ordensimplificada1Id;
 	}
+
+	@Override
+	public String toString() {
+		return "Cliente [clienteId=" + clienteId + ", nombre=" + nombre + ", clave=" + clave + ", cliente1Id="
+				+ cliente1Id + ", etiquetaasignadas1Id=" + etiquetaasignadas1Id + ", ordensimplificada1Id="
+				+ ordensimplificada1Id + "]";
+	}
+
 	
 }			

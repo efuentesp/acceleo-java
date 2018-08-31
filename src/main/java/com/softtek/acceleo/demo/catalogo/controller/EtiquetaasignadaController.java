@@ -140,7 +140,7 @@ public class EtiquetaasignadaController {
 	etiquetaasignadaFound.setMultiplo1(etiquetaasignada.getMultiplo1());
 	etiquetaasignadaFound.setMultiplo2(etiquetaasignada.getMultiplo2());
 	etiquetaasignadaFound.setMultiplo3(etiquetaasignada.getMultiplo3());
-	etiquetaasignadaFound.setClienteId(etiquetaasignada.getClienteId());
+//	etiquetaasignadaFound.setClienteId(etiquetaasignada.getClienteId());
 //	etiquetaasignadaFound.setOrdensimplificadaId(etiquetaasignada.getOrdensimplificadaId());
 //	etiquetaasignadaFound.setEtiquetaasignadaId(etiquetaasignada.getEtiquetaasignadaId());
 

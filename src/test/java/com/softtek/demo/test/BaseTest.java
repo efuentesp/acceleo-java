@@ -53,9 +53,9 @@ public abstract class BaseTest {
 		c1.setClave(001);
 		c1.setClienteId(1);
 		c1.setNombre("Normaysel Carbajal");
-		c1.setClienteIdS(cliente);
-		c1.setEtiquetaasignadas(etiquetaasignadas);
-		c1.setOrdensimplificada(ordensimplificadas);
+		c1.setCliente1Id(cliente);
+		c1.setEtiquetaasignadas1Id(etiquetaasignadas);
+		c1.setOrdensimplificada1Id(ordensimplificadas);
 		
 	}
 	
@@ -64,7 +64,7 @@ public abstract class BaseTest {
 		final Date currentDt = new Date();
 
 		Etiquetaasignada e1 = new Etiquetaasignada();
-		e1.setClienteId(cliente);
+		e1.setCliente1Id(cliente);
 		e1.setEtiquetaasignadaId(1);
 		e1.setSap(1);
 		e1.setEtiquetaasignadasxpalet(1);
@@ -72,7 +72,7 @@ public abstract class BaseTest {
 		e1.setMultiplo2(1);
 		e1.setMultiplo3(1);
 		e1.setF5(1);
-		e1.setOrdenSimplificadaId(ordensimplificada);
+		e1.setOrdenSimplificada1Id(ordensimplificada);
 	}
 	
 	private void setMemoryOrdenSimplificada() {
