@@ -6,15 +6,19 @@
  */
 package com.softtek.acceleo.demo.repository.impl;
 
+import java.util.ArrayList;
 import java.util.List;
 
+import org.hibernate.Criteria;
+import org.hibernate.Session;
 import org.hibernate.SessionFactory;
-import org.hibernate.criterion.Example;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.stereotype.Repository;
+import org.hibernate.criterion.Order;
 import org.hibernate.criterion.Projections;
 import org.hibernate.criterion.Restrictions;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Repository;
 
+import com.softtek.acceleo.demo.domain.Authority;
 import com.softtek.acceleo.demo.domain.Cliente;
 import com.softtek.acceleo.demo.repository.ClienteRepository;
 /**
@@ -27,6 +31,7 @@ public class ClienteRepositoryImpl implements ClienteRepository {
 
 	@Autowired
 	private SessionFactory sessionFactory;
+	
 	/**
 	 * Agrega un cliente.
 	 */
@@ -55,8 +60,37 @@ public class ClienteRepositoryImpl implements ClienteRepository {
 	 */
 	@SuppressWarnings({ "unchecked" })
 	public List<Cliente> listAllClientes() {
-		return (List<Cliente>) sessionFactory.getCurrentSession().createCriteria(Cliente.class).list();
+		List<Cliente> lstClientes = new ArrayList<Cliente>();
+		
+		try {
+			Session session = sessionFactory.getCurrentSession();
+			Criteria criteria = session.createCriteria(Cliente.class);
+			lstClientes = (List<Cliente>) criteria.list();
+		}catch(Exception e) {
+			e.printStackTrace();
+		}
+		
+		return lstClientes;
 	}
+	
+/**
+ * 	public List<Authority> getAuthority() {
+		List<Authority> lstAuthority = null;
+
+		try {
+			Session session = sessionFactory.getCurrentSession();
+			Criteria criteria = session.createCriteria(Authority.class);
+			criteria.add(Restrictions.eq("enabled", Boolean.TRUE)).addOrder(Order.asc("name")).list();
+			
+			lstAuthority = (List<Authority>) criteria.list();
+		}catch(Exception e) {
+			logger.error("Error: ", e);
+		}
+		
+		return lstAuthority;
+	}
+	
+ */
 	
 	
 	/**
@@ -167,6 +201,23 @@ Restrictions.like("es", "%" + query +"%"))
 	 */
 	public void deleteCliente(Cliente cliente) {
 		sessionFactory.getCurrentSession().delete(cliente);
+	}
+	
+	@Override
+	public List<Cliente> listClientes(int idClientePadre) {
+		List<Cliente> lstClientes = new ArrayList<>();
+		
+		try {
+			Session session = sessionFactory.getCurrentSession();
+			Criteria criteria = session.createCriteria(Cliente.class);
+			criteria.add(Restrictions.eq("cliente1Id", idClientePadre)).list();
+			
+			lstClientes = (List<Cliente>) criteria.list();
+		}catch(Exception e) {
+			e.printStackTrace();
+		}
+		
+		return lstClientes;		
 	}
 
 }

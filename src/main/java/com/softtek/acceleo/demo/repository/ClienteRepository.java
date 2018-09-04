@@ -12,6 +12,8 @@ public interface ClienteRepository {
 	 public void editCliente(Cliente cliente);
 	   
 	 public List<Cliente> listClientes(Cliente cliente);   
+	 
+	 public List<Cliente> listClientes(int idClientePadre);
 	    
 	 public List<Cliente> listAllClientes();
 	 

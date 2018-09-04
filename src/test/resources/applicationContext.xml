@@ -59,6 +59,9 @@
 	<bean id="testAdminPermisosRepositoryImpl" class="com.softtek.acceleo.demo.security.repository.AdminPermisosRepositoryImpl" />
 	
 	<bean id="testAdminPermisoServiceImpl" class="com.softtek.acceleo.demo.service.impl.AdminPermisoServiceImpl" />
+	<!-- <bean id="testClienteServiceImpl" class="com.softtek.acceleo.demo.service.impl.ClienteServiceImpl" /> -->
+	<bean id="testClienteRepositoryImpl" class="com.softtek.acceleo.demo.repository.impl.ClienteRepositoryImpl" />
+	
 	
 <!--     <bean id="bcryptEncoder" class="org.springframewok.security.crypto.bcrypt.BCryptPasswordEncoder"/>
  -->      

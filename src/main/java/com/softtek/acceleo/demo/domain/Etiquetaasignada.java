@@ -15,7 +15,7 @@ import javax.validation.constraints.NotNull;
 
 @Entity
 @Table(name = "etiquetaasignada")
-public class Etiquetaasignada implements Serializable {
+public class Etiquetaasignada /**/implements Serializable/**/ {
 
 	private static final long serialVersionUID = 1L;
 
@@ -44,7 +44,8 @@ public class Etiquetaasignada implements Serializable {
 	private Integer multiplo3;
 	@NotNull
 	@Column(name = "clienteId") 
-	private Cliente clienteId;
+	//private Cliente clienteId;
+	private Integer clienteId;
 	@NotNull
 	@Column(name = "ordenSimplificadaId") 
 	private Ordensimplificada ordenSimplificadaId;
@@ -91,10 +92,10 @@ public class Etiquetaasignada implements Serializable {
 	public void setMultiplo3(Integer multiplo3) {
 		this.multiplo3 = multiplo3;
 	}
-	public Cliente getClienteId() {
+	public Integer getClienteId() {
 		return clienteId;
 	}
-	public void setClienteId(Cliente clienteId) {
+	public void setClienteId(Integer clienteId) {
 		this.clienteId = clienteId;
 	}
 	public Ordensimplificada getOrdenSimplificadaId() {

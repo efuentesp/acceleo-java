@@ -1,15 +1,5 @@
 package com.softtek.demo.test.dao;
 
-import org.junit.runner.RunWith;
-//import org.springframework.beans.factory.annotation.Autowired;
-//import org.springframework.boot.context.properties.ConfigurationProperties;
-//import org.springframework.boot.test.context.SpringBootTest;
-//import org.springframework.test.context.ActiveProfiles;
-//import org.springframework.test.context.junit4.SpringRunner;
-
-import com.softtek.acceleo.demo.domain.Cliente;
-import com.softtek.acceleo.demo.repository.ClienteRepository;
-
 import java.util.List;
 
 import org.apache.commons.logging.Log;
@@ -17,26 +7,42 @@ import org.apache.commons.logging.LogFactory;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.test.context.ContextConfiguration;
+import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
+import org.springframework.transaction.annotation.Transactional;
 
+import com.softtek.acceleo.demo.domain.Cliente;
+import com.softtek.acceleo.demo.repository.ClienteRepository;
+
+@RunWith(SpringJUnit4ClassRunner.class)
+@ContextConfiguration(locations = "file:src/test/resources/applicationContext.xml")
 public class ClienteTest {
 
 		private static Log log = LogFactory.getLog(ClienteTest.class);
 		
-//		@Autowired
-//		private ClienteRepository clienteRepository;
-//		
-//		@Before
-//		public void setup() {
-//			super.setup();
-//		}
-//
-//		@Test
-//		public void findAll() throws Exception {
-//
-//			List<Cliente> result = clienteRepository.listAllClientes();
-//			assertEquals(1, result.size());
-//
-//		}
+		@Autowired
+		private ClienteRepository clienteRepository;
+		
+		@Before
+		public void setup() {
+			//super.setup();
+			System.out.println("********Iniciando pruebas de ClienteTest...");
+		}
+
+		@Test
+		@Transactional
+		public void findAll() throws Exception {
+			int idClientePadre = 1;
+			try {
+			System.out.println("********Ejecutando JUnit()... findAll - " + clienteRepository);
+			List<Cliente> result = clienteRepository.listClientes(idClientePadre);//listAllClientes();
+			System.out.println("********El numero de clientes obtenidos es: " + result.size());
+			//assertEquals(1, result.size());
+			}catch(Exception e) {
+				System.out.println(e.getMessage());
+			}
+		}
 //		
 //		@Test
 //		public void findAllIsActive() throws Exception {

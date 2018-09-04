@@ -17,8 +17,10 @@ import org.springframework.transaction.annotation.Transactional;
 
 import com.softtek.acceleo.demo.domain.AdminPermiso;
 import com.softtek.acceleo.demo.domain.Authority;
+import com.softtek.acceleo.demo.domain.Cliente;
 import com.softtek.acceleo.demo.domain.ConfigAuthority;
 import com.softtek.acceleo.demo.domain.ConfigPermisos;
+import com.softtek.acceleo.demo.repository.ClienteRepository;
 import com.softtek.acceleo.demo.security.repository.AuthorityRepository;
 import com.softtek.acceleo.demo.service.AdminPermisoService;
 
