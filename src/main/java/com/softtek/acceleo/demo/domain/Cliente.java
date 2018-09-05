@@ -15,11 +15,13 @@ import java.util.List;
 import javax.persistence.*;
 import javax.validation.constraints.NotNull;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
+
 @Entity
 @Table(name = "cliente")
-public class Cliente implements Serializable {
+public class Cliente /**/implements Serializable/**/ {
 
-	private static final long serialVersionUID = 1L;
+	//private static final long serialVersionUID = 1L;
 
 	@Id
 	@GeneratedValue(strategy = GenerationType.AUTO)
@@ -29,19 +31,44 @@ public class Cliente implements Serializable {
 	@NotNull
 	@Column(name = "nombre") 
 	private String nombre;
+	
 	@NotNull
 	@Column(name = "clave") 
 	private Integer clave;
 	
-	@Column (name = "cliente1Id")
-	private Cliente cliente1Id;
+//-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-
+    //@ManyToOne(cascade={CascadeType.ALL})
+    //@JoinColumn(name="cliente1Id")
+	@Column(name="cliente1Id")
+    //private Cliente cliente1Id;
+	private Integer cliente1Id;
 	
-	@Column (name = "etiquetaasignada1Id")
-	private List<Etiquetaasignada> etiquetaasignadas1Id;
+//	@Column (name = "clienteId")
+//	private List<Cliente> clienteIdS;
 	
-	@Column (name = "ordensimplificada1Id")
+	//	@Column (name = "etiquetaasignadaId")
+//	private List<Etiquetaasignada> etiquetaasignadas;
+//	@NotNull
+//	@Column (name = "etiquetaasignada1Id")
+//	private Integer etiquetaasignadas;
+	@OneToMany (cascade=CascadeType.ALL, orphanRemoval = true, fetch = FetchType.LAZY)
+	@JoinColumn(name = "etiquetaasignada1Id")
+	@JsonIgnore 
+	private List<Etiquetaasignada> etiquetaasignadas1Id;	
+	
+	
+//	@Column (name = "ordensimplificada")
+//	private List<Ordensimplificada> ordensimplificada;
+//	@Column (name = "ordensimplificada1Id")
+//	private Integer ordensimplificada;
+	@OneToMany (cascade=CascadeType.ALL, orphanRemoval = true)
+	@JoinColumn(name = "ordensimplificada1Id")
+	@JsonIgnore 
 	private List<Ordensimplificada> ordensimplificada1Id;
-
+	
+//-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-	
+	
+	
 	public Integer getClienteId() {
 		return clienteId;
 	}
@@ -66,12 +93,34 @@ public class Cliente implements Serializable {
 		this.clave = clave;
 	}
 
-	public Cliente getCliente1Id() {
-		return cliente1Id;
-	}
+//	public List<Cliente> getClienteIdS() {
+//		return clienteIdS;
+//	}
+//
+//	public void setClienteIdS(List<Cliente> clienteIdS) {
+//		this.clienteIdS = clienteIdS;
+//	}
 
-	public void setCliente1Id(Cliente cliente1Id) {
-		this.cliente1Id = cliente1Id;
+//	public List<Etiquetaasignada> getEtiquetaasignadas() {
+//		return etiquetaasignadas;
+//	}
+//
+//	public void setEtiquetaasignadas(List<Etiquetaasignada> etiquetaasignadas) {
+//		this.etiquetaasignadas = etiquetaasignadas;
+//	}
+
+	
+//	public List<Ordensimplificada> getOrdensimplificada() {
+//		return ordensimplificada;
+//	}
+//
+//	public void setOrdensimplificada(List<Ordensimplificada> ordensimplificada) {
+//		this.ordensimplificada = ordensimplificada;
+//	}
+	
+	
+	public Integer getCliente1Id() {
+		return cliente1Id;
 	}
 
 	public List<Etiquetaasignada> getEtiquetaasignadas1Id() {
@@ -90,12 +139,8 @@ public class Cliente implements Serializable {
 		this.ordensimplificada1Id = ordensimplificada1Id;
 	}
 
-	@Override
-	public String toString() {
-		return "Cliente [clienteId=" + clienteId + ", nombre=" + nombre + ", clave=" + clave + ", cliente1Id="
-				+ cliente1Id + ", etiquetaasignadas1Id=" + etiquetaasignadas1Id + ", ordensimplificada1Id="
-				+ ordensimplificada1Id + "]";
+	public void setCliente1Id(Integer cliente1Id) {
+		this.cliente1Id = cliente1Id;
 	}
-
 	
 }			

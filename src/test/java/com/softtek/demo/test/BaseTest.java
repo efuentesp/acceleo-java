@@ -22,14 +22,18 @@ public abstract class BaseTest {
 
 	protected final static Logger LOGGER = LoggerFactory.getLogger(BasicConfigurator.class);
 	
-	protected Cliente cliente = new Cliente();
+	//protected Cliente cliente = new Cliente();
+	protected Integer cliente = new Integer(0);
 	protected List<Cliente> clientes = new ArrayList<>();
 	
 	protected Etiquetaasignada etiquetaasignada = new Etiquetaasignada();
 	protected List<Etiquetaasignada> etiquetaasignadas = new ArrayList<>();
+	//protected Integer etiquetaAsignada = new Integer(0);
 	
 	protected Ordensimplificada ordensimplificada = new Ordensimplificada();
 	protected List<Ordensimplificada> ordensimplificadas = new ArrayList<>();
+	protected List<Ordensimplificada> ordenSimplificada = new ArrayList<>();
+	//protected Integer ordenSimplificada = new Integer(0);
 	
 	protected Operadorproduccion operadorproduccion = new Operadorproduccion();
 	protected List<Operadorproduccion> operadorproduccions = new ArrayList<>();
@@ -53,9 +57,11 @@ public abstract class BaseTest {
 		c1.setClave(001);
 		c1.setClienteId(1);
 		c1.setNombre("Normaysel Carbajal");
-		c1.setCliente1Id(cliente);
+		//c1.setClienteIdS(clientes);
 		c1.setEtiquetaasignadas1Id(etiquetaasignadas);
-		c1.setOrdensimplificada1Id(ordensimplificadas);
+		//c1.setEtiquetaasignadas(etiquetaasignadas);
+		//c1.setOrdensimplificada(ordensimplificadas);
+		c1.setOrdensimplificada1Id(ordenSimplificada);
 		
 	}
 	
@@ -64,7 +70,7 @@ public abstract class BaseTest {
 		final Date currentDt = new Date();
 
 		Etiquetaasignada e1 = new Etiquetaasignada();
-		e1.setCliente1Id(cliente);
+		e1.setClienteId(cliente);
 		e1.setEtiquetaasignadaId(1);
 		e1.setSap(1);
 		e1.setEtiquetaasignadasxpalet(1);
@@ -72,7 +78,7 @@ public abstract class BaseTest {
 		e1.setMultiplo2(1);
 		e1.setMultiplo3(1);
 		e1.setF5(1);
-		e1.setOrdenSimplificada1Id(ordensimplificada);
+		e1.setOrdenSimplificadaId(ordensimplificada);
 	}
 	
 	private void setMemoryOrdenSimplificada() {
