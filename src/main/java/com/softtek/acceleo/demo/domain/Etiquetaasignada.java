@@ -43,12 +43,11 @@ public class Etiquetaasignada /**/implements Serializable/**/ {
 	@Column(name = "multiplo3") 
 	private Integer multiplo3;
 	@NotNull
-	@Column(name = "clienteId") 
-	//private Cliente clienteId;
-	private Integer clienteId;
+	@Column(name = "cliente1Id") 
+	private Cliente cliente1Id;
 	@NotNull
-	@Column(name = "ordenSimplificadaId") 
-	private Ordensimplificada ordenSimplificadaId;
+	@Column(name = "ordensimplificada1Id") 
+	private Ordensimplificada ordensimplificada1Id;
 	
 	public Integer getEtiquetaasignadaId() {
 		return etiquetaasignadaId;
@@ -92,17 +91,17 @@ public class Etiquetaasignada /**/implements Serializable/**/ {
 	public void setMultiplo3(Integer multiplo3) {
 		this.multiplo3 = multiplo3;
 	}
-	public Integer getClienteId() {
-		return clienteId;
+	public Cliente getCliente1Id() {
+		return cliente1Id;
 	}
-	public void setClienteId(Integer clienteId) {
-		this.clienteId = clienteId;
+	public void setCliente1Id(Cliente cliente1Id) {
+		this.cliente1Id = cliente1Id;
 	}
-	public Ordensimplificada getOrdenSimplificadaId() {
-		return ordenSimplificadaId;
+	public Ordensimplificada getOrdensimplificada1Id() {
+		return ordensimplificada1Id;
 	}
-	public void setOrdenSimplificadaId(Ordensimplificada ordenSimplificadaId) {
-		this.ordenSimplificadaId = ordenSimplificadaId;
+	public void setOrdensimplificada1Id(Ordensimplificada ordensimplificada1Id) {
+		this.ordensimplificada1Id = ordensimplificada1Id;
 	}
 
 }			

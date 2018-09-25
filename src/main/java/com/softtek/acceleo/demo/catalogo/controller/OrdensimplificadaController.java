@@ -140,8 +140,8 @@ public class OrdensimplificadaController {
 	ordensimplificadaFound.setFechafinal(ordensimplificada.getFechafinal());
 	ordensimplificadaFound.setCantidadproducida(ordensimplificada.getCantidadproducida());
 	ordensimplificadaFound.setFechainicial(ordensimplificada.getFechainicial());
-	ordensimplificadaFound.setLineaId(ordensimplificada.getLineaId());
-	ordensimplificadaFound.setDestinoId(ordensimplificada.getDestinoId());
+	ordensimplificadaFound.setLinea1Id(ordensimplificada.getLinea1Id());
+	ordensimplificadaFound.setDestino1Id(ordensimplificada.getDestino1Id());
 //	ordensimplificadaFound.setEstadoordenId(ordensimplificada.getEstadoordenId());
 //	ordensimplificadaFound.setEstadoordenId(ordensimplificada.getEstadoordenId());
 //	ordensimplificadaFound.setOperadorproduccionId(ordensimplificada.getOperadorproduccionId());

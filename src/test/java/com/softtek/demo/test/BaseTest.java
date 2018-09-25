@@ -70,7 +70,7 @@ public abstract class BaseTest {
 		final Date currentDt = new Date();
 
 		Etiquetaasignada e1 = new Etiquetaasignada();
-		e1.setClienteId(cliente);
+//		e1.setClienteId(cliente);
 		e1.setEtiquetaasignadaId(1);
 		e1.setSap(1);
 		e1.setEtiquetaasignadasxpalet(1);
@@ -78,7 +78,7 @@ public abstract class BaseTest {
 		e1.setMultiplo2(1);
 		e1.setMultiplo3(1);
 		e1.setF5(1);
-		e1.setOrdenSimplificadaId(ordensimplificada);
+//		e1.setOrdenSimplificadaId(ordensimplificada);
 	}
 	
 	private void setMemoryOrdenSimplificada() {
@@ -94,10 +94,10 @@ public abstract class BaseTest {
 		o1.setCantidadprogramada(200000);
 		o1.setFechafinal(new Timestamp(currentDt.getTime()));
 		o1.setFechainicial(new Timestamp(currentDt.getTime()));
-		o1.setDestinoId(destino.d1);
+//		o1.setDestinoId(destino.d1);
 		o1.setEstadoorden1Id(estadoorden.e1);
 		o1.setEstadoorden2Id(estadoorden.e2);
-		o1.setLineaId(linea.a);
+//		o1.setLineaId(linea.a);
 		o1.setOperadorproduccion1Id(operadorproduccion);
 		o1.setOperadorproduccion2Id(operadorproduccion);
 	}

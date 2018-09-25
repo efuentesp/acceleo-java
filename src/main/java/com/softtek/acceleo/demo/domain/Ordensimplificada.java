@@ -10,7 +10,6 @@ import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.Table;
 import java.util.Date;
-import javax.persistence.*;
 import javax.validation.constraints.NotNull;
 
 @Entity
@@ -45,11 +44,11 @@ public class Ordensimplificada implements Serializable {
 	@NotNull
 	@Column(name = "linea1Id", nullable = false)
 	@Enumerated(EnumType.STRING)
-	private Linea lineaId;
+	private Linea linea1Id;
 	@NotNull
 	@Column(name = "destino1Id", nullable = false)
 	@Enumerated(EnumType.STRING)
-	private Destino destinoId;
+	private Destino destino1Id;
 	@NotNull
 	@Column(name = "estadoorden1Id", nullable = false)
 	@Enumerated(EnumType.STRING)
@@ -127,22 +126,6 @@ public class Ordensimplificada implements Serializable {
 		this.fechainicial = fechainicial;
 	}
 
-	public Linea getLineaId() {
-		return lineaId;
-	}
-
-	public void setLineaId(Linea lineaId) {
-		this.lineaId = lineaId;
-	}
-
-	public Destino getDestinoId() {
-		return destinoId;
-	}
-
-	public void setDestinoId(Destino destinoId) {
-		this.destinoId = destinoId;
-	}
-
 	public Estadoorden getEstadoorden1Id() {
 		return estadoorden1Id;
 	}
@@ -193,6 +176,22 @@ public class Ordensimplificada implements Serializable {
 
 	public static long getSerialversionuid() {
 		return serialVersionUID;
+	}
+
+	public Linea getLinea1Id() {
+		return linea1Id;
+	}
+
+	public void setLinea1Id(Linea linea1Id) {
+		this.linea1Id = linea1Id;
+	}
+
+	public Destino getDestino1Id() {
+		return destino1Id;
+	}
+
+	public void setDestino1Id(Destino destino1Id) {
+		this.destino1Id = destino1Id;
 	}
 
 }			
