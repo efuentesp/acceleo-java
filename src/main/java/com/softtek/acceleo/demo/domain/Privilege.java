@@ -23,31 +23,31 @@ public class Privilege {
 
 	@Id
 	@GeneratedValue(strategy = GenerationType.AUTO)
-    @Column(name = "id_privilege")
+    @Column(name = "ID_PRIVILEGE")
     private Long idPrivilege;
 
-    @Column(name = "name", length = 50, unique = true)
+    @Column(name = "NAME", length = 50, unique = true)
     @NotNull
     @Size(min = 4, max = 50)
     private String name;
 
-    @Column(name = "enabled", length = 100)
+    @Column(name = "ENABLED", length = 100)
     @NotNull
     @Size(min = 4, max = 100)
     private Boolean enabled;
 
-    @Column(name = "creationdate", length = 50)
+    @Column(name = "CREATIONDATE", length = 50)
     @NotNull
     @Size(min = 4, max = 50)
     private Date creationdate;
 
-    @Column(name = "modifieddate", length = 50)
+    @Column(name = "MODIFIEDDATE", length = 50)
     @NotNull
     @Size(min = 4, max = 50)
     private Date modifieddate;
 
     @OneToOne(cascade = CascadeType.ALL)
-    @JoinColumn(name = "id_grupo")
+    @JoinColumn(name = "ID_GRUPO")
     private Grupo grupo;
     
     @ManyToMany(fetch = FetchType.LAZY, mappedBy = "privilege")

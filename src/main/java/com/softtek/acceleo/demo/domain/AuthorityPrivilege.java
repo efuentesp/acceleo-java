@@ -20,24 +20,24 @@ import javax.validation.constraints.NotNull;
 @Table(name = "authority_privilege")
 public class AuthorityPrivilege {
     @Id
-    @Column(name = "id_aut_priv")
+    @Column(name = "ID_AUT_PRIV")
     @GeneratedValue(strategy = GenerationType.AUTO)
 	private Long idAutorityPrivilege;
     
-    @Column(name = "enabled")    
+    @Column(name = "ENABLED")    
     private Boolean enabled;
     
     
 //	@Column(name = "ID_PRIVILEGE")
 //  @NotNull
 	@OneToOne(cascade = CascadeType.ALL)
-    @JoinColumn(name = "id_privilege")    
+    @JoinColumn(name = "ID_PRIVILEGE")    
     private Privilege idPrivilege;
     
 //  @Column(name = "ID_AUTHORITY")
 //  @NotNull
 	@OneToOne(cascade = CascadeType.ALL)
-    @JoinColumn(name = "id_authority")    
+    @JoinColumn(name = "ID_AUTHORITY")    
     private Authority idAuthority;
     
 	public Long getIdAutorityPrivilege() {
