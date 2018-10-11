@@ -11,8 +11,6 @@ import org.hibernate.SessionFactory;
 import org.hibernate.criterion.Restrictions;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
-import org.springframework.test.annotation.Rollback;
-import org.springframework.test.context.transaction.TransactionConfiguration;
 import org.springframework.transaction.annotation.Propagation;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -21,7 +19,6 @@ import com.softtek.acceleo.demo.domain.AuthorityPrivilege;
 
 
 @Repository("authorityPrivilegeRepository")
-@Rollback(false)
 @Transactional(propagation = Propagation.SUPPORTS, readOnly = true)
 public class AuthorityPrivilegeRepositoryImpl implements AuthorityPrivilegeRepository{
 	private static final Logger logger = Logger.getLogger(AuthorityPrivilegeRepositoryImpl.class);
