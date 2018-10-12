@@ -318,7 +318,7 @@ public class UserRepositoryImpl implements UserRepository {
 		if (user != null) {
 			User userProxy = new User();
 			return (List<User>) sessionFactory.getCurrentSession().createCriteria(User.class)
-					.add(Example.create(userProxy)).add(Restrictions.eq("userName", user.getUserName())).list();
+					.add(Example.create(userProxy)).add(Restrictions.eq("username", user.getUserName())).list();
 			// .add(Example.create(userProxy)).add(Restrictions.eq("idUser",
 			// user.getIdUser())).list();
 		}
@@ -331,12 +331,12 @@ public class UserRepositoryImpl implements UserRepository {
 	 */
 	@SuppressWarnings("unchecked")
 	@Override
-	public List<User> consultarInformacionPorUsuario(String userName) {
+	public List<User> consultarInformacionPorUsuario(String username) {
 		List<User> lstUser = null;
 
 		try {
 			lstUser = (List<User>) sessionFactory.getCurrentSession().createCriteria(User.class)
-					.add(Restrictions.eq("userName", userName)).list();
+					.add(Restrictions.eq("username", username)).list();
 		} catch (HibernateException e) {
 			logger.error("Error al ejecutar la consulta para obtener los User. - " + e);
 		} catch (Exception e) {

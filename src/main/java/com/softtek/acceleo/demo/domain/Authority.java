@@ -12,45 +12,45 @@ import java.util.Date;
 import java.util.List;
 
 @Entity
-@Table(name = "AUTHORITY")
+@Table(name = "authority")
 public class Authority {
 
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
-    @Column(name = "ID_AUTHORITY")
+    @Column(name = "id_authority")
     private Long idAuthority;
 
-    @Column(name = "NAME", length = 50)
+    @Column(name = "name", length = 50)
     @NotNull
     @OrderBy("name ASC")
     private String name;
     
-    @Column(name = "ENABLED")
+    @Column(name = "enabled")
     @NotNull
     private Boolean enabled;
     
     
-    @Column(name = "CREATIONDATE")
+    @Column(name = "creationdate")
     @NotNull
     private Date creationDate;
 
-    @Column(name = "MODIFIEDDATE")
+    @Column(name = "modifieddate")
     private Date modifiedDate;
     
 
 	@ManyToMany(fetch = FetchType.LAZY, cascade = CascadeType.ALL)
 	@JoinTable(name = "authority_privilege", joinColumns = { 
-			@JoinColumn(name = "ID_AUTHORITY", nullable = false, updatable = false) }, 
-			inverseJoinColumns = { @JoinColumn(name = "ID_PRIVILEGE", nullable = false, updatable = false) })
-	@WhereJoinTable(clause = "ENABLED = '1'") 
+			@JoinColumn(name = "id_authority", nullable = false, updatable = false) }, 
+			inverseJoinColumns = { @JoinColumn(name = "id_privilege", nullable = false, updatable = false) })
+	@WhereJoinTable(clause = "enabled = '1'") 
 	@JsonIgnore 
 	private List<Privilege> privilege;
     
     
 	@ManyToMany(fetch = FetchType.LAZY, cascade = CascadeType.ALL)
 	@JoinTable(name = "user_authority", joinColumns = { 
-			@JoinColumn(name = "ID_AUTHORITY", nullable = false, updatable = false) }, 
-			inverseJoinColumns = { @JoinColumn(name = "ID_USER", nullable = false, updatable = false) })
+			@JoinColumn(name = "id_authority", nullable = false, updatable = false) }, 
+			inverseJoinColumns = { @JoinColumn(name = "id_user", nullable = false, updatable = false) })
 	//@WhereJoinTable(clause = "ENABLED = '1'")
 	@JsonIgnore 
 	private List<User> user;
