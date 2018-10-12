@@ -140,8 +140,6 @@ public class CandidatoController {
 	candidatoFound.setNombre(candidato.getNombre());
 	candidatoFound.setGeneroId(candidato.getGeneroId());
 	candidatoFound.setEstatuscandidatoId(candidato.getEstatuscandidatoId());
-	candidatoFound.setSolicitudId(candidato.getSolicitudId());
-	candidatoFound.setEventoId(candidato.getEventoId());
 	candidatoFound.setCandidatoId(candidato.getCandidatoId());
 
 		    candidatoService.editCandidato(candidatoFound);
