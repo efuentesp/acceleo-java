@@ -8,6 +8,8 @@ package com.softtek.acceleo.demo.catalogo.bean;
 
 import java.util.Date;
 
+import com.softtek.acceleo.demo.domain.Estatussolicitud;
+
 public class SolicitudBean {
 /**
  * Clase SolicitudBean.
@@ -22,7 +24,7 @@ public class SolicitudBean {
 	private Integer posicionId;
 	private Integer candidatoId;
 	private Estatussolicitud estadoId;
-	private enum Estatussolicitud { e1,e4,e3,e2}
+	//private enum Estatussolicitud { e1,e4,e3,e2}
 	private Date fecha;
 
 	public Integer getSolicitudId() {

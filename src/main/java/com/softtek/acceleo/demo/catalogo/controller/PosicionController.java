@@ -145,8 +145,8 @@ public class PosicionController {
 	posicionFound.setTiponominaId(posicion.getTiponominaId());
 	posicionFound.setReclutadorId(posicion.getReclutadorId());
 	posicionFound.setEstatusposicionId(posicion.getEstatusposicionId());
-	posicionFound.setSolicitudId(posicion.getSolicitudId());
-	posicionFound.setEventoId(posicion.getEventoId());
+//	posicionFound.setSolicitudId(posicion.getSolicitudId());
+//	posicionFound.setEventoId(posicion.getEventoId());
 	posicionFound.setPosicionId(posicion.getPosicionId());
 
 		    posicionService.editPosicion(posicionFound);

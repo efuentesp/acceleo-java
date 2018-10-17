@@ -74,16 +74,16 @@ public class Posicion implements Serializable {
 	@Column(name = "estatusposicionId", nullable = false)
 	@Enumerated(EnumType.STRING)
 	private Estatusposicion estatusposicionId;
-	@NotNull
-	@Column(name = "solicitudId") 
-	private Integer solicitudId;
+//	@NotNull
+//	@Column(name = "solicitudId") 
+//	private Integer solicitudId;
 //	@OneToMany(cascade= CascadeType.ALL)
 //	@JoinColumn(name="solicitudId")
 //	@IndexColumn(name="idx")
 //	private List<SolicitudId> solicitudList;
-	@NotNull
-	@Column(name = "eventoId") 
-	private Integer eventoId;
+//	@NotNull
+//	@Column(name = "eventoId") 
+//	private Integer eventoId;
 //	@OneToMany(cascade= CascadeType.ALL)
 //	@JoinColumn(name="eventoId")
 //	@IndexColumn(name="idx")
@@ -193,23 +193,23 @@ public class Posicion implements Serializable {
 	//public void setSolicitudList (List<Solicitud> solicitudList) {
 	//	this.solicitudList = solicitudList;
 	//}
-	public Integer getSolicitudId () {
-	    return solicitudId;  		
-    }
-	public void setSolicitudId (Integer solicitudId) {
-		this.solicitudId = solicitudId;
-	}
-	//public List<Evento> getEventoList () {
-	//    return eventoList;  		
-    //}
-	//public void setEventoList (List<Evento> eventoList) {
-	//	this.eventoList = eventoList;
-	//}
-	public Integer getEventoId () {
-	    return eventoId;  		
-    }
-	public void setEventoId (Integer eventoId) {
-		this.eventoId = eventoId;
-	}
+//	public Integer getSolicitudId () {
+//	    return solicitudId;  		
+//    }
+//	public void setSolicitudId (Integer solicitudId) {
+//		this.solicitudId = solicitudId;
+//	}
+//	//public List<Evento> getEventoList () {
+//	//    return eventoList;  		
+//    //}
+//	//public void setEventoList (List<Evento> eventoList) {
+//	//	this.eventoList = eventoList;
+//	//}
+//	public Integer getEventoId () {
+//	    return eventoId;  		
+//    }
+//	public void setEventoId (Integer eventoId) {
+//		this.eventoId = eventoId;
+//	}
 
 }			
