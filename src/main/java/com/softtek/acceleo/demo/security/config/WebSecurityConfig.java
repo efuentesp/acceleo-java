@@ -58,7 +58,7 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
 
                 public void addCorsMappings(CorsRegistry registry) {
                                logger.info("Ingresando addCorsMApping...");
-                                registry.addMapping("/**").allowedOrigins("http://dockerjaas.cloudapp.net:4200").allowCredentials(true).allowedMethods("*").allowedHeaders(
+                                registry.addMapping("/**").allowedOrigins("http://app.softtek.online:4200").allowCredentials(true).allowedMethods("*").allowedHeaders(
                                                                "Content-Type, Access-Control-Allow-Origin, Access-Control-Allow-Headers, Authorization, X-Requested-With, requestId, Correlation-Id");
                 }
 
