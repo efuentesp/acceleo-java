@@ -31,118 +31,91 @@ import com.softtek.acceleo.demo.security.service.JwtUserDetailsService;
 @EnableGlobalMethodSecurity(prePostEnabled = true)
 @PropertySource("application.properties")
 public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
-	
-	private final Logger logger = LoggerFactory.getLogger(this.getClass());
 
-    //@Autowired
-    private JwtAuthenticationEntryPoint unauthorizedHandler = new JwtAuthenticationEntryPoint();
+                private final Logger logger = LoggerFactory.getLogger(this.getClass());
 
-    @Autowired
-    private JwtTokenUtil jwtTokenUtil;
+                // @Autowired
+                private JwtAuthenticationEntryPoint unauthorizedHandler = new JwtAuthenticationEntryPoint();
 
-    @Autowired
-    private JwtUserDetailsService jwtUserDetailsService;
+                @Autowired
+                private JwtTokenUtil jwtTokenUtil;
 
-    @Value("${jwt.header}")
-    private String tokenHeader;
+                @Autowired
+                private JwtUserDetailsService jwtUserDetailsService;
 
-    @Value("${jwt.route.authentication.path}")
-    private String authenticationPath;
+                @Value("${jwt.header}")
+                private String tokenHeader;
 
-    @Autowired
-    public void configureGlobal(AuthenticationManagerBuilder auth) throws Exception {
-        auth
-            .userDetailsService(jwtUserDetailsService)
-            .passwordEncoder(passwordEncoderBean());
-        
-        logger.info("configureGlobal: tokenHeader"+tokenHeader);
-        //System.out.println("JAAAAS"+tokenHeader);
-    }
+                @Value("${jwt.route.authentication.path}")
+                private String authenticationPath;
 
-        
-	public void addCorsMappings(CorsRegistry registry) {
-		registry.addMapping("/**");
-	}
-    
-    @Bean
-    public PasswordEncoder passwordEncoderBean() {
-        return new BCryptPasswordEncoder();
-    }
+                @Autowired
+                public void configureGlobal(AuthenticationManagerBuilder auth) throws Exception {
+                               auth.userDetailsService(jwtUserDetailsService).passwordEncoder(passwordEncoderBean());
 
-    @Bean
-    @Override
-    public AuthenticationManager authenticationManagerBean() throws Exception {
-        logger.info("authenticationManagerBean");
+                               logger.info("configureGlobal: tokenHeader" + tokenHeader);
+                }
 
-        return super.authenticationManagerBean();
-    }
+                public void addCorsMappings(CorsRegistry registry) {
+                               logger.info("Ingresando addCorsMApping...");
+                                registry.addMapping("/**").allowedOrigins("http://dockerjaas.cloudapp.net:4200").allowCredentials(true).allowedMethods("*").allowedHeaders(
+                                                               "Content-Type, Access-Control-Allow-Origin, Access-Control-Allow-Headers, Authorization, X-Requested-With, requestId, Correlation-Id");
+                }
 
-    @Override
-    protected void configure(HttpSecurity httpSecurity) throws Exception {
-    	
-        logger.info("configure");
+                @Bean
+                public PasswordEncoder passwordEncoderBean() {
+                               return new BCryptPasswordEncoder();
+                }
 
-    	
-        httpSecurity
-            // we don't need CSRF because our token is invulnerable
-            .csrf().disable()
+                @Bean
+                @Override
+                public AuthenticationManager authenticationManagerBean() throws Exception {
+                               logger.info("authenticationManagerBean");
 
-            .exceptionHandling().authenticationEntryPoint(unauthorizedHandler).and()
+                               return super.authenticationManagerBean();
+                }
 
-            // don't create session
-            .sessionManagement().sessionCreationPolicy(SessionCreationPolicy.STATELESS).and()
+                @Override
+                protected void configure(HttpSecurity httpSecurity) throws Exception {
 
-            .authorizeRequests()
+                               logger.info("configure");
 
-            // Un-secure H2 Database
-            .antMatchers("/h2-console/**/**").permitAll()
-            .antMatchers(HttpMethod.OPTIONS,"/**").permitAll()
-            .antMatchers("/auth/**").permitAll()
-            
-            //Revisar para quitar
-            .antMatchers("/user/**").permitAll()
-            .anyRequest().authenticated();
+                               httpSecurity
+                               
+                                                               // we don't need CSRF because our token is invulnerable
+                                                               .csrf().disable()
 
-        // Custom JWT based security filter
-        JwtAuthorizationTokenFilter authenticationTokenFilter = new JwtAuthorizationTokenFilter(userDetailsService(), jwtTokenUtil, tokenHeader);
-        httpSecurity
-            .addFilterBefore(authenticationTokenFilter, UsernamePasswordAuthenticationFilter.class);
+                                                               .exceptionHandling().authenticationEntryPoint(unauthorizedHandler).and()
 
-        // disable page caching
-        httpSecurity
-            .headers()
-            .frameOptions().sameOrigin()  // required to set for H2 else H2 Console will be blank.
-            .cacheControl();
-    }
+                                                               // No se crea ninguna sesion
+                                                               .sessionManagement().sessionCreationPolicy(SessionCreationPolicy.STATELESS).and()
 
-    @Override
-    public void configure(WebSecurity web) throws Exception {
-        // AuthenticationTokenFilter will ignore the below paths
-        web
-            .ignoring()
-            .antMatchers(
-                HttpMethod.POST,
-                authenticationPath
-            )
+                                                               .authorizeRequests()
+                                                               .antMatchers("/auth/**").permitAll()
 
-            // allow anonymous resource requests
-            .and()
-            .ignoring()
-            .antMatchers(
-                HttpMethod.GET,
-                "/SADFB/",
-                "/",
-                "/*.html",
-                "/*.jsp",
-                "/favicon.ico",
-                "/**/*.html",
-                "/**/*.css",
-                "/**/*.js"
-            )
+                                                               // Revisar para quitar
+                                                               //.antMatchers("/user").permitAll()
+                                                               .anyRequest().authenticated();
 
-            // Un-secure H2 Database (for testing purposes, H2 console shouldn't be unprotected in production)
-            .and()
-            .ignoring()
-            .antMatchers("/h2-console/**/**");
-    }
+                               // Custom JWT based security filter
+                               JwtAuthorizationTokenFilter authenticationTokenFilter = new JwtAuthorizationTokenFilter(userDetailsService(),
+                                                               jwtTokenUtil, tokenHeader);
+                               httpSecurity.addFilterBefore(authenticationTokenFilter, UsernamePasswordAuthenticationFilter.class);
+
+                }
+
+                @Override
+                public void configure(WebSecurity web) throws Exception {
+                               // El filtro AuthenticationTokenFilter ignora las rutas de abajo
+                               // La peticion inicial post se ignora y envia al controller
+                               // es decir 
+                               web.ignoring().antMatchers(HttpMethod.POST, authenticationPath)
+                               //.and().ignoring().antMatchers(HttpMethod.POST, "/auth")
+                                       //.and().ignoring().antMatchers(HttpMethod.GET,"/user")
+                                                               
+                                                               // allow anonymous resource requests
+                                               .and().ignoring()
+                                                               .antMatchers(HttpMethod.GET, "/*.html", "/*.jsp", "/favicon.ico", "/**/*.html",
+                                                                                              "/**/*.css", "/**/*.js");
+                }
 }
