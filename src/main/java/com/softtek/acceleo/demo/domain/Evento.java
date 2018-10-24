@@ -1,14 +1,6 @@
 package com.softtek.acceleo.demo.domain;
 
 import java.io.Serializable;
-import javax.persistence.EnumType;
-import javax.persistence.Enumerated;
-import javax.persistence.Column;
-import javax.persistence.Entity;
-import javax.persistence.GeneratedValue;
-import javax.persistence.GenerationType;
-import javax.persistence.Id;
-import javax.persistence.Table;
 import java.util.Date;
 import javax.persistence.*;
 import javax.validation.constraints.NotNull;
@@ -40,20 +32,15 @@ public class Evento implements Serializable {
 	@Column(name = "tipoeventoId", nullable = false)
 	@Enumerated(EnumType.STRING)
 	private Tipoevento tipoeventoId;
-	@NotNull
-	@Column(name = "posicionId") 
-	private Integer posicionId;
-//	@OneToMany(cascade= CascadeType.ALL)
-//	@JoinColumn(name="posicionId")
-//	@IndexColumn(name="idx")
-//	private List<PosicionId> posicionList;
-	@NotNull
-	@Column(name = "candidatoId") 
-	private Integer candidatoId;
-//	@OneToMany(cascade= CascadeType.ALL)
-//	@JoinColumn(name="candidatoId")
-//	@IndexColumn(name="idx")
-//	private List<CandidatoId> candidatoList;
+	
+	@OneToOne
+	@JoinColumn(name = "posicionId")
+	private Posicion posicion;
+	
+	@OneToOne
+	@JoinColumn(name = "candidatoId")
+	private Candidato candidato;
+	
 	@NotNull
 	@Column(name = "estatuseventoId", nullable = false)
 	@Enumerated(EnumType.STRING)
@@ -104,30 +91,7 @@ public class Evento implements Serializable {
 	public void setTipoeventoId (Tipoevento tipoeventoId) {
 		this.tipoeventoId = tipoeventoId;
 	}
-	//public List<Posicion> getPosicionList () {
-	//    return posicionList;  		
-    //}
-	//public void setPosicionList (List<Posicion> posicionList) {
-	//	this.posicionList = posicionList;
-	//}
-	public Integer getPosicionId () {
-	    return posicionId;  		
-    }
-	public void setPosicionId (Integer posicionId) {
-		this.posicionId = posicionId;
-	}
-	//public List<Candidato> getCandidatoList () {
-	//    return candidatoList;  		
-    //}
-	//public void setCandidatoList (List<Candidato> candidatoList) {
-	//	this.candidatoList = candidatoList;
-	//}
-	public Integer getCandidatoId () {
-	    return candidatoId;  		
-    }
-	public void setCandidatoId (Integer candidatoId) {
-		this.candidatoId = candidatoId;
-	}
+
 	public Estatusevento getEstatuseventoId () {
 	    return estatuseventoId;  		
     }
@@ -163,6 +127,22 @@ public class Evento implements Serializable {
     }
 	public void setNotas (String notas) {
 		this.notas = notas;
+	}
+
+	public Posicion getPosicion() {
+		return posicion;
+	}
+
+	public void setPosicion(Posicion posicion) {
+		this.posicion = posicion;
+	}
+
+	public Candidato getCandidato() {
+		return candidato;
+	}
+
+	public void setCandidato(Candidato candidato) {
+		this.candidato = candidato;
 	}
 
 }			

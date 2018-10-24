@@ -10,6 +10,10 @@ public interface SolicitudService {
 	public void editSolicitud(Solicitud solicitud);
 	
 	public List<Solicitud> listSolicituds(Solicitud solicitud);
+	
+	public List<Solicitud> listSolicitudsByCandidato(Solicitud solicitud, int candidatoId);
+	
+	public List<Solicitud> listSolicitudsByPosicion(Solicitud solicitud, int posicionId);
 
 	public Solicitud getSolicitud(int empid);
 

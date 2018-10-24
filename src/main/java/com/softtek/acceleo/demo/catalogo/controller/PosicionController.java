@@ -140,10 +140,10 @@ public class PosicionController {
 	posicionFound.setVacantes(posicion.getVacantes());
 	posicionFound.setNombre(posicion.getNombre());
 	posicionFound.setFecha(posicion.getFecha());
-	posicionFound.setFilialId(posicion.getFilialId());
-	posicionFound.setPuestoId(posicion.getPuestoId());
+	posicionFound.setFilial(posicion.getFilial());
+	posicionFound.setPuesto(posicion.getPuesto());
 	posicionFound.setTiponominaId(posicion.getTiponominaId());
-	posicionFound.setReclutadorId(posicion.getReclutadorId());
+	posicionFound.setReclutador(posicion.getReclutador());
 	posicionFound.setEstatusposicionId(posicion.getEstatusposicionId());
 //	posicionFound.setSolicitudId(posicion.getSolicitudId());
 //	posicionFound.setEventoId(posicion.getEventoId());

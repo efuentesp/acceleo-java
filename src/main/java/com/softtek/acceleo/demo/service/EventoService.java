@@ -1,6 +1,7 @@
 package com.softtek.acceleo.demo.service;
 
 import com.softtek.acceleo.demo.domain.Evento;
+
 import java.util.List;
 
 public interface EventoService {
@@ -10,6 +11,8 @@ public interface EventoService {
 	public void editEvento(Evento evento);
 	
 	public List<Evento> listEventos(Evento evento);
+	
+	public List<Evento> listEventosByCandidato(Evento evento, int candidatoId);
 
 	public Evento getEvento(int empid);
 

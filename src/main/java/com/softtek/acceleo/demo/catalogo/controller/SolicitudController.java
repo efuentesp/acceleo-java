@@ -83,6 +83,74 @@ public class SolicitudController {
 
 		return listSolicitud;
 	}
+	
+	/************************************** SEARCH
+	 * Obtiene informacion de los solicitudes por candidato.
+	 * @param requestParams.
+	 * @param request.
+	 * @param response.
+	 * @return List<Solicitud>.
+	 */
+	@RequestMapping(value = "/solicitud/candidato/{id}", method = RequestMethod.GET, produces = "application/json")
+	@PreAuthorize("hasRole('SOLICITUDSEARCH')")
+	public @ResponseBody  List<Solicitud> getAllSolicitudByCandidato(@RequestParam Map<String,String> requestParams, HttpServletRequest request, HttpServletResponse response, @PathVariable("id") int candidatoId) {
+
+       	String query=requestParams.get("q");
+		int _page= requestParams.get("_page")==null?0:new Integer(requestParams.get("_page")).intValue();
+		long rows = 0;
+
+		List<Solicitud> listSolicitud = null;
+
+		if (query==null && _page == 0) {
+       		listSolicitud = solicitudService.listSolicitudsByCandidato(solicitud, candidatoId);
+			rows = solicitudService.getTotalRows();
+		} else if (query!= null){
+			listSolicitud = solicitudService.listSolicitudsQuery(solicitud, query, _page, 10);
+			rows = solicitudService.getTotalRowsSearch(query);
+		} else if (_page != 0){
+			listSolicitud = solicitudService.listSolicitudsPagination(solicitud, _page, 10);
+			rows = solicitudService.getTotalRows();
+		}
+
+		response.setHeader("Access-Control-Expose-Headers", "x-total-count");
+		response.setHeader("x-total-count", String.valueOf(rows).toString());	
+
+		return listSolicitud;
+	}
+	
+	/************************************** SEARCH
+	 * Obtiene informacion de los solicitudes por posicion.
+	 * @param requestParams.
+	 * @param request.
+	 * @param response.
+	 * @return List<Solicitud>.
+	 */
+	@RequestMapping(value = "/solicitud/posicion/{id}", method = RequestMethod.GET, produces = "application/json")
+	@PreAuthorize("hasRole('SOLICITUDSEARCH')")
+	public @ResponseBody  List<Solicitud> getAllSolicitudByPosicion(@RequestParam Map<String,String> requestParams, HttpServletRequest request, HttpServletResponse response, @PathVariable("id") int posicionId) {
+
+       	String query=requestParams.get("q");
+		int _page= requestParams.get("_page")==null?0:new Integer(requestParams.get("_page")).intValue();
+		long rows = 0;
+
+		List<Solicitud> listSolicitud = null;
+
+		if (query==null && _page == 0) {
+       		listSolicitud = solicitudService.listSolicitudsByPosicion(solicitud, posicionId);
+			rows = solicitudService.getTotalRows();
+		} else if (query!= null){
+			listSolicitud = solicitudService.listSolicitudsQuery(solicitud, query, _page, 10);
+			rows = solicitudService.getTotalRowsSearch(query);
+		} else if (_page != 0){
+			listSolicitud = solicitudService.listSolicitudsPagination(solicitud, _page, 10);
+			rows = solicitudService.getTotalRows();
+		}
+
+		response.setHeader("Access-Control-Expose-Headers", "x-total-count");
+		response.setHeader("x-total-count", String.valueOf(rows).toString());	
+
+		return listSolicitud;
+	}	
 
 	/************************************* SEARCH
 	 * Obtiene informacion de un solicitud.
@@ -137,8 +205,8 @@ public class SolicitudController {
 	solicitudFound.setSalario(solicitud.getSalario());
 	solicitudFound.setCorreo(solicitud.getCorreo());
 	solicitudFound.setTelefono(solicitud.getTelefono());
-	solicitudFound.setPosicionId(solicitud.getPosicionId());
-	solicitudFound.setCandidatoId(solicitud.getCandidatoId());
+//	solicitudFound.setPosicionId(solicitud.getPosicionId());
+//	solicitudFound.setCandidatoId(solicitud.getCandidatoId());
 	solicitudFound.setEstatussolicitudId(solicitud.getEstatussolicitudId());
 	solicitudFound.setSolicitudId(solicitud.getSolicitudId());
 
@@ -176,7 +244,7 @@ public class SolicitudController {
             //	 return new ResponseEntity<Solicitud>(HttpStatus.PRECONDITION_FAILED);
             //}
 		}
-
+		
 	/**
 	 * Salva informacion de un solicitud.
 	 * @param afiliadoBean.

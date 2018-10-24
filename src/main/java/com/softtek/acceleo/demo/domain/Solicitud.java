@@ -1,15 +1,8 @@
 package com.softtek.acceleo.demo.domain;
 
 import java.io.Serializable;
-import javax.persistence.EnumType;
-import javax.persistence.Enumerated;
-import javax.persistence.Column;
-import javax.persistence.Entity;
-import javax.persistence.GeneratedValue;
-import javax.persistence.GenerationType;
-import javax.persistence.Id;
-import javax.persistence.Table;
 import java.util.Date;
+
 import javax.persistence.*;
 import javax.validation.constraints.NotNull;
 
@@ -24,7 +17,6 @@ public class Solicitud implements Serializable {
 	@Column(name = "solicitudId")
 	private Integer  solicitudId;
 
-
 	@NotNull
 	@Column(name = "salario") 
 	private Double salario;
@@ -35,28 +27,40 @@ public class Solicitud implements Serializable {
 	@Column(name = "telefono") 
 	private String telefono;
 
-
-	@NotNull
-	@Column(name = "posicionId") 
-	private Integer posicionId;
-//	@OneToMany(cascade= CascadeType.ALL)
-//	@JoinColumn(name="posicionId")
-//	@IndexColumn(name="idx")
-//	private List<PosicionId> posicionList;
-	@NotNull
-	@Column(name = "candidatoId") 
-	private Integer candidatoId;
-//	@OneToMany(cascade= CascadeType.ALL)
-//	@JoinColumn(name="candidatoId")
-//	@IndexColumn(name="idx")
-//	private List<CandidatoId> candidatoList;
+	@Column(name = "fecha") 
+	private Date fecha;
+	
 	@NotNull
 	@Column(name = "estatussolicitudId", nullable = false)
 	@Enumerated(EnumType.STRING)
 	private Estatussolicitud estatussolicitudId;
-	@Column(name = "fecha") 
-	private Date fecha;
 
+	@OneToOne
+	@JoinColumn(name="candidatoId")
+	private Candidato candidato;
+	
+	@OneToOne
+	@JoinColumn(name="posicionId")
+	private Posicion posicion;
+
+	public Solicitud() {
+	
+	}
+	
+	public Solicitud(Integer solicitudId, Double salario, String correo,  String telefono,
+			Date fecha,  Estatussolicitud estatussolicitudId, Candidato candidato, Posicion posicion
+//			, Set<Candidato> candidatos
+			) {
+		this.solicitudId = solicitudId;
+		this.salario = salario;
+		this.correo = correo;
+		this.telefono = telefono;
+		this.fecha = fecha;
+		this.estatussolicitudId = estatussolicitudId;
+		this.candidato = candidato;
+		this.posicion = posicion;
+	}
+	
 	public Integer getSolicitudId() {
 		return solicitudId;
 	}
@@ -65,7 +69,6 @@ public class Solicitud implements Serializable {
 		this.solicitudId = solicitudId;
 	}
 
-	
 	public Double getSalario () {
 	    return salario;  		
     }
@@ -86,30 +89,6 @@ public class Solicitud implements Serializable {
 	public void setTelefono(String telefono) {
 		this.telefono = telefono;
 	}
-	//public List<Posicion> getPosicionList () {
-	//    return posicionList;  		
-    //}
-	//public void setPosicionList (List<Posicion> posicionList) {
-	//	this.posicionList = posicionList;
-	//}
-	public Integer getPosicionId () {
-	    return posicionId;  		
-    }
-	public void setPosicionId (Integer posicionId) {
-		this.posicionId = posicionId;
-	}
-	//public List<Candidato> getCandidatoList () {
-	//    return candidatoList;  		
-    //}
-	//public void setCandidatoList (List<Candidato> candidatoList) {
-	//	this.candidatoList = candidatoList;
-	//}
-	public Integer getCandidatoId () {
-	    return candidatoId;  		
-    }
-	public void setCandidatoId (Integer candidatoId) {
-		this.candidatoId = candidatoId;
-	}
 	public Estatussolicitud getEstatussolicitudId () {
 	    return estatussolicitudId;  		
     }
@@ -122,5 +101,21 @@ public class Solicitud implements Serializable {
 	public void setFecha (Date fecha) {
 		this.fecha = fecha;
 	}
+
+	public Candidato getCandidato() {
+		return candidato;
+	}
+
+	public void setCandidato(Candidato candidato) {
+		this.candidato = candidato;
+	}
+
+	public Posicion getPosicion() {
+		return posicion;
+	}
+
+	public void setPosicion(Posicion posicion) {
+		this.posicion = posicion;
+	}	
 
 }			

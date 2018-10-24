@@ -1,24 +1,21 @@
 package com.softtek.acceleo.demo.domain;
 
 import java.io.Serializable;
-import javax.persistence.EnumType;
-import javax.persistence.Enumerated;
-import javax.persistence.Column;
-import javax.persistence.Entity;
-import javax.persistence.GeneratedValue;
-import javax.persistence.GenerationType;
-import javax.persistence.Id;
-import javax.persistence.Table;
 import java.util.Date;
+import java.util.HashSet;
+import java.util.Set;
+
 import javax.persistence.*;
 import javax.validation.constraints.NotNull;
+
+import com.fasterxml.jackson.annotation.JsonIgnore;
 
 @Entity
 @Table(name = "candidato")
 public class Candidato implements Serializable {
 
 	private static final long serialVersionUID = 1L;
-
+	
 	@Id
 	@GeneratedValue(strategy = GenerationType.AUTO)
 	@Column(name = "candidatoId")
@@ -47,8 +44,33 @@ public class Candidato implements Serializable {
 	@Column(name = "estatuscandidatoId", nullable = false)
 	@Enumerated(EnumType.STRING)
 	private Estatuscandidato estatuscandidatoId;
+	
+//	@ManyToMany(cascade = {CascadeType.ALL})
+//	@JoinTable(name="candidatosolicitud", joinColumns={@JoinColumn(name="candidatoId")}, inverseJoinColumns={@JoinColumn(name="solicitudId")})
+//	private Set<Solicitud> solicitudes=new HashSet<>();
 
-
+//	@OneToOne(mappedBy = "solicitud", cascade = CascadeType.ALL,fetch = FetchType.LAZY, optional = false)
+//	private Solicitud solicitud;
+	
+	//@OneToOne(cascade=CascadeType.ALL)
+	//@JoinColumn(name="direccionId")
+//	@OneToOne(mappedBy="candidato")
+//	@JoinColumn(name="direccionId")
+//	private Direccion direccion;
+	
+//	public Candidato() {} 
+//	
+//	public Candidato(Integer candidatoId, Date fecha, String apellidomaterno, String apellidopaterno, String nombre, Genero generoId, Estatuscandidato estatuscandidatoId, Set<Solicitud> solicitudes) {
+//		this.candidatoId = candidatoId;
+//		this.nombre = nombre;
+//		this.fecha = fecha;
+//		this.apellidomaterno = apellidomaterno;
+//		this.apellidopaterno = apellidopaterno;
+//		this.generoId = generoId;
+//		this.estatuscandidatoId = estatuscandidatoId;
+////		this.solicitudes = solicitudes;
+//	}
+	
 	public Integer getCandidatoId() {
 		return candidatoId;
 	}
@@ -98,4 +120,30 @@ public class Candidato implements Serializable {
 		this.estatuscandidatoId = estatuscandidatoId;
 	}
 
+//	public Direccion getDireccion() {
+//		return direccion;
+//	}
+//
+//	public void setDireccion(Direccion direccion) {
+//		this.direccion = direccion;
+//	}
+
+//	public Set<Solicitud> getSolicitudes() {
+//		return solicitudes;
+//	}
+//
+//	public void setSolicitudes(Set<Solicitud> solicitudes) {
+//		this.solicitudes = solicitudes;
+//	}
+
+//	public Solicitud getSolicitud() {
+//		return solicitud;
+//	}
+//
+//	public void setSolicitud(Solicitud solicitud) {
+//		this.solicitud = solicitud;
+//	}
+
+	
+	
 }			

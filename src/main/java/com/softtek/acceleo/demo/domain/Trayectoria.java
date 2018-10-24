@@ -1,14 +1,6 @@
 package com.softtek.acceleo.demo.domain;
 
 import java.io.Serializable;
-import javax.persistence.EnumType;
-import javax.persistence.Enumerated;
-import javax.persistence.Column;
-import javax.persistence.Entity;
-import javax.persistence.GeneratedValue;
-import javax.persistence.GenerationType;
-import javax.persistence.Id;
-import javax.persistence.Table;
 import java.util.Date;
 import javax.persistence.*;
 import javax.validation.constraints.NotNull;
@@ -31,26 +23,19 @@ public class Trayectoria implements Serializable {
 	@NotNull
 	@Column(name = "descripcion") 
 	private String descripcion;
-
-
-	@NotNull
-	@Column(name = "candidatoId") 
-	private Integer candidatoId;
-//	@OneToMany(cascade= CascadeType.ALL)
-//	@JoinColumn(name="candidatoId")
-//	@IndexColumn(name="idx")
-//	private List<CandidatoId> candidatoList;
+	
+	@OneToOne
+	@JoinColumn(name="candidatoId")
+	private Candidato candidato;
+	
+	@OneToOne
+	@JoinColumn(name="documentoId")
+	private Documento documento;
+	
 	@NotNull
 	@Column(name = "tipotrayectoriaId", nullable = false)
 	@Enumerated(EnumType.STRING)
 	private Tipotrayectoria tipotrayectoriaId;
-	@NotNull
-	@Column(name = "documentoId") 
-	private Integer documentoId;
-//	@OneToMany(cascade= CascadeType.ALL)
-//	@JoinColumn(name="documentoId")
-//	@IndexColumn(name="idx")
-//	private List<DocumentoId> documentoList;
 
 	public Integer getTrayectoriaId() {
 		return trayectoriaId;
@@ -74,35 +59,28 @@ public class Trayectoria implements Serializable {
 	public void setDescripcion(String descripcion) {
 		this.descripcion = descripcion;
 	}
-	//public List<Candidato> getCandidatoList () {
-	//    return candidatoList;  		
-    //}
-	//public void setCandidatoList (List<Candidato> candidatoList) {
-	//	this.candidatoList = candidatoList;
-	//}
-	public Integer getCandidatoId () {
-	    return candidatoId;  		
-    }
-	public void setCandidatoId (Integer candidatoId) {
-		this.candidatoId = candidatoId;
-	}
+	
 	public Tipotrayectoria getTipotrayectoriaId () {
 	    return tipotrayectoriaId;  		
     }
 	public void setTipotrayectoriaId (Tipotrayectoria tipotrayectoriaId) {
 		this.tipotrayectoriaId = tipotrayectoriaId;
 	}
-	//public List<Documento> getDocumentoList () {
-	//    return documentoList;  		
-    //}
-	//public void setDocumentoList (List<Documento> documentoList) {
-	//	this.documentoList = documentoList;
-	//}
-	public Integer getDocumentoId () {
-	    return documentoId;  		
-    }
-	public void setDocumentoId (Integer documentoId) {
-		this.documentoId = documentoId;
+	
+	public Candidato getCandidato() {
+		return candidato;
+	}
+
+	public void setCandidato(Candidato candidato) {
+		this.candidato = candidato;
+	}
+
+	public Documento getDocumento() {
+		return documento;
+	}
+
+	public void setDocumento(Documento documento) {
+		this.documento = documento;
 	}
 
 }			

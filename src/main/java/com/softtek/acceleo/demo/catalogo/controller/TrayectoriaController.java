@@ -136,9 +136,9 @@ public class TrayectoriaController {
 	
 	trayectoriaFound.setClave(trayectoria.getClave());
 	trayectoriaFound.setDescripcion(trayectoria.getDescripcion());
-	trayectoriaFound.setCandidatoId(trayectoria.getCandidatoId());
+	trayectoriaFound.setCandidato(trayectoria.getCandidato());
 	trayectoriaFound.setTipotrayectoriaId(trayectoria.getTipotrayectoriaId());
-	trayectoriaFound.setDocumentoId(trayectoria.getDocumentoId());
+	trayectoriaFound.setDocumento(trayectoria.getDocumento());
 	trayectoriaFound.setTrayectoriaId(trayectoria.getTrayectoriaId());
 
 		    trayectoriaService.editTrayectoria(trayectoriaFound);

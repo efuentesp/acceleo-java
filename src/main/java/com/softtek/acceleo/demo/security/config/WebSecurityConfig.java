@@ -56,8 +56,10 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
                                logger.info("configureGlobal: tokenHeader" + tokenHeader);
                 }
 
+               
                 public void addCorsMappings(CorsRegistry registry) {
                                logger.info("Ingresando addCorsMApping...");
+                               //registry.addMapping("/**");
                                 registry.addMapping("/**").allowedOrigins("http://app.softtek.online:4200").allowCredentials(true).allowedMethods("*").allowedHeaders(
                                                                "Content-Type, Access-Control-Allow-Origin, Access-Control-Allow-Headers, Authorization, X-Requested-With, requestId, Correlation-Id");
                 }
@@ -91,10 +93,11 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
                                                                .sessionManagement().sessionCreationPolicy(SessionCreationPolicy.STATELESS).and()
 
                                                                .authorizeRequests()
+                                                               //.antMatchers(HttpMethod.OPTIONS,"**").permitAll()
                                                                .antMatchers("/auth/**").permitAll()
 
                                                                // Revisar para quitar
-                                                               //.antMatchers("/user").permitAll()
+                                                               //.antMatchers("/**").permitAll()
                                                                .anyRequest().authenticated();
 
                                // Custom JWT based security filter
@@ -111,8 +114,8 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
                                // es decir 
                                web.ignoring().antMatchers(HttpMethod.POST, authenticationPath)
                                //.and().ignoring().antMatchers(HttpMethod.POST, "/auth")
-                                       //.and().ignoring().antMatchers(HttpMethod.GET,"/user")
-                                                               
+                                      // .and().ignoring().antMatchers(HttpMethod.GET,"/user")
+                                      // .and().ignoring().antMatchers(HttpMethod.POST,"/user")                      
                                                                // allow anonymous resource requests
                                                .and().ignoring()
                                                                .antMatchers(HttpMethod.GET, "/*.html", "/*.jsp", "/favicon.ico", "/**/*.html",

@@ -1,15 +1,12 @@
 package com.softtek.acceleo.demo.domain;
 
 import java.io.Serializable;
-import javax.persistence.EnumType;
-import javax.persistence.Enumerated;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.Table;
-import java.util.Date;
 import javax.persistence.*;
 import javax.validation.constraints.NotNull;
 
@@ -38,14 +35,12 @@ public class Direccion implements Serializable {
 	@Column(name = "calle") 
 	private String calle;
 
+	//@OneToOne(mappedBy="direccion")
+	//@JoinColumn(name="candidatoId")
+	@OneToOne
+	@JoinColumn(name="candidatoId")
+	private Candidato candidato;
 
-	@NotNull
-	@Column(name = "candidatoId") 
-	private Integer candidatoId;
-//	@OneToMany(cascade= CascadeType.ALL)
-//	@JoinColumn(name="candidatoId")
-//	@IndexColumn(name="idx")
-//	private List<CandidatoId> candidatoList;
 
 	public Integer getDireccionId() {
 		return direccionId;
@@ -83,17 +78,17 @@ public class Direccion implements Serializable {
 	public void setCalle(String calle) {
 		this.calle = calle;
 	}
-	//public List<Candidato> getCandidatoList () {
-	//    return candidatoList;  		
-    //}
-	//public void setCandidatoList (List<Candidato> candidatoList) {
-	//	this.candidatoList = candidatoList;
-	//}
-	public Integer getCandidatoId () {
-	    return candidatoId;  		
-    }
-	public void setCandidatoId (Integer candidatoId) {
-		this.candidatoId = candidatoId;
+	
+	public Candidato getCandidato() {
+		return candidato;
 	}
+
+	public void setCandidato(Candidato candidato) {
+		this.candidato = candidato;
+	}
+
+
+	
+	
 
 }			

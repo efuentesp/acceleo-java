@@ -16,6 +16,7 @@ import org.springframework.transaction.annotation.Transactional;
 
 import com.softtek.acceleo.demo.repository.EventoRepository;
 import com.softtek.acceleo.demo.domain.Evento;
+import com.softtek.acceleo.demo.domain.Solicitud;
 import com.softtek.acceleo.demo.service.EventoService;
 /**
  * Clase EventoServiceImpl.
@@ -54,7 +55,7 @@ public class EventoServiceImpl implements EventoService {
 
 		return eventoRepository.listEventos(evento);
 	}
-
+	
 	/**
 	 * Obtiene informacion de un evento.
 	 */
@@ -115,6 +116,11 @@ public class EventoServiceImpl implements EventoService {
 	public List<Evento> listEventosQuery(Evento evento, String query, int page, int size) {
 		// TODO Auto-generated method stub
 		return eventoRepository.listEventosQuery(evento, query, page, size);
+	}
+
+	@Override
+	public List<Evento> listEventosByCandidato(Evento evento, int candidatoId) {
+		return eventoRepository.listEventosByCandidato(evento, candidatoId);
 	}
 
 }

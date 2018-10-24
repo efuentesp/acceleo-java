@@ -134,11 +134,12 @@ public class DireccionController {
 	            return new ResponseEntity<Direccion>(HttpStatus.NOT_FOUND);
 	        }
 	
+	System.out.println("Direccion:"+ direccion);        
 	direccionFound.setEstado(direccion.getEstado());
 	direccionFound.setCp(direccion.getCp());
 	direccionFound.setCiudad(direccion.getCiudad());
 	direccionFound.setCalle(direccion.getCalle());
-	direccionFound.setCandidatoId(direccion.getCandidatoId());
+	direccionFound.setCandidato(direccion.getCandidato());
 	direccionFound.setDireccionId(direccion.getDireccionId());
 
 		    direccionService.editDireccion(direccionFound);

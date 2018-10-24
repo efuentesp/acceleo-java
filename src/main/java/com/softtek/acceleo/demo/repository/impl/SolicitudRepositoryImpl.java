@@ -9,14 +9,13 @@ package com.softtek.acceleo.demo.repository.impl;
 import java.util.List;
 
 import org.hibernate.SessionFactory;
-import org.hibernate.criterion.Example;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
 import org.hibernate.criterion.Projections;
 import org.hibernate.criterion.Restrictions;
-
 import com.softtek.acceleo.demo.domain.Solicitud;
 import com.softtek.acceleo.demo.repository.SolicitudRepository;
+
 /**
  * Clase solicitudRepositoryImpl.
  * @author PSG.
@@ -44,10 +43,39 @@ public class SolicitudRepositoryImpl implements SolicitudRepository {
 	 * Consulta informacion de solicitud.
 	 */
 	@SuppressWarnings({ "unchecked" })
-	public List<Solicitud> listSolicituds(Solicitud solicitud) {
+	public List<Solicitud> listSolicituds(Solicitud sol) {
 
-		return (List<Solicitud>) sessionFactory.getCurrentSession()
-				.createCriteria(Solicitud.class).list();
+		List<Solicitud> solicitudes = sessionFactory.getCurrentSession().createCriteria(Solicitud.class).list();
+//		for (Solicitud s: solicitudes) {
+//			Hibernate.initialize(s.getCandidatos());
+//		}
+		return solicitudes;
+	}
+	
+	/**
+	 * Consulta informacion de solicitud.
+	 */
+	@SuppressWarnings({ "unchecked" })
+	public List<Solicitud> listSolicitudsByCandidato(Solicitud sol, int candidatoId) {
+
+		List<Solicitud> solicitudes = sessionFactory.getCurrentSession().createCriteria(Solicitud.class).add(Restrictions.like("candidato.candidatoId", candidatoId)).list();
+//		for (Solicitud s: solicitudes) {
+//			Hibernate.initialize(s.getCandidatos());
+//		}
+		return solicitudes;
+	}
+	
+	/**
+	 * Consulta informacion de solicitud.
+	 */
+	@SuppressWarnings({ "unchecked" })
+	public List<Solicitud> listSolicitudsByPosicion(Solicitud sol, int posicionId) {
+
+		List<Solicitud> solicitudes = sessionFactory.getCurrentSession().createCriteria(Solicitud.class).add(Restrictions.like("posicionId", posicionId)).list();
+//		for (Solicitud s: solicitudes) {
+//			Hibernate.initialize(s.getCandidatos());
+//		}
+		return solicitudes;
 	}
 
 	/**

@@ -8,6 +8,8 @@ package com.softtek.acceleo.demo.repository.impl;
 
 import java.util.List;
 
+import org.hibernate.Hibernate;
+import org.hibernate.Session;
 import org.hibernate.SessionFactory;
 import org.hibernate.criterion.Example;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -38,16 +40,22 @@ public class CandidatoRepositoryImpl implements CandidatoRepository {
 	 */
 	public void editCandidato(Candidato candidato) {
 		sessionFactory.getCurrentSession().update(candidato);
-
+		
 	}
 	/**
 	 * Consulta informacion de candidato.
 	 */
 	@SuppressWarnings({ "unchecked" })
-	public List<Candidato> listCandidatos(Candidato candidato) {
-
-		return (List<Candidato>) sessionFactory.getCurrentSession()
-				.createCriteria(Candidato.class).list();
+	public List<Candidato> listCandidatos(Candidato cand) {
+//		Session session = sessionFactory.getCurrentSession();
+//		//Candidato candidato = session.get(Candidato.class, candidatoId);
+//		//Hibernate.initialize(candidato.getSolicitudes());
+		List<Candidato> candidatos = sessionFactory.getCurrentSession().createCriteria(Candidato.class).list();
+//		for (Candidato c: candidatos) {
+//			Hibernate.initialize(c.getSolicitudes());
+//		}
+//		session.close();
+		return candidatos;
 	}
 
 	/**

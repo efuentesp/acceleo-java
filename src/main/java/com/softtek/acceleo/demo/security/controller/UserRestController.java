@@ -23,6 +23,7 @@ import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.core.userdetails.UserDetailsService;
+import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -60,6 +61,7 @@ public class UserRestController {
     @Qualifier("jwtUserDetailsService")
     private UserDetailsService userDetailsService;
 
+    
     @RequestMapping(value = "user", method = RequestMethod.GET)
     public JwtUser getAuthenticatedUser(HttpServletRequest request) {
     	logger.info("User REST :"+tokenHeader);

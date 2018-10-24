@@ -47,9 +47,9 @@ public class UserRepositoryImpl implements UserRepository {
 			for (Authority authority : lstAuthority) {
 				logger.info("IdAuthority: " + authority.getIdAuthority() + "\tName: " + authority.getName()
 						+ "\tPrivilege" + authority.getPrivilege());
-				for (Privilege privilege : authority.getPrivilege())
+				//for (Privilege privilege : authority.getPrivilege())
 
-					logger.info("  --> IdPrivilege: " + privilege.getIdPrivilege() + "\tName: " + privilege.getName());
+					//logger.info("  --> IdPrivilege: " + privilege.getIdPrivilege() + "\tName: " + privilege.getName());
 
 			}
 

@@ -51,8 +51,21 @@ public class SolicitudServiceImpl implements SolicitudService {
 	 * Consulta informacion de solicituds.
 	 */
 	public List<Solicitud> listSolicituds(Solicitud solicitud) {
-
 		return solicitudRepository.listSolicituds(solicitud);
+	}
+	
+	/**
+	 * Consulta informacion de solicituds.
+	 */
+	public List<Solicitud> listSolicitudsByCandidato(Solicitud solicitud, int candidatoId) {
+		return solicitudRepository.listSolicitudsByCandidato(solicitud, candidatoId);
+	}
+	
+	/**
+	 * Consulta informacion de solicituds.
+	 */
+	public List<Solicitud> listSolicitudsByPosicion(Solicitud solicitud, int posicionId) {
+		return solicitudRepository.listSolicitudsByPosicion(solicitud, posicionId);
 	}
 
 	/**

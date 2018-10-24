@@ -3,6 +3,7 @@ package com.softtek.acceleo.demo.repository;
 
 import java.util.List;
 import com.softtek.acceleo.demo.domain.Evento;
+import com.softtek.acceleo.demo.domain.Solicitud;
 
 public interface EventoRepository {
 
@@ -11,7 +12,9 @@ public interface EventoRepository {
 	 
 	 public void editEvento(Evento evento);
 	   
-	 public List<Evento> listEventos(Evento evento);   
+	 public List<Evento> listEventos(Evento evento); 
+	 
+	 public List<Evento> listEventosByCandidato(Evento evento, int candidatoId);
 	    
 	 public Evento getEvento(int empid);   
 	    

@@ -35,6 +35,7 @@ import com.softtek.acceleo.demo.exception.GenericException;
 
 import com.softtek.acceleo.demo.catalogo.bean.EventoBean;
 import com.softtek.acceleo.demo.domain.Evento;
+import com.softtek.acceleo.demo.domain.Solicitud;
 import com.softtek.acceleo.demo.service.EventoService;
 
 /**
@@ -84,6 +85,74 @@ public class EventoController {
 		return listEvento;
 	}
 
+	/************************************** SEARCH
+	 * Obtiene informacion de los solicitudes por candidato.
+	 * @param requestParams.
+	 * @param request.
+	 * @param response.
+	 * @return List<Solicitud>.
+	 */
+	@RequestMapping(value = "/evento/candidato/{id}", method = RequestMethod.GET, produces = "application/json")
+	@PreAuthorize("hasRole('EVENTOSEARCH')")
+	public @ResponseBody  List<Evento> getAllEventoByCandidato(@RequestParam Map<String,String> requestParams, HttpServletRequest request, HttpServletResponse response, @PathVariable("id") int candidatoId) {
+
+       	String query=requestParams.get("q");
+		int _page= requestParams.get("_page")==null?0:new Integer(requestParams.get("_page")).intValue();
+		long rows = 0;
+
+		List<Evento> listEvento = null;
+		
+		if (query==null && _page == 0) {
+       		listEvento = eventoService.listEventosByCandidato(evento, candidatoId);
+			rows = eventoService.getTotalRows();
+		} else if (query!= null){
+			listEvento = eventoService.listEventosQuery(evento, query, _page, 10);
+			rows = eventoService.getTotalRowsSearch(query);
+		} else if (_page != 0){
+			listEvento = eventoService.listEventosPagination(evento, _page, 10);
+			rows = eventoService.getTotalRows();
+		}
+
+		response.setHeader("Access-Control-Expose-Headers", "x-total-count");
+		response.setHeader("x-total-count", String.valueOf(rows).toString());	
+
+		return listEvento;
+	}
+	
+//	/************************************** SEARCH
+//	 * Obtiene informacion de los solicitudes por posicion.
+//	 * @param requestParams.
+//	 * @param request.
+//	 * @param response.
+//	 * @return List<Solicitud>.
+//	 */
+//	@RequestMapping(value = "/evento/posicion/{id}", method = RequestMethod.GET, produces = "application/json")
+//	@PreAuthorize("hasRole('EVENTOSEARCH')")
+//	public @ResponseBody  List<Evento> getAllEventoByPosicion(@RequestParam Map<String,String> requestParams, HttpServletRequest request, HttpServletResponse response, @PathVariable("id") int posicionId) {
+//
+//       	String query=requestParams.get("q");
+//		int _page= requestParams.get("_page")==null?0:new Integer(requestParams.get("_page")).intValue();
+//		long rows = 0;
+//
+//		List<Evento> listEvento = null;
+//
+//		if (query==null && _page == 0) {
+//			listEvento = eventoService.listSolicitudsByPosicion(evento, posicionId);
+//			rows = eventoService.getTotalRows();
+//		} else if (query!= null){
+//			listEvento = eventoService.listSolicitudsQuery(evento, query, _page, 10);
+//			rows = eventoService.getTotalRowsSearch(query);
+//		} else if (_page != 0){
+//			listEvento = eventoService.listSolicitudsPagination(evento, _page, 10);
+//			rows = eventoService.getTotalRows();
+//		}
+//
+//		response.setHeader("Access-Control-Expose-Headers", "x-total-count");
+//		response.setHeader("x-total-count", String.valueOf(rows).toString());	
+//
+//		return listEvento;
+//	}
+	
 	/************************************* SEARCH
 	 * Obtiene informacion de un evento.
 	 * @param id.
@@ -138,24 +207,8 @@ public class EventoController {
 	eventoFound.setFecha(evento.getFecha());
 	eventoFound.setNombre(evento.getNombre());
 	eventoFound.setTipoeventoId(evento.getTipoeventoId());
-	eventoFound.setPosicionId(evento.getPosicionId());
-	eventoFound.setCandidatoId(evento.getCandidatoId());
-	eventoFound.setFeedback(evento.getFeedback());
-	eventoFound.setResponsablereal(evento.getResponsablereal());
-	eventoFound.setComentarios(evento.getComentarios());
-	eventoFound.setNotas(evento.getNotas());
-	eventoFound.setFeedback(evento.getFeedback());
-	eventoFound.setResponsablereal(evento.getResponsablereal());
-	eventoFound.setComentarios(evento.getComentarios());
-	eventoFound.setNotas(evento.getNotas());
-	eventoFound.setFeedback(evento.getFeedback());
-	eventoFound.setResponsablereal(evento.getResponsablereal());
-	eventoFound.setComentarios(evento.getComentarios());
-	eventoFound.setNotas(evento.getNotas());
-	eventoFound.setFeedback(evento.getFeedback());
-	eventoFound.setResponsablereal(evento.getResponsablereal());
-	eventoFound.setComentarios(evento.getComentarios());
-	eventoFound.setNotas(evento.getNotas());
+	eventoFound.setPosicion(evento.getPosicion());
+	eventoFound.setCandidato(evento.getCandidato());
 	eventoFound.setFeedback(evento.getFeedback());
 	eventoFound.setResponsablereal(evento.getResponsablereal());
 	eventoFound.setComentarios(evento.getComentarios());

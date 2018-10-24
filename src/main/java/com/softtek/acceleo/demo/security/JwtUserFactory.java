@@ -41,7 +41,7 @@ public final class JwtUserFactory {
 			if (authority.getEnabled())
 				for (Privilege privilege : authority.getPrivilege()) {
 					listGrantedAuthority.add(new SimpleGrantedAuthority(prefijoRole + privilege.getName()));
-					logger.info("Name: " + prefijoRole + privilege.getName());
+				//	logger.info("Name: " + prefijoRole + privilege.getName());
 				}
 		}
 		logger.info("Finalizando convert AUTHORITY --> PRIVILEGE:");

@@ -1,14 +1,6 @@
 package com.softtek.acceleo.demo.domain;
 
 import java.io.Serializable;
-import javax.persistence.EnumType;
-import javax.persistence.Enumerated;
-import javax.persistence.Column;
-import javax.persistence.Entity;
-import javax.persistence.GeneratedValue;
-import javax.persistence.GenerationType;
-import javax.persistence.Id;
-import javax.persistence.Table;
 import java.util.Date;
 import javax.persistence.*;
 import javax.validation.constraints.NotNull;
@@ -44,50 +36,27 @@ public class Posicion implements Serializable {
 	@Column(name = "fecha") 
 	private Date fecha;
 
-
-	@NotNull
-	@Column(name = "filialId") 
-	private Integer filialId;
-//	@OneToMany(cascade= CascadeType.ALL)
-//	@JoinColumn(name="filialId")
-//	@IndexColumn(name="idx")
-//	private List<FilialId> filialList;
-	@NotNull
-	@Column(name = "puestoId") 
-	private Integer puestoId;
-//	@OneToMany(cascade= CascadeType.ALL)
-//	@JoinColumn(name="puestoId")
-//	@IndexColumn(name="idx")
-//	private List<PuestoId> puestoList;
+	@OneToOne
+	@JoinColumn(name = "filialId")
+	private Filial filial;
+	
+	@OneToOne
+	@JoinColumn(name = "puestoId")
+	private Puesto puesto;
+	
+	@OneToOne
+	@JoinColumn(name = "reclutadorId")
+	private Reclutador reclutador;
+	
 	@NotNull
 	@Column(name = "tiponominaId", nullable = false)
 	@Enumerated(EnumType.STRING)
 	private Tiponomina tiponominaId;
 	@NotNull
-	@Column(name = "reclutadorId") 
-	private Integer reclutadorId;
-//	@OneToMany(cascade= CascadeType.ALL)
-//	@JoinColumn(name="reclutadorId")
-//	@IndexColumn(name="idx")
-//	private List<ReclutadorId> reclutadorList;
-	@NotNull
 	@Column(name = "estatusposicionId", nullable = false)
 	@Enumerated(EnumType.STRING)
 	private Estatusposicion estatusposicionId;
-//	@NotNull
-//	@Column(name = "solicitudId") 
-//	private Integer solicitudId;
-//	@OneToMany(cascade= CascadeType.ALL)
-//	@JoinColumn(name="solicitudId")
-//	@IndexColumn(name="idx")
-//	private List<SolicitudId> solicitudList;
-//	@NotNull
-//	@Column(name = "eventoId") 
-//	private Integer eventoId;
-//	@OneToMany(cascade= CascadeType.ALL)
-//	@JoinColumn(name="eventoId")
-//	@IndexColumn(name="idx")
-//	private List<EventoId> eventoList;
+
 
 	public Integer getPosicionId() {
 		return posicionId;
@@ -139,77 +108,43 @@ public class Posicion implements Serializable {
 	public void setFecha(Date fecha) {
 		this.fecha = fecha;
 	}
-	//public List<Filial> getFilialList () {
-	//    return filialList;  		
-    //}
-	//public void setFilialList (List<Filial> filialList) {
-	//	this.filialList = filialList;
-	//}
-	public Integer getFilialId () {
-	    return filialId;  		
-    }
-	public void setFilialId (Integer filialId) {
-		this.filialId = filialId;
-	}
-	//public List<Puesto> getPuestoList () {
-	//    return puestoList;  		
-    //}
-	//public void setPuestoList (List<Puesto> puestoList) {
-	//	this.puestoList = puestoList;
-	//}
-	public Integer getPuestoId () {
-	    return puestoId;  		
-    }
-	public void setPuestoId (Integer puestoId) {
-		this.puestoId = puestoId;
-	}
+	
 	public Tiponomina getTiponominaId () {
 	    return tiponominaId;  		
     }
 	public void setTiponominaId (Tiponomina tiponominaId) {
 		this.tiponominaId = tiponominaId;
 	}
-	//public List<Reclutador> getReclutadorList () {
-	//    return reclutadorList;  		
-    //}
-	//public void setReclutadorList (List<Reclutador> reclutadorList) {
-	//	this.reclutadorList = reclutadorList;
-	//}
-	public Integer getReclutadorId () {
-	    return reclutadorId;  		
-    }
-	public void setReclutadorId (Integer reclutadorId) {
-		this.reclutadorId = reclutadorId;
-	}
+	
 	public Estatusposicion getEstatusposicionId () {
 	    return estatusposicionId;  		
     }
 	public void setEstatusposicionId (Estatusposicion estatusposicionId) {
 		this.estatusposicionId = estatusposicionId;
 	}
-	//public List<Solicitud> getSolicitudList () {
-	//    return solicitudList;  		
-    //}
-	//public void setSolicitudList (List<Solicitud> solicitudList) {
-	//	this.solicitudList = solicitudList;
-	//}
-//	public Integer getSolicitudId () {
-//	    return solicitudId;  		
-//    }
-//	public void setSolicitudId (Integer solicitudId) {
-//		this.solicitudId = solicitudId;
-//	}
-//	//public List<Evento> getEventoList () {
-//	//    return eventoList;  		
-//    //}
-//	//public void setEventoList (List<Evento> eventoList) {
-//	//	this.eventoList = eventoList;
-//	//}
-//	public Integer getEventoId () {
-//	    return eventoId;  		
-//    }
-//	public void setEventoId (Integer eventoId) {
-//		this.eventoId = eventoId;
-//	}
+
+	public Filial getFilial() {
+		return filial;
+	}
+
+	public void setFilial(Filial filial) {
+		this.filial = filial;
+	}
+
+	public Puesto getPuesto() {
+		return puesto;
+	}
+
+	public void setPuesto(Puesto puesto) {
+		this.puesto = puesto;
+	}
+
+	public Reclutador getReclutador() {
+		return reclutador;
+	}
+
+	public void setReclutador(Reclutador reclutador) {
+		this.reclutador = reclutador;
+	}
 
 }			

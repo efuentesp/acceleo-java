@@ -137,7 +137,7 @@ public class UsuarioController {
 	usuarioFound.setActivo(usuario.getActivo());
 	usuarioFound.setNombreclave(usuario.getNombreclave());
 	usuarioFound.setPassword(usuario.getPassword());
-	usuarioFound.setRolId(usuario.getRolId());
+	usuarioFound.setRol(usuario.getRol());
 	usuarioFound.setUsuarioId(usuario.getUsuarioId());
 
 		    usuarioService.editUsuario(usuarioFound);

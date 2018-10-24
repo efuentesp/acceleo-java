@@ -16,6 +16,7 @@ import org.hibernate.criterion.Projections;
 import org.hibernate.criterion.Restrictions;
 
 import com.softtek.acceleo.demo.domain.Evento;
+import com.softtek.acceleo.demo.domain.Solicitud;
 import com.softtek.acceleo.demo.repository.EventoRepository;
 /**
  * Clase eventoRepositoryImpl.
@@ -48,6 +49,19 @@ public class EventoRepositoryImpl implements EventoRepository {
 
 		return (List<Evento>) sessionFactory.getCurrentSession()
 				.createCriteria(Evento.class).list();
+	}
+	
+	/**
+	 * Consulta informacion de evento.
+	 */
+	@SuppressWarnings({ "unchecked" })
+	public List<Evento> listEventosByCandidato(Evento evento, int candidatoId) {
+
+		List<Evento> eventos = sessionFactory.getCurrentSession().createCriteria(Evento.class).add(Restrictions.like("candidato.candidatoId", candidatoId)).list();
+//		for (Solicitud s: solicitudes) {
+//			Hibernate.initialize(s.getCandidatos());
+//		}
+		return eventos;
 	}
 
 	/**

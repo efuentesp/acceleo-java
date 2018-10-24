@@ -137,7 +137,7 @@ public class PermisoController {
 	permisoFound.setRuta(permiso.getRuta());
 	permisoFound.setFuncion(permiso.getFuncion());
 	permisoFound.setNivelpermiso(permiso.getNivelpermiso());
-	permisoFound.setRolId(permiso.getRolId());
+	permisoFound.setRol(permiso.getRol());
 	permisoFound.setPermisoId(permiso.getPermisoId());
 
 		    permisoService.editPermiso(permisoFound);

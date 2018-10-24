@@ -8,6 +8,8 @@ package com.softtek.acceleo.demo.repository.impl;
 
 import java.util.List;
 
+import org.hibernate.Hibernate;
+import org.hibernate.Session;
 import org.hibernate.SessionFactory;
 import org.hibernate.criterion.Example;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -15,7 +17,9 @@ import org.springframework.stereotype.Repository;
 import org.hibernate.criterion.Projections;
 import org.hibernate.criterion.Restrictions;
 
+import com.softtek.acceleo.demo.domain.Candidato;
 import com.softtek.acceleo.demo.domain.Direccion;
+import com.softtek.acceleo.demo.domain.Solicitud;
 import com.softtek.acceleo.demo.repository.DireccionRepository;
 /**
  * Clase direccionRepositoryImpl.
@@ -45,9 +49,20 @@ public class DireccionRepositoryImpl implements DireccionRepository {
 	 */
 	@SuppressWarnings({ "unchecked" })
 	public List<Direccion> listDireccions(Direccion direccion) {
-
-		return (List<Direccion>) sessionFactory.getCurrentSession()
-				.createCriteria(Direccion.class).list();
+		Session session = sessionFactory.getCurrentSession();
+		List<Direccion> direcciones = session.createCriteria(Direccion.class).list();
+		for (Direccion c: direcciones) {
+			if (c != null) {
+				Hibernate.initialize(c.getCandidato());
+			}
+			
+			System.out.println("candidato****************:"+ c.getCandidato());
+		}
+		//session.close();
+		return direcciones;
+		
+//		return (List<Direccion>) sessionFactory.getCurrentSession()
+//				.createCriteria(Direccion.class).list();
 	}
 
 	/**

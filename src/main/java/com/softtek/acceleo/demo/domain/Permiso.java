@@ -1,14 +1,6 @@
 package com.softtek.acceleo.demo.domain;
 
 import java.io.Serializable;
-import javax.persistence.EnumType;
-import javax.persistence.Enumerated;
-import javax.persistence.Column;
-import javax.persistence.Entity;
-import javax.persistence.GeneratedValue;
-import javax.persistence.GenerationType;
-import javax.persistence.Id;
-import javax.persistence.Table;
 import java.util.Date;
 import javax.persistence.*;
 import javax.validation.constraints.NotNull;
@@ -36,9 +28,11 @@ public class Permiso implements Serializable {
 	private String nivelpermiso;
 
 
-	@NotNull
-	@Column(name = "rolId") 
-	private Integer rolId;
+	//@NotNull
+	//@Column(name = "rolId") 
+	@OneToOne
+	@JoinColumn(name="rolId") 
+	private Rol rol;
 //	@OneToMany(cascade= CascadeType.ALL)
 //	@JoinColumn(name="rolId")
 //	@IndexColumn(name="idx")
@@ -79,11 +73,19 @@ public class Permiso implements Serializable {
 	//public void setRolList (List<Rol> rolList) {
 	//	this.rolList = rolList;
 	//}
-	public Integer getRolId () {
-	    return rolId;  		
-    }
-	public void setRolId (Integer rolId) {
-		this.rolId = rolId;
+//	public Integer getRolId () {
+//	    return rolId;  		
+//    }
+//	public void setRolId (Integer rolId) {
+//		this.rolId = rolId;
+//	}
+
+	public Rol getRol() {
+		return rol;
+	}
+
+	public void setRol(Rol rol) {
+		this.rol = rol;
 	}
 
 }			
