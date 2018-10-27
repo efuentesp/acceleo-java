@@ -8,6 +8,7 @@ package com.softtek.acceleo.demo.repository.impl;
 
 import java.util.List;
 
+import org.hibernate.Session;
 import org.hibernate.SessionFactory;
 import org.hibernate.criterion.Example;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -15,6 +16,7 @@ import org.springframework.stereotype.Repository;
 import org.hibernate.criterion.Projections;
 import org.hibernate.criterion.Restrictions;
 
+import com.softtek.acceleo.demo.domain.Direccion;
 import com.softtek.acceleo.demo.domain.Trayectoria;
 import com.softtek.acceleo.demo.repository.TrayectoriaRepository;
 /**
@@ -48,6 +50,16 @@ public class TrayectoriaRepositoryImpl implements TrayectoriaRepository {
 
 		return (List<Trayectoria>) sessionFactory.getCurrentSession()
 				.createCriteria(Trayectoria.class).list();
+	}
+	/**
+	 * Consulta informacion de trayectoria.
+	 */
+	@SuppressWarnings({ "unchecked" })
+	public List<Trayectoria> listTrayectoriasByCandidato(Trayectoria trayectoria, int id) {
+
+		Session session = sessionFactory.getCurrentSession();
+		List<Trayectoria> trayectorias = session.createCriteria(Trayectoria.class).add(Restrictions.like("candidato.candidatoId", id)).list();
+		return  trayectorias;
 	}
 
 	/**

@@ -35,6 +35,7 @@ import com.softtek.acceleo.demo.exception.GenericException;
 
 import com.softtek.acceleo.demo.catalogo.bean.PosicionBean;
 import com.softtek.acceleo.demo.domain.Posicion;
+import com.softtek.acceleo.demo.domain.Posicion;
 import com.softtek.acceleo.demo.service.PosicionService;
 
 /**
@@ -81,6 +82,24 @@ public class PosicionController {
 		response.setHeader("Access-Control-Expose-Headers", "x-total-count");
 		response.setHeader("x-total-count", String.valueOf(rows).toString());	
 
+		return listPosicion;
+	}
+	
+	/************************************** SEARCH
+	 * Obtiene informacion de los candidatos.
+	 * @param requestParams.
+	 * @param request.
+	 * @param response.
+	 * @return List<Posicion>.
+	 */
+	@RequestMapping(value = "/posicion/candidato/{id}", method = RequestMethod.GET, produces = "application/json")
+	@PreAuthorize("hasRole('POSICIONSEARCH')")
+	public @ResponseBody  List<Posicion> getPosicionsByCandidato(@RequestParam Map<String,String> requestParams, HttpServletRequest request, HttpServletResponse response, @PathVariable("id") int id) {
+
+		List<Posicion> listPosicion = null;
+		listPosicion = posicionService.listPosicionsByCandidato(posicion, id);
+		response.setHeader("Access-Control-Expose-Headers", "x-total-count");
+		
 		return listPosicion;
 	}
 

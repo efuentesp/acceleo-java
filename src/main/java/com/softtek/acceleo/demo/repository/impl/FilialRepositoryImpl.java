@@ -15,7 +15,9 @@ import org.springframework.stereotype.Repository;
 import org.hibernate.criterion.Projections;
 import org.hibernate.criterion.Restrictions;
 
+import com.softtek.acceleo.demo.domain.Evento;
 import com.softtek.acceleo.demo.domain.Filial;
+import com.softtek.acceleo.demo.domain.Trayectoria;
 import com.softtek.acceleo.demo.repository.FilialRepository;
 /**
  * Clase filialRepositoryImpl.
@@ -48,6 +50,12 @@ public class FilialRepositoryImpl implements FilialRepository {
 
 		return (List<Filial>) sessionFactory.getCurrentSession()
 				.createCriteria(Filial.class).list();
+	}
+	
+	@SuppressWarnings({ "unchecked" })
+	public List<Filial> listFilialsByCandidato(Filial filial, int id){
+		return (List<Filial>) sessionFactory.getCurrentSession()
+				.createCriteria(Filial.class).add(Restrictions.like("candidatoId", id)).list();
 	}
 
 	/**

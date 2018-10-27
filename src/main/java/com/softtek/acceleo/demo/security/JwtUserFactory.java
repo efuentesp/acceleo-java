@@ -5,12 +5,14 @@ import java.util.List;
 import java.util.stream.Collectors;
 
 import org.apache.log4j.Logger;
+import org.hibernate.Hibernate;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 
 import com.softtek.acceleo.demo.domain.Authority;
 import com.softtek.acceleo.demo.domain.Privilege;
 import com.softtek.acceleo.demo.domain.User;
+import com.softtek.acceleo.demo.domain.UserAuthority;
 
 public final class JwtUserFactory {
 	private static final Logger logger = Logger.getLogger(JwtUserFactory.class);
@@ -21,7 +23,7 @@ public final class JwtUserFactory {
 	public static JwtUser create(User user) {
 		return new JwtUser(user.getIdUser(), user.getUserName(), user.getFirstname(), user.getLastname(),
 				user.getEmail(), user.getPassword(), mapToGrantedAuthorities(user.getAuthorities()), user.getEnabled(),
-				user.getLastPasswordResetDate());
+				user.getLastPasswordResetDate(), user.getAuthorities().get(0).getName());
 	}
 
 	private static List<GrantedAuthority> mapToGrantedAuthorities(List<Authority> authorities) {
@@ -35,6 +37,7 @@ public final class JwtUserFactory {
 				"/_/_/_/_/_/_/_/_/_/_/_/_/_/_/_/_/_/_/_/_/_/_/_/_/_/_/_/_/_/_/_/_/_/_/_/_/_/_/_/_/_/_/_/_/_/_/_/_/_/_/_/_/_/_/_/_/_/_/_/_/_/_/_/_/_/_/_/_/_/_/_/_");
 		logger.info("Iniciando convert AUTHORITY --> PRIVILEGE:");
 		for (Authority authority : authorities) {
+			logger.info("JAAAAAS" + authority.getName());
 			logger.info("JAAAAAS" + authority.getEnabled());
 			//Si al obtener el rol (Authority) no esta habilitado
 			//no se agregan los privilegios
@@ -54,6 +57,7 @@ public final class JwtUserFactory {
 		// .map(authority -> new SimpleGrantedAuthority(authority.getName))
 		// .collect(Collectors.toList());
 	}
+	
 
 	// private static List<GrantedAuthority> mapToGrantedPrivileges(List<Authority>
 	// authorities) {

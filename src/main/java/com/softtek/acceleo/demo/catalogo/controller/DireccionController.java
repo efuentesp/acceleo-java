@@ -34,6 +34,7 @@ import org.springframework.web.bind.annotation.RestController;
 import com.softtek.acceleo.demo.exception.GenericException;
 
 import com.softtek.acceleo.demo.catalogo.bean.DireccionBean;
+import com.softtek.acceleo.demo.domain.Candidato;
 import com.softtek.acceleo.demo.domain.Direccion;
 import com.softtek.acceleo.demo.service.DireccionService;
 
@@ -83,6 +84,25 @@ public class DireccionController {
 
 		return listDireccion;
 	}
+	
+	/************************************** SEARCH
+	 * Obtiene informacion de los candidatos.
+	 * @param requestParams.
+	 * @param request.
+	 * @param response.
+	 * @return List<Direccion>.
+	 */
+	@RequestMapping(value = "/direccion/candidato/{id}", method = RequestMethod.GET, produces = "application/json")
+	@PreAuthorize("hasRole('DIRECCIONSEARCH')")
+	public @ResponseBody  List<Direccion> getDireccionsByCandidato(@RequestParam Map<String,String> requestParams, HttpServletRequest request, HttpServletResponse response, @PathVariable("id") int id) {
+
+		List<Direccion> listDireccion = null;
+		listDireccion = direccionService.listDireccionsByCandidato(direccion, id);
+		response.setHeader("Access-Control-Expose-Headers", "x-total-count");
+		
+		return listDireccion;
+	}
+	
 
 	/************************************* SEARCH
 	 * Obtiene informacion de un direccion.

@@ -11,7 +11,9 @@ public interface TrayectoriaRepository {
 	 
 	 public void editTrayectoria(Trayectoria trayectoria);
 	   
-	 public List<Trayectoria> listTrayectorias(Trayectoria trayectoria);   
+	 public List<Trayectoria> listTrayectorias(Trayectoria trayectoria); 
+	 
+	 public List<Trayectoria> listTrayectoriasByCandidato(Trayectoria trayectoria, int id); 
 	    
 	 public Trayectoria getTrayectoria(int empid);   
 	    

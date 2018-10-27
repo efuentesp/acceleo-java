@@ -56,6 +56,13 @@ public class DocumentoServiceImpl implements DocumentoService {
 	}
 
 	/**
+	 * Consulta informacion de documentos.
+	 */
+	public List<Documento> listDocumentosByCandidato(Documento documento, int id) {
+		return documentoRepository.listDocumentosByCandidato(documento, id);
+	}
+	
+	/**
 	 * Obtiene informacion de un documento.
 	 */
 	public Documento getDocumento(int empid) {

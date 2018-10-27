@@ -10,6 +10,8 @@ public interface PosicionService {
 	public void editPosicion(Posicion posicion);
 	
 	public List<Posicion> listPosicions(Posicion posicion);
+	
+	public List<Posicion> listPosicionsByCandidato(Posicion pocision, int id);
 
 	public Posicion getPosicion(int empid);
 

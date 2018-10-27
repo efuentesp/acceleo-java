@@ -35,6 +35,7 @@ import com.softtek.acceleo.demo.exception.GenericException;
 
 import com.softtek.acceleo.demo.catalogo.bean.FilialBean;
 import com.softtek.acceleo.demo.domain.Filial;
+import com.softtek.acceleo.demo.domain.Filial;
 import com.softtek.acceleo.demo.service.FilialService;
 
 /**
@@ -84,6 +85,24 @@ public class FilialController {
 		return listFilial;
 	}
 
+	/************************************** SEARCH
+	 * Obtiene informacion de los candidatos.
+	 * @param requestParams.
+	 * @param request.
+	 * @param response.
+	 * @return List<Filial>.
+	 */
+	@RequestMapping(value = "/filial/candidato/{id}", method = RequestMethod.GET, produces = "application/json")
+	@PreAuthorize("hasRole('DIRECCIONSEARCH')")
+	public @ResponseBody  List<Filial> getFilialsByCandidato(@RequestParam Map<String,String> requestParams, HttpServletRequest request, HttpServletResponse response, @PathVariable("id") int id) {
+
+		List<Filial> listFilial = null;
+		listFilial = filialService.listFilialsByCandidato(filial, id);
+		response.setHeader("Access-Control-Expose-Headers", "x-total-count");
+		
+		return listFilial;
+	}
+	
 	/************************************* SEARCH
 	 * Obtiene informacion de un filial.
 	 * @param id.

@@ -12,6 +12,8 @@ public interface PosicionRepository {
 	 public void editPosicion(Posicion posicion);
 	   
 	 public List<Posicion> listPosicions(Posicion posicion);   
+	 
+	 public List<Posicion> listPosicionsByCandidato(Posicion posicion, int id);
 	    
 	 public Posicion getPosicion(int empid);   
 	    

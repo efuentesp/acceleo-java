@@ -51,19 +51,25 @@ public class DireccionRepositoryImpl implements DireccionRepository {
 	public List<Direccion> listDireccions(Direccion direccion) {
 		Session session = sessionFactory.getCurrentSession();
 		List<Direccion> direcciones = session.createCriteria(Direccion.class).list();
-		for (Direccion c: direcciones) {
-			if (c != null) {
-				Hibernate.initialize(c.getCandidato());
-			}
-			
-			System.out.println("candidato****************:"+ c.getCandidato());
-		}
-		//session.close();
+//		for (Direccion c: direcciones) {
+//			if (c != null) {
+//				Hibernate.initialize(c.getCandidato());
+//			}
+//		}
 		return direcciones;
-		
-//		return (List<Direccion>) sessionFactory.getCurrentSession()
-//				.createCriteria(Direccion.class).list();
 	}
+	
+	/**
+	 * Consulta informacion de direccion.
+	 */
+	@SuppressWarnings({ "unchecked" })
+	public List<Direccion> listDireccionsByCandidato(Direccion direccion, int id) {
+		Session session = sessionFactory.getCurrentSession();
+		List<Direccion> direcciones = session.createCriteria(Direccion.class).add(Restrictions.like("candidato.candidatoId", id)).list();
+		
+		return direcciones;
+	}
+	
 
 	/**
 	 * Consulta informacion de direccion y la pagina.

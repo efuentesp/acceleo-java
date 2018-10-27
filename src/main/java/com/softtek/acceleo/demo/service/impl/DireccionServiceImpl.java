@@ -54,7 +54,12 @@ public class DireccionServiceImpl implements DireccionService {
 
 		return direccionRepository.listDireccions(direccion);
 	}
-
+	
+	@Override
+	public List<Direccion> listDireccionsByCandidato(Direccion direccion, int id) {
+		return direccionRepository.listDireccionsByCandidato(direccion, id);
+	}
+	
 	/**
 	 * Obtiene informacion de un direccion.
 	 */
@@ -116,6 +121,8 @@ public class DireccionServiceImpl implements DireccionService {
 		// TODO Auto-generated method stub
 		return direccionRepository.listDireccionsQuery(direccion, query, page, size);
 	}
+
+	
 
 }
 

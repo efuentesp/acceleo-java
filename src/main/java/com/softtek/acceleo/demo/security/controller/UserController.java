@@ -46,20 +46,7 @@ public class UserController {
 
 			List<User> listUser = null;
 	       	listUser = userService.listUserss();
-	       	
-//	       	Set<User> hs = new HashSet<User>();
-//	       	hs.addAll(listUser);
-//	       	listUser.clear();
-//	       	listUser.addAll(hs);
-	       	
-	       	for (User u:listUser){	
-	       		// Hay que decodificar el password
-	       	}
-	       	
-	       	
-			System.out.print("Conttroller - Cantidad" + listUser.size());
-			System.out.print("Fin Conttroller - userList ");
-			return listUser;
+	    	return listUser;
 		}
 	    
 	    
@@ -73,7 +60,7 @@ public class UserController {
 	    
 	    @RequestMapping(value = "/users/{username}/{privileges}", method = RequestMethod.POST)
 	    @PreAuthorize("hasRole('MANAGESEARCH')")
-	        public ResponseEntity<Void> createAfiliado(@RequestBody User user, @PathVariable("username") String userName,  @PathVariable("privileges") String privileges, UriComponentsBuilder ucBuilder) {
+	        public ResponseEntity<Void> createUser(@RequestBody User user, @PathVariable("username") String userName,  @PathVariable("privileges") String privileges, UriComponentsBuilder ucBuilder) {
 	    	HttpStatus httpStatus = null;
 	    	
 	            user.setCreationDate(new Date()); 
@@ -90,6 +77,7 @@ public class UserController {
 	                
 	            
 	            try {
+	            	
 	            	userService.addUser(user);
 	            	
 	            	httpStatus = HttpStatus.CREATED;

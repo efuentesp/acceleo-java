@@ -15,6 +15,7 @@ import org.springframework.stereotype.Repository;
 import org.hibernate.criterion.Projections;
 import org.hibernate.criterion.Restrictions;
 
+import com.softtek.acceleo.demo.domain.Posicion;
 import com.softtek.acceleo.demo.domain.Puesto;
 import com.softtek.acceleo.demo.repository.PuestoRepository;
 /**
@@ -48,6 +49,15 @@ public class PuestoRepositoryImpl implements PuestoRepository {
 
 		return (List<Puesto>) sessionFactory.getCurrentSession()
 				.createCriteria(Puesto.class).list();
+	}
+	
+	/**
+	 * Consulta informacion de puesto.
+	 */
+	@SuppressWarnings({ "unchecked" })
+	public List<Puesto> listPuestosByCandidato(Puesto puesto, int id) {
+		return (List<Puesto>) sessionFactory.getCurrentSession()
+				.createCriteria(Puesto.class).add(Restrictions.like("candidatoId", id)).list();
 	}
 
 	/**

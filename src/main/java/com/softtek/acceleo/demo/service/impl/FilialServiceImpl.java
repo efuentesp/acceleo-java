@@ -51,8 +51,12 @@ public class FilialServiceImpl implements FilialService {
 	 * Consulta informacion de filials.
 	 */
 	public List<Filial> listFilials(Filial filial) {
-
 		return filialRepository.listFilials(filial);
+	}
+	
+	
+	public List<Filial> listFilialsByCandidato(Filial filial, int id){
+		return filialRepository.listFilialsByCandidato(filial, id);
 	}
 
 	/**

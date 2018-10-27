@@ -32,7 +32,6 @@ public class Documento implements Serializable {
 	@Column(name = "descripcion") 
 	private String descripcion;
 
-
 	@Column(name = "size") 
 	private Integer size;
 
@@ -64,5 +63,5 @@ public class Documento implements Serializable {
 	public void setSize (Integer size) {
 		this.size = size;
 	}
-
-}			
+	
+}

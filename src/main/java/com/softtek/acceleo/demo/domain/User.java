@@ -3,6 +3,7 @@ package com.softtek.acceleo.demo.domain;
 import java.util.Date;
 import java.util.List;
 
+import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.FetchType;
@@ -12,6 +13,8 @@ import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.JoinTable;
 import javax.persistence.ManyToMany;
+import javax.persistence.OneToMany;
+import javax.persistence.OneToOne;
 import javax.persistence.SequenceGenerator;
 import javax.persistence.Table;
 import javax.persistence.Temporal;
@@ -80,8 +83,7 @@ public class User {
     @JoinTable(
             name = "user_authority",
             joinColumns = {@JoinColumn(name = "id_user", referencedColumnName = "id_user")},
-            inverseJoinColumns = {@JoinColumn(name = "id_authority", referencedColumnName = "id_authority")})
-	//@WhereJoinTable(clause = "ENABLED = '1'")     
+            inverseJoinColumns = {@JoinColumn(name = "id_authority", referencedColumnName = "id_authority")})   
     private List<Authority> authorities;
 
 	public String getUserName() {
@@ -171,21 +173,6 @@ public class User {
 	public void setModifiedDate(Date modifiedDate) {
 		this.modifiedDate = modifiedDate;
 	}
-
-//	public List<Authority> getAuthority() {
-//		return authority;
-//	}
-//
-//	public void setAuthority(List<Authority> authority) {
-//		this.authority = authority;
-//	}    
-
-//	public Object getRole() {
-//		return null;
-//	}
-//
-//	public void setRole(String string) {
-//	}
 	
     public List<Authority> getAuthorities() {
 		return authorities;
@@ -194,5 +181,5 @@ public class User {
 	public void setAuthorities(List<Authority> authorities) {
 		this.authorities = authorities;
 	}
-	
+
 }

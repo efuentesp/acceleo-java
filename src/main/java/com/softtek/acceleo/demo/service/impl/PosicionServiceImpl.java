@@ -54,6 +54,13 @@ public class PosicionServiceImpl implements PosicionService {
 
 		return posicionRepository.listPosicions(posicion);
 	}
+	
+	/**
+	 * Consulta informacion de posicions.
+	 */
+	public List<Posicion> listPosicionsByCandidato(Posicion posicion, int id) {
+		return posicionRepository.listPosicionsByCandidato(posicion, id);
+	}
 
 	/**
 	 * Obtiene informacion de un posicion.

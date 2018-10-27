@@ -68,6 +68,11 @@ public class UserRestController {
         String token = request.getHeader(tokenHeader).substring(7);
         String username = jwtTokenUtil.getUsernameFromToken(token);
         JwtUser user = (JwtUser) userDetailsService.loadUserByUsername(username);
+        
+//        User userDb = new User();
+//        userDb.setUserName(user.getUsername());
+//        
+//        userService.addUserLogin(userDb);
         return user;
     }
     

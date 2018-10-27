@@ -54,6 +54,14 @@ public class PuestoServiceImpl implements PuestoService {
 
 		return puestoRepository.listPuestos(puesto);
 	}
+	
+	/**
+	 * Consulta informacion de puestos.
+	 */
+	public List<Puesto> listPuestosByCandidato(Puesto puesto, int id) {
+
+		return puestoRepository.listPuestosByCandidato(puesto, id);
+	}
 
 	/**
 	 * Obtiene informacion de un puesto.

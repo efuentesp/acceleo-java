@@ -10,6 +10,8 @@ public interface DireccionService {
 	public void editDireccion(Direccion direccion);
 	
 	public List<Direccion> listDireccions(Direccion direccion);
+	
+	public List<Direccion> listDireccionsByCandidato(Direccion direccion, int id );
 
 	public Direccion getDireccion(int empid);
 

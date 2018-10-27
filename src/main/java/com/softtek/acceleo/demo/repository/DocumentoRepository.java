@@ -11,7 +11,9 @@ public interface DocumentoRepository {
 	 
 	 public void editDocumento(Documento documento);
 	   
-	 public List<Documento> listDocumentos(Documento documento);   
+	 public List<Documento> listDocumentos(Documento documento);  
+	 
+	 public List<Documento> listDocumentosByCandidato(Documento documento, int id);  
 	    
 	 public Documento getDocumento(int empid);   
 	    

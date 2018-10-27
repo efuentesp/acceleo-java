@@ -12,6 +12,8 @@ public interface FilialRepository {
 	 public void editFilial(Filial filial);
 	   
 	 public List<Filial> listFilials(Filial filial);   
+	 
+	 public List<Filial> listFilialsByCandidato(Filial filial, int id);
 	    
 	 public Filial getFilial(int empid);   
 	    

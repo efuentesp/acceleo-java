@@ -54,6 +54,16 @@ public class CandidatoServiceImpl implements CandidatoService {
 
 		return candidatoRepository.listCandidatos(candidato);
 	}
+	
+	@Override
+	public List<Candidato> listCandidatosByCandidato(Candidato candidato, int id) {
+		return candidatoRepository.listCandidatosByCandidato(candidato, id);
+	}
+	
+	@Override
+	public List<Candidato> listCandidatosByUsername(Candidato candidato, String id) {
+		return candidatoRepository.listCandidatosByUsername(candidato, id);
+	}
 
 	/**
 	 * Obtiene informacion de un candidato.
@@ -116,6 +126,8 @@ public class CandidatoServiceImpl implements CandidatoService {
 		// TODO Auto-generated method stub
 		return candidatoRepository.listCandidatosQuery(candidato, query, page, size);
 	}
+
+	
 
 }
 

@@ -11,6 +11,8 @@ public interface TrayectoriaService {
 	
 	public List<Trayectoria> listTrayectorias(Trayectoria trayectoria);
 
+	public List<Trayectoria> listTrayectoriasByCandidato(Trayectoria trayectoria, int id);
+	
 	public Trayectoria getTrayectoria(int empid);
 
 	public void deleteTrayectoria(Trayectoria trayectoria);

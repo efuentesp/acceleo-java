@@ -49,7 +49,19 @@ public class DocumentoRepositoryImpl implements DocumentoRepository {
 		return (List<Documento>) sessionFactory.getCurrentSession()
 				.createCriteria(Documento.class).list();
 	}
-
+	
+	
+	/**
+	 * Consulta informacion de documento.
+	 */
+	@SuppressWarnings({ "unchecked" })
+	public List<Documento> listDocumentosByCandidato(Documento documento, int id) {
+		
+		return (List<Documento>) sessionFactory.getCurrentSession()
+				.createCriteria(Documento.class).list();
+		//return sessionFactory.getCurrentSession().createCriteria(Documento.class).add(Restrictions.like("candidatoId",id)).list();
+	}
+	
 	/**
 	 * Consulta informacion de documento y la pagina.
 	 */

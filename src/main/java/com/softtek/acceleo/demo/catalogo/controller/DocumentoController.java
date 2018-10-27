@@ -35,6 +35,7 @@ import com.softtek.acceleo.demo.exception.GenericException;
 
 import com.softtek.acceleo.demo.catalogo.bean.DocumentoBean;
 import com.softtek.acceleo.demo.domain.Documento;
+import com.softtek.acceleo.demo.domain.Documento;
 import com.softtek.acceleo.demo.service.DocumentoService;
 
 /**
@@ -84,6 +85,24 @@ public class DocumentoController {
 		return listDocumento;
 	}
 
+	/************************************** SEARCH
+	 * Obtiene informacion de los candidatos.
+	 * @param requestParams.
+	 * @param request.
+	 * @param response.
+	 * @return List<Documento>.
+	 */
+	@RequestMapping(value = "/documento/candidato/{id}", method = RequestMethod.GET, produces = "application/json")
+	@PreAuthorize("hasRole('DOCUMENTOSEARCH')")
+	public @ResponseBody  List<Documento> getDocumentosByCandidato(@RequestParam Map<String,String> requestParams, HttpServletRequest request, HttpServletResponse response, @PathVariable("id") int id) {
+
+		List<Documento> listDocumento = null;
+		listDocumento = documentoService.listDocumentosByCandidato(documento, id);
+		response.setHeader("Access-Control-Expose-Headers", "x-total-count");
+		
+		return listDocumento;
+	}
+	
 	/************************************* SEARCH
 	 * Obtiene informacion de un documento.
 	 * @param id.

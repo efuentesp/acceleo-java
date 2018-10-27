@@ -54,6 +54,14 @@ public class TrayectoriaServiceImpl implements TrayectoriaService {
 
 		return trayectoriaRepository.listTrayectorias(trayectoria);
 	}
+	
+	/**
+	 * Consulta informacion de trayectorias.
+	 */
+	public List<Trayectoria> listTrayectoriasByCandidato(Trayectoria trayectoria, int id) {
+
+		return trayectoriaRepository.listTrayectoriasByCandidato(trayectoria, id);
+	}
 
 	/**
 	 * Obtiene informacion de un trayectoria.

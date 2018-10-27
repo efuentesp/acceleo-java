@@ -35,6 +35,7 @@ import com.softtek.acceleo.demo.exception.GenericException;
 
 import com.softtek.acceleo.demo.catalogo.bean.PuestoBean;
 import com.softtek.acceleo.demo.domain.Puesto;
+import com.softtek.acceleo.demo.domain.Puesto;
 import com.softtek.acceleo.demo.service.PuestoService;
 
 /**
@@ -84,6 +85,24 @@ public class PuestoController {
 		return listPuesto;
 	}
 
+	/************************************** SEARCH
+	 * Obtiene informacion de los candidatos.
+	 * @param requestParams.
+	 * @param request.
+	 * @param response.
+	 * @return List<Puesto>.
+	 */
+	@RequestMapping(value = "/puesto/candidato/{id}", method = RequestMethod.GET, produces = "application/json")
+	@PreAuthorize("hasRole('PUESTOSEARCH')")
+	public @ResponseBody  List<Puesto> getPuestosByCandidato(@RequestParam Map<String,String> requestParams, HttpServletRequest request, HttpServletResponse response, @PathVariable("id") int id) {
+
+		List<Puesto> listPuesto = null;
+		listPuesto = puestoService.listPuestosByCandidato(puesto, id);
+		response.setHeader("Access-Control-Expose-Headers", "x-total-count");
+		
+		return listPuesto;
+	}
+	
 	/************************************* SEARCH
 	 * Obtiene informacion de un puesto.
 	 * @param id.

@@ -8,7 +8,10 @@ import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.softtek.acceleo.demo.domain.Candidato;
 import com.softtek.acceleo.demo.domain.Privilege;
+import com.softtek.acceleo.demo.domain.Reclutador;
+import com.softtek.acceleo.demo.domain.UserAuthority;
 
 /**
  * Created by stephan on 20.03.16.
@@ -24,6 +27,7 @@ public class JwtUser implements UserDetails {
     private final Collection<? extends GrantedAuthority> authorities;
     private final boolean enabled;
     private final Date lastPasswordResetDate;
+    private final String authorityname;
 
     public JwtUser(
           Long id,
@@ -31,9 +35,11 @@ public class JwtUser implements UserDetails {
           String firstname,
           String lastname,
           String email,
-          String password, Collection<? extends GrantedAuthority> authorities,
+          String password, 
+          Collection<? extends GrantedAuthority> authorities,
           boolean enabled,
-          Date lastPasswordResetDate
+          Date lastPasswordResetDate,
+          String authorityname
     ) {
         this.id = id;
         this.username = username;
@@ -44,9 +50,14 @@ public class JwtUser implements UserDetails {
         this.authorities = authorities;
         this.enabled = enabled;
         this.lastPasswordResetDate = lastPasswordResetDate;
+        this.authorityname = authorityname;
     }
     
-    /**
+    public String getAuthorityname() {
+		return authorityname;
+	}
+
+	/**
      * Se carga informacion de los authority.
      * @return
      */
@@ -117,4 +128,6 @@ public class JwtUser implements UserDetails {
     public Date getLastPasswordResetDate() {
         return lastPasswordResetDate;
     }
+
+
 }

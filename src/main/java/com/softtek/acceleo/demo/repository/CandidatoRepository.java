@@ -12,6 +12,10 @@ public interface CandidatoRepository {
 	 public void editCandidato(Candidato candidato);
 	   
 	 public List<Candidato> listCandidatos(Candidato candidato);   
+	 
+	 public List<Candidato> listCandidatosByCandidato(Candidato candidato, int id);  
+	 
+	 public List<Candidato> listCandidatosByUsername(Candidato candidato, String id);  
 	    
 	 public Candidato getCandidato(int empid);   
 	    

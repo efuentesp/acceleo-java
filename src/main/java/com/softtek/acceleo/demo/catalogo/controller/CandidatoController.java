@@ -83,6 +83,71 @@ public class CandidatoController {
 
 		return listCandidato;
 	}
+	
+	/************************************** SEARCH
+	 * Obtiene informacion de los candidatos.
+	 * @param requestParams.
+	 * @param request.
+	 * @param response.
+	 * @return List<Candidato>.
+	 */
+	@RequestMapping(value = "/candidato/{id}", method = RequestMethod.GET, produces = "application/json")
+	@PreAuthorize("hasRole('CANDIDATOSEARCH')")
+	public @ResponseBody  List<Candidato> getCandidatos(@RequestParam Map<String,String> requestParams, HttpServletRequest request, HttpServletResponse response, @PathVariable("id") int id) {
+
+ 
+		List<Candidato> listCandidato = null;
+
+       	listCandidato = candidatoService.listCandidatosByCandidato(candidato, id);
+
+		response.setHeader("Access-Control-Expose-Headers", "x-total-count");
+		
+
+		return listCandidato;
+	}
+	
+	/************************************** SEARCH
+	 * Obtiene informacion de los candidatos.
+	 * @param requestParams.
+	 * @param request.
+	 * @param response.
+	 * @return List<Candidato>.
+	 */
+	@RequestMapping(value = "/candidato/username/{id}", method = RequestMethod.GET, produces = "application/json")
+	@PreAuthorize("hasRole('CANDIDATOSEARCH')")
+	public @ResponseBody  Candidato getCandidatosByUsername(@RequestParam Map<String,String> requestParams, HttpServletRequest request, HttpServletResponse response, @PathVariable("id") String id) {
+
+		List<Candidato> listCandidato = null;
+       	listCandidato = candidatoService.listCandidatosByUsername(candidato, id);
+		response.setHeader("Access-Control-Expose-Headers", "x-total-count");
+		
+		if (listCandidato.size() > 0) {
+			return listCandidato.get(0);
+		}else {
+			return null;
+		}
+		
+	}
+	
+	/************************************** SEARCH
+	 * Obtiene informacion de los candidatos.
+	 * @param requestParams.
+	 * @param request.
+	 * @param response.
+	 * @return List<Candidato>.
+	 */
+	@RequestMapping(value = "/candidato/username/list/{id}", method = RequestMethod.GET, produces = "application/json")
+	@PreAuthorize("hasRole('CANDIDATOSEARCH')")
+	public @ResponseBody  List<Candidato> getCandidatosByUsernameList(@RequestParam Map<String,String> requestParams, HttpServletRequest request, HttpServletResponse response, @PathVariable("id") String id) {
+
+		List<Candidato> listCandidato = null;
+       	listCandidato = candidatoService.listCandidatosByUsername(candidato, id);
+		response.setHeader("Access-Control-Expose-Headers", "x-total-count");
+		
+		return listCandidato;
+		
+		
+	}
 
 	/************************************* SEARCH
 	 * Obtiene informacion de un candidato.

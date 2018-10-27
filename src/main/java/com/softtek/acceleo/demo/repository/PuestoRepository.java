@@ -12,6 +12,8 @@ public interface PuestoRepository {
 	 public void editPuesto(Puesto puesto);
 	   
 	 public List<Puesto> listPuestos(Puesto puesto);   
+	 
+	 public List<Puesto> listPuestosByCandidato(Puesto puesto, int id);
 	    
 	 public Puesto getPuesto(int empid);   
 	    

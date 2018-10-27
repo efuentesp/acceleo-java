@@ -35,6 +35,7 @@ import com.softtek.acceleo.demo.exception.GenericException;
 
 import com.softtek.acceleo.demo.catalogo.bean.TrayectoriaBean;
 import com.softtek.acceleo.demo.domain.Trayectoria;
+import com.softtek.acceleo.demo.domain.Trayectoria;
 import com.softtek.acceleo.demo.service.TrayectoriaService;
 
 /**
@@ -84,6 +85,24 @@ public class TrayectoriaController {
 		return listTrayectoria;
 	}
 
+	/************************************** SEARCH
+	 * Obtiene informacion de los candidatos.
+	 * @param requestParams.
+	 * @param request.
+	 * @param response.
+	 * @return List<Trayectoria>.
+	 */
+	@RequestMapping(value = "/trayectoria/candidato/{id}", method = RequestMethod.GET, produces = "application/json")
+	@PreAuthorize("hasRole('TRAYECTORIASEARCH')")
+	public @ResponseBody  List<Trayectoria> getTrayectoriasByCandidato(@RequestParam Map<String,String> requestParams, HttpServletRequest request, HttpServletResponse response, @PathVariable("id") int id) {
+
+		List<Trayectoria> listTrayectoria = null;
+		listTrayectoria = trayectoriaService.listTrayectoriasByCandidato(trayectoria, id);
+		response.setHeader("Access-Control-Expose-Headers", "x-total-count");
+		
+		return listTrayectoria;
+	}
+	
 	/************************************* SEARCH
 	 * Obtiene informacion de un trayectoria.
 	 * @param id.

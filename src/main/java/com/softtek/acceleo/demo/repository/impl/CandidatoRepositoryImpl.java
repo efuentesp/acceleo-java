@@ -47,17 +47,28 @@ public class CandidatoRepositoryImpl implements CandidatoRepository {
 	 */
 	@SuppressWarnings({ "unchecked" })
 	public List<Candidato> listCandidatos(Candidato cand) {
-//		Session session = sessionFactory.getCurrentSession();
-//		//Candidato candidato = session.get(Candidato.class, candidatoId);
-//		//Hibernate.initialize(candidato.getSolicitudes());
 		List<Candidato> candidatos = sessionFactory.getCurrentSession().createCriteria(Candidato.class).list();
-//		for (Candidato c: candidatos) {
-//			Hibernate.initialize(c.getSolicitudes());
-//		}
-//		session.close();
 		return candidatos;
 	}
-
+	
+	/**
+	 * Consulta informacion de candidato.
+	 */
+	@SuppressWarnings({ "unchecked" })
+	public List<Candidato> listCandidatosByCandidato(Candidato cand, int id) {
+		List<Candidato> candidatos = sessionFactory.getCurrentSession().createCriteria(Candidato.class).add(Restrictions.like("candidatoId",id)).list();
+		return candidatos;
+	}
+ 
+	/**
+	 * Consulta informacion de candidato.
+	 */
+	@SuppressWarnings({ "unchecked" })
+	public List<Candidato> listCandidatosByUsername(Candidato cand, String id) {
+		List<Candidato> candidatos = sessionFactory.getCurrentSession().createCriteria(Candidato.class).add(Restrictions.like("username",id)).list();
+		return candidatos;
+	}
+	
 	/**
 	 * Consulta informacion de candidato y la pagina.
 	 */

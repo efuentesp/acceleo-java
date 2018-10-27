@@ -35,6 +35,10 @@ public class Candidato implements Serializable {
 	@Column(name = "nombre") 
 	private String nombre;
 
+	@NotNull
+	@Column(name = "username") 
+	private String username;
+
 
 	@NotNull
 	@Column(name = "generoId", nullable = false)
@@ -120,6 +124,15 @@ public class Candidato implements Serializable {
 		this.estatuscandidatoId = estatuscandidatoId;
 	}
 
+	public String getUsername() {
+		return username;
+	}
+
+	public void setUsername(String username) {
+		this.username = username;
+	}
+
+	
 //	public Direccion getDireccion() {
 //		return direccion;
 //	}
