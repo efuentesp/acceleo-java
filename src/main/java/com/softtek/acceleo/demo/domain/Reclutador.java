@@ -1,17 +1,19 @@
 package com.softtek.acceleo.demo.domain;
 
 import java.io.Serializable;
-import javax.persistence.EnumType;
-import javax.persistence.Enumerated;
-import javax.persistence.Column;
-import javax.persistence.Entity;
-import javax.persistence.GeneratedValue;
-import javax.persistence.GenerationType;
-import javax.persistence.Id;
-import javax.persistence.Table;
 import java.util.Date;
+import java.util.List;
+import java.util.UUID;
+
 import javax.persistence.*;
 import javax.validation.constraints.NotNull;
+import javax.validation.constraints.Size;
+
+import com.fasterxml.jackson.annotation.JsonIgnore;
+
+import org.hibernate.annotations.GenericGenerator;
+import org.hibernate.annotations.Parameter;
+
 
 @Entity
 @Table(name = "reclutador")
@@ -19,62 +21,68 @@ public class Reclutador implements Serializable {
 
 	private static final long serialVersionUID = 1L;
 
+
 	@Id
-	@GeneratedValue(strategy = GenerationType.AUTO)
-	@Column(name = "reclutadorId")
-	private Integer  reclutadorId;
-
+	@NotNull
+	@GeneratedValue(generator = "UUID")
+	@GenericGenerator(
+			          name = "UUID", 
+	                  strategy = "org.hibernate.id.UUIDGenerator", 
+	                  parameters = {
+	                		@Parameter( 
+	                				name = "uuid_gen_strategy_class", 
+	                				value = "org.hibernate.id.uuid.CustomVersionOneStrategy" 
+	                		) 
+					  } 
+					 )
+	@Column(name = "reclutadorId", columnDefinition = "VARBINARY(50)")
+	private UUID reclutadorId;
 
 	@NotNull
-	@Column(name = "apellidomaterno") 
-	private String apellidomaterno;
-	@NotNull
-	@Column(name = "nombre") 
+	@Column(name = "nombre")
 	private String nombre;
+	
 	@NotNull
-	@Column(name = "apellidopaterno") 
+	@Column(name = "apellidopaterno")
 	private String apellidopaterno;
-
-
+	
 	@NotNull
-	@Column(name = "generoId", nullable = false)
-	@Enumerated(EnumType.STRING)
-	private Genero generoId;
+	@Column(name = "apellidomaterno")
+	private String apellidomaterno;
+	
+	@NotNull
+	private String genero;
 
-	public Integer getReclutadorId() {
+	public UUID getReclutadorId() {
 		return reclutadorId;
 	}
 
-	public void setReclutadorId(Integer reclutadorId) {
+	public void setReclutadorId(UUID reclutadorId) {
 		this.reclutadorId = reclutadorId;
-	}
-
-	
-	public String getApellidomaterno () {
-	    return apellidomaterno;  		
-    }
-	public void setApellidomaterno(String apellidomaterno) {
-		this.apellidomaterno = apellidomaterno;
 	}
 	
 	public String getNombre () {
-	    return nombre;  		
-    }
+	    return nombre;
+	    }
 	public void setNombre(String nombre) {
 		this.nombre = nombre;
 	}
-	
 	public String getApellidopaterno () {
-	    return apellidopaterno;  		
-    }
+	    return apellidopaterno;
+	    }
 	public void setApellidopaterno(String apellidopaterno) {
 		this.apellidopaterno = apellidopaterno;
 	}
-	public Genero getGeneroId () {
-	    return generoId;  		
-    }
-	public void setGeneroId (Genero generoId) {
-		this.generoId = generoId;
+	public String getApellidomaterno () {
+	    return apellidomaterno;
+	    }
+	public void setApellidomaterno(String apellidomaterno) {
+		this.apellidomaterno = apellidomaterno;
 	}
-
-}			
+	public String getGenero () {
+	    return genero;
+	    }
+	public void setGenero(String genero) {
+		this.genero = genero;
+	}
+}		

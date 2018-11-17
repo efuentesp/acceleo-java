@@ -8,6 +8,7 @@ import java.util.function.Function;
 
 import io.jsonwebtoken.Claims;
 import io.jsonwebtoken.Clock;
+import io.jsonwebtoken.Jws;
 import io.jsonwebtoken.Jwts;
 import io.jsonwebtoken.SignatureAlgorithm;
 import io.jsonwebtoken.impl.DefaultClock;
@@ -18,6 +19,9 @@ import org.springframework.beans.factory.annotation.Value;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.stereotype.Component;
 
+import com.softtek.acceleo.demo.domain.Authority;
+import com.softtek.acceleo.demo.domain.User;
+
 @Component
 public class JwtTokenUtil implements Serializable {
 
@@ -25,6 +29,7 @@ public class JwtTokenUtil implements Serializable {
 	static final String CLAIM_KEY_USERNAME = "sub";
 	static final String CLAIM_KEY_CREATED = "iat";
 	private static final long serialVersionUID = -3301605591108950415L;
+	private final int CERO = 0;
 
 	private Clock clock = DefaultClock.INSTANCE;
 
@@ -47,6 +52,13 @@ public class JwtTokenUtil implements Serializable {
 
 	public Date getExpirationDateFromToken(String token) {
 		return getClaimFromToken(token, Claims::getExpiration);
+	}
+	
+	public String getRoleFromToken(String token) {
+		Claims claims = getAllClaimsFromToken(token);
+		Object role = claims.get("role");
+		
+		return role.toString();
 	}
 
 	public <T> T getClaimFromToken(String token, Function<Claims, T> claimsResolver) {
@@ -76,9 +88,26 @@ public class JwtTokenUtil implements Serializable {
 		return false;
 	}
 
-	public String generateToken(UserDetails userDetails) {
+	//public String generateToken(UserDetails userDetails) {
+	public String generateToken(User user) {
 		Map<String, Object> claims = new HashMap<>();
-		return doGenerateToken(claims, userDetails.getUsername());
+		
+		claims.put("username", user.getUserName());
+		claims.put("display_name", user.getFirstname() + " " + user.getLastname());
+		claims.put("email", user.getEmail());
+		claims.put("user_enabled", user.getEnabled());
+		
+		if( user.getAuthorities().isEmpty() ) {
+			logger.info("El user no tiene asociado roles (authority's)");
+		}else {
+			Authority authority = user.getAuthorities().get(CERO);
+
+			claims.put("role", authority.getName());
+			claims.put("role_enabled", authority.getEnabled());			
+		}	
+		
+		//return doGenerateToken(claims, userDetails.getUsername());
+		return doGenerateToken(claims, user.getUserName());
 	}
 
 	private String doGenerateToken(Map<String, Object> claims, String subject) {

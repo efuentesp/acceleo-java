@@ -1,64 +1,51 @@
-/**
- * Autor: PSG.
- * Proyecto:
- * Version: 0.1 
- * Clase para encapsular informacion de un Direccion.
- */
 package com.softtek.acceleo.demo.catalogo.bean;
 
 import java.util.Date;
+import java.util.UUID;
 
 public class DireccionBean {
+
 /**
  * Clase DireccionBean.
  * @author PSG.
  *
  */
-	private Integer direccionId;
+ 
+private UUID direccionId; 
+private String calle;
+private String cp;
+private String ciudad;
+private String estado;
 
-	private String estado;
-	private String cp;
-	private String ciudad;
-	private String calle;
-	private Integer candidatoId;
-
-	public Integer getDireccionId() {
-		return direccionId;
-	}
-	public void setDireccionId(Integer direccionId) {
+	public UUID getDireccionId () {
+	    return direccionId;  		
+    }
+	public void setDireccionId (UUID direccionId) {
 		this.direccionId = direccionId;
 	}
-	public String getEstado () {
-	    return estado;  		
-    }
-	public void setEstado(String estado) {
-		this.estado = estado;
-	}
-	public String getCp () {
-	    return cp;  		
-    }
-	public void setCp(String cp) {
-		this.cp = cp;
-	}
-	public String getCiudad () {
-	    return ciudad;  		
-    }
-	public void setCiudad(String ciudad) {
-		this.ciudad = ciudad;
-	}
-	public String getCalle () {
-	    return calle;  		
-    }
-	public void setCalle(String calle) {
-		this.calle = calle;
-	}
 
-	public Integer getCandidatoId () {
-	    return candidatoId;  		
+public String getCalle () {
+    return calle;
     }
-	public void setCandidatoId (Integer candidatoId) {
-		this.candidatoId = candidatoId;
-	}
-
-
+public void setCalle(String calle) {
+	this.calle = calle;
+}
+public String getCp () {
+    return cp;
+    }
+public void setCp(String cp) {
+	this.cp = cp;
+}
+public String getCiudad () {
+    return ciudad;
+    }
+public void setCiudad(String ciudad) {
+	this.ciudad = ciudad;
+}
+public String getEstado () {
+    return estado;
+    }
+public void setEstado(String estado) {
+	this.estado = estado;
+}
 }

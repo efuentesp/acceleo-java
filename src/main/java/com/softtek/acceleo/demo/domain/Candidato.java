@@ -2,148 +2,108 @@ package com.softtek.acceleo.demo.domain;
 
 import java.io.Serializable;
 import java.util.Date;
-import java.util.HashSet;
-import java.util.Set;
+import java.util.List;
+import java.util.UUID;
 
 import javax.persistence.*;
 import javax.validation.constraints.NotNull;
+import javax.validation.constraints.Size;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
+
+import org.hibernate.annotations.GenericGenerator;
+import org.hibernate.annotations.Parameter;
+
 
 @Entity
 @Table(name = "candidato")
 public class Candidato implements Serializable {
 
 	private static final long serialVersionUID = 1L;
-	
+
+
 	@Id
-	@GeneratedValue(strategy = GenerationType.AUTO)
-	@Column(name = "candidatoId")
-	private Integer  candidatoId;
+	@NotNull
+	@GeneratedValue(generator = "UUID")
+	@GenericGenerator(
+			          name = "UUID", 
+	                  strategy = "org.hibernate.id.UUIDGenerator", 
+	                  parameters = {
+	                		@Parameter( 
+	                				name = "uuid_gen_strategy_class", 
+	                				value = "org.hibernate.id.uuid.CustomVersionOneStrategy" 
+	                		) 
+					  } 
+					 )
+	@Column(name = "candidatoId", columnDefinition = "VARBINARY(50)")
+	private UUID candidatoId;
 
-
 	@NotNull
-	@Column(name = "fecha") 
-	private Date fecha;
-	@NotNull
-	@Column(name = "apellidomaterno") 
-	private String apellidomaterno;
-	@NotNull
-	@Column(name = "apellidopaterno") 
-	private String apellidopaterno;
-	@NotNull
-	@Column(name = "nombre") 
+	@Column(name = "nombre")
 	private String nombre;
-
-
+	
 	@NotNull
-	@Column(name = "generoId", nullable = false)
-	@Enumerated(EnumType.STRING)
-	private Genero generoId;
+	@Column(name = "apellidopaterno")
+	private String apellidopaterno;
+	
 	@NotNull
-	@Column(name = "estatuscandidatoId", nullable = false)
-	@Enumerated(EnumType.STRING)
-	private Estatuscandidato estatuscandidatoId;
+	@Column(name = "apellidomaterno")
+	private String apellidomaterno;
 	
-//	@ManyToMany(cascade = {CascadeType.ALL})
-//	@JoinTable(name="candidatosolicitud", joinColumns={@JoinColumn(name="candidatoId")}, inverseJoinColumns={@JoinColumn(name="solicitudId")})
-//	private Set<Solicitud> solicitudes=new HashSet<>();
+	@NotNull
+	@Column(name = "fecha")
+	@Temporal(TemporalType.TIMESTAMP)
+	private Date fecha;
+	
+	@NotNull
+	private String genero;
+	@NotNull
+	private String estatuscandidato;
+	@NotNull
+	@NotNull
 
-//	@OneToOne(mappedBy = "solicitud", cascade = CascadeType.ALL,fetch = FetchType.LAZY, optional = false)
-//	private Solicitud solicitud;
-	
-	//@OneToOne(cascade=CascadeType.ALL)
-	//@JoinColumn(name="direccionId")
-//	@OneToOne(mappedBy="candidato")
-//	@JoinColumn(name="direccionId")
-//	private Direccion direccion;
-	
-//	public Candidato() {} 
-//	
-//	public Candidato(Integer candidatoId, Date fecha, String apellidomaterno, String apellidopaterno, String nombre, Genero generoId, Estatuscandidato estatuscandidatoId, Set<Solicitud> solicitudes) {
-//		this.candidatoId = candidatoId;
-//		this.nombre = nombre;
-//		this.fecha = fecha;
-//		this.apellidomaterno = apellidomaterno;
-//		this.apellidopaterno = apellidopaterno;
-//		this.generoId = generoId;
-//		this.estatuscandidatoId = estatuscandidatoId;
-////		this.solicitudes = solicitudes;
-//	}
-	
-	public Integer getCandidatoId() {
+	public UUID getCandidatoId() {
 		return candidatoId;
 	}
 
-	public void setCandidatoId(Integer candidatoId) {
+	public void setCandidatoId(UUID candidatoId) {
 		this.candidatoId = candidatoId;
-	}
-
-	
-	public Date getFecha () {
-	    return fecha;  		
-    }
-	public void setFecha(Date fecha) {
-		this.fecha = fecha;
-	}
-	
-	public String getApellidomaterno () {
-	    return apellidomaterno;  		
-    }
-	public void setApellidomaterno(String apellidomaterno) {
-		this.apellidomaterno = apellidomaterno;
-	}
-	
-	public String getApellidopaterno () {
-	    return apellidopaterno;  		
-    }
-	public void setApellidopaterno(String apellidopaterno) {
-		this.apellidopaterno = apellidopaterno;
 	}
 	
 	public String getNombre () {
-	    return nombre;  		
-    }
+	    return nombre;
+	    }
 	public void setNombre(String nombre) {
 		this.nombre = nombre;
 	}
-	public Genero getGeneroId () {
-	    return generoId;  		
-    }
-	public void setGeneroId (Genero generoId) {
-		this.generoId = generoId;
+	public String getApellidopaterno () {
+	    return apellidopaterno;
+	    }
+	public void setApellidopaterno(String apellidopaterno) {
+		this.apellidopaterno = apellidopaterno;
 	}
-	public Estatuscandidato getEstatuscandidatoId () {
-	    return estatuscandidatoId;  		
-    }
-	public void setEstatuscandidatoId (Estatuscandidato estatuscandidatoId) {
-		this.estatuscandidatoId = estatuscandidatoId;
+	public String getApellidomaterno () {
+	    return apellidomaterno;
+	    }
+	public void setApellidomaterno(String apellidomaterno) {
+		this.apellidomaterno = apellidomaterno;
 	}
-
-//	public Direccion getDireccion() {
-//		return direccion;
-//	}
-//
-//	public void setDireccion(Direccion direccion) {
-//		this.direccion = direccion;
-//	}
-
-//	public Set<Solicitud> getSolicitudes() {
-//		return solicitudes;
-//	}
-//
-//	public void setSolicitudes(Set<Solicitud> solicitudes) {
-//		this.solicitudes = solicitudes;
-//	}
-
-//	public Solicitud getSolicitud() {
-//		return solicitud;
-//	}
-//
-//	public void setSolicitud(Solicitud solicitud) {
-//		this.solicitud = solicitud;
-//	}
-
-	
-	
-}			
+	public Date getFecha () {
+	    return fecha;
+	    }
+	public void setFecha(Date fecha) {
+		this.fecha = fecha;
+	}
+	public String getGenero () {
+	    return genero;
+	    }
+	public void setGenero(String genero) {
+		this.genero = genero;
+	}
+	public String getEstatuscandidato () {
+	    return estatuscandidato;
+	    }
+	public void setEstatuscandidato(String estatuscandidato) {
+		this.estatuscandidato = estatuscandidato;
+	}
+}		

@@ -2,7 +2,6 @@ package com.softtek.acceleo.demo.security;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.stream.Collectors;
 
 import org.apache.log4j.Logger;
 import org.springframework.security.core.GrantedAuthority;
@@ -14,14 +13,51 @@ import com.softtek.acceleo.demo.domain.User;
 
 public final class JwtUserFactory {
 	private static final Logger logger = Logger.getLogger(JwtUserFactory.class);
+	private static final int CERO = 0; 
 
 	private JwtUserFactory() {
 	}
 
 	public static JwtUser create(User user) {
+		InfoUser infoUser = new InfoUser();
+		infoUser.setUsername(user.getUserName());
+		infoUser.setDisplay_name(user.getFirstname() + " " + user.getLastname());
+		infoUser.setEmail(user.getEmail());
+		infoUser.setUser_enabled(user.getEnabled());
+		
+		List<Authority> lstAuthority =  user.getAuthorities();
+		Authority authority = lstAuthority.get(CERO);
+		
+		infoUser.setRole(authority.getName());
+		infoUser.setRole_enabled(authority.getEnabled());
+		
+		
 		return new JwtUser(user.getIdUser(), user.getUserName(), user.getFirstname(), user.getLastname(),
-				user.getEmail(), user.getPassword(), mapToGrantedAuthorities(user.getAuthorities()), user.getEnabled(),
-				user.getLastPasswordResetDate());
+				user.getEmail(), user.getPassword(), user.getEnabled(),
+				user.getLastPasswordResetDate(),
+				infoUser, 
+				mapToGrantedAuthorities(user.getAuthorities()),
+				mapToJwtPermissions(user.getAuthorities()));
+	}
+	
+	private static List<JwtPermission> mapToJwtPermissions(List<Authority> authorities){
+		List<JwtPermission> lstJwtPermissions = new ArrayList<>();
+		
+		for( Authority authority : authorities ) {
+			if( authority.getEnabled() ) {
+				for( Privilege privilege : authority.getPrivileges() ) {
+					JwtPermission jwtPermission = new JwtPermission();
+					
+					//jwtPermission.setId(privilege.getIdPrivilege());
+					jwtPermission.setCode(privilege.getName());
+					jwtPermission.setDescription(privilege.getName());
+					
+					lstJwtPermissions.add(jwtPermission);
+				}
+			}			
+		}
+		
+		return lstJwtPermissions;
 	}
 
 	private static List<GrantedAuthority> mapToGrantedAuthorities(List<Authority> authorities) {
@@ -39,9 +75,9 @@ public final class JwtUserFactory {
 			//Si al obtener el rol (Authority) no esta habilitado
 			//no se agregan los privilegios
 			if (authority.getEnabled())
-				for (Privilege privilege : authority.getPrivilege()) {
+				for (Privilege privilege : authority.getPrivileges()) {
 					listGrantedAuthority.add(new SimpleGrantedAuthority(prefijoRole + privilege.getName()));
-				//	logger.info("Name: " + prefijoRole + privilege.getName());
+					logger.info("Name: " + prefijoRole + privilege.getName());
 				}
 		}
 		logger.info("Finalizando convert AUTHORITY --> PRIVILEGE:");

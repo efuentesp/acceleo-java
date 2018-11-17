@@ -10,6 +10,7 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.UUID;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
@@ -49,26 +50,106 @@ public class CandidatoController {
 	private CandidatoService candidatoService;
 	
 	Candidato candidato = new Candidato();
-
-	/************************************** SEARCH
+	/************************************** CREATE  **************************************
+	 * Crea un nuevo candidato.
+	 * @param candidato.
+	 * @param ucBuilder.
+	 * @return ResponseEntity.
+	 */
+	 @RequestMapping(value = "/srp/candidato", method = RequestMethod.POST)
+	 @PreAuthorize("hasRole('ROLE_CANDIDATO:CREATE')")
+	 public ResponseEntity<Map<String, Object>> createCandidato(@RequestBody Candidato candidato,    UriComponentsBuilder ucBuilder) {
+	   try{
+	        candidatoService.addCandidato(candidato);
+	 
+	        HttpHeaders headers = new HttpHeaders();
+	        headers.setLocation(ucBuilder.path("/candidato/{id}").buildAndExpand(candidato.getCandidatoId()).toUri());
+	        
+		        	Candidato candidatoFound = candidatoService.getCandidato(candidato.getCandidatoId());
+	
+			Map<String, Object> candidatoMAP = new HashMap<>();
+			candidatoMAP.put("id", candidatoFound.getCandidatoId());
+			/*candidatoFound.setNombre(candidato.getNombre());*/
+			candidatoMAP.put("nombre", candidato.getNombre());
+			/*candidatoFound.setApellidopaterno(candidato.getApellidopaterno());*/
+			candidatoMAP.put("apellidopaterno", candidato.getApellidopaterno());
+			/*candidatoFound.setApellidomaterno(candidato.getApellidomaterno());*/
+			candidatoMAP.put("apellidomaterno", candidato.getApellidomaterno());
+			/*candidatoFound.setFecha(candidato.getFecha());*/
+			candidatoMAP.put("fecha", candidato.getFecha());
+			/*candidatoFound.setGenero(candidato.getGenero());*/
+			candidatoMAP.put("genero", candidato.getGenero());
+			/*candidatoFound.setEstatuscandidato(candidato.getEstatuscandidato());*/
+			candidatoMAP.put("estatuscandidato", candidato.getEstatuscandidato());
+			
+		        	return new ResponseEntity<Map<String, Object>>(candidatoMAP, headers, HttpStatus.CREATED);
+	   }catch(Exception e){
+		        	 HttpHeaders responseHeaders = new HttpHeaders();
+		        	 responseHeaders.set("Exception", "Exception: " + e);
+		        	 responseHeaders.set("Message", "Candidato no se puede agregar la informacion. " + e.getMessage());	  
+		             return new ResponseEntity<Map<String, Object>>(responseHeaders,HttpStatus.CONFLICT);		   	
+	   }
+	 }
+	/************************************** UPDATE **************************************
+	  * Actualiza la informacion de un candidato.
+	  * @param id.
+	  * @param candidato.
+	  * @return ResponseEntity.
+	  */
+	 @RequestMapping(value = "/srp/candidato/{id}", method = RequestMethod.PUT)
+		 	 @PreAuthorize("hasRole('ROLE_CANDIDATO:UPDATE')") 
+	    public ResponseEntity<Map<String, Object>> actualizarCandidato(
+				@PathVariable("id") String id, 
+				@RequestBody Candidato candidato) {
+	        
+	        UUID uuid = UUID.fromString(id);
+	        Candidato candidatoFound = candidatoService.getCandidato(uuid);
+	         
+	        if (candidatoFound==null) {
+	            return new ResponseEntity<Map<String, Object>>(HttpStatus.NOT_FOUND);
+	        }
+	
+		candidato.setCandidatoId(candidatoFound.getCandidatoId());
+		candidatoService.editCandidato(candidato);
+		
+		Map<String, Object> candidatoMAP = new HashMap<>();
+		candidatoMAP.put("id", candidatoFound.getCandidatoId());
+		/*candidatoFound.setNombre(candidato.getNombre());*/
+		candidatoMAP.put("nombre", candidato.getNombre());
+		/*candidatoFound.setApellidopaterno(candidato.getApellidopaterno());*/
+		candidatoMAP.put("apellidopaterno", candidato.getApellidopaterno());
+		/*candidatoFound.setApellidomaterno(candidato.getApellidomaterno());*/
+		candidatoMAP.put("apellidomaterno", candidato.getApellidomaterno());
+		/*candidatoFound.setFecha(candidato.getFecha());*/
+		candidatoMAP.put("fecha", candidato.getFecha());
+		/*candidatoFound.setGenero(candidato.getGenero());*/
+		candidatoMAP.put("genero", candidato.getGenero());
+		/*candidatoFound.setEstatuscandidato(candidato.getEstatuscandidato());*/
+		candidatoMAP.put("estatuscandidato", candidato.getEstatuscandidato());
+		
+		HttpHeaders headers = new HttpHeaders();
+	    return new ResponseEntity<Map<String, Object>>(candidatoMAP, headers, HttpStatus.OK);
+	  } 
+	/************************************** SEARCH **************************************
 	 * Obtiene informacion de los candidatos.
 	 * @param requestParams.
 	 * @param request.
 	 * @param response.
 	 * @return List<Candidato>.
 	 */
-	@RequestMapping(value = "/candidato", method = RequestMethod.GET, produces = "application/json")
-	@PreAuthorize("hasRole('CANDIDATOSEARCH')")
-	public @ResponseBody  List<Candidato> getCandidatos(@RequestParam Map<String,String> requestParams, HttpServletRequest request, HttpServletResponse response) {
-
-       	String query=requestParams.get("q");
+	 
+	@RequestMapping(value = "/srp/candidato", method = RequestMethod.GET, produces = "application/json")
+	@PreAuthorize("hasRole('ROLE_CANDIDATO:READ')")
+	public @ResponseBody  List<Map<String, Object>> getCandidatos(@RequestParam Map<String,String> requestParams, HttpServletRequest request, HttpServletResponse response) {
+		
+		       	String query=requestParams.get("q");
 		int _page= requestParams.get("_page")==null?0:new Integer(requestParams.get("_page")).intValue();
 		long rows = 0;
-
+		
 		List<Candidato> listCandidato = null;
-
+		
 		if (query==null && _page == 0) {
-       		listCandidato = candidatoService.listCandidatos(candidato);
+		       		listCandidato = candidatoService.listCandidatos(candidato);
 			rows = candidatoService.getTotalRows();
 		} else if (query!= null){
 			listCandidato = candidatoService.listCandidatosQuery(candidato, query, _page, 10);
@@ -77,243 +158,63 @@ public class CandidatoController {
 			listCandidato = candidatoService.listCandidatosPagination(candidato, _page, 10);
 			rows = candidatoService.getTotalRows();
 		}
-
+		
+		List<Map<String, Object>> listCandidatoMAP = new ArrayList<>();
+		for( Candidato candidato : listCandidato ){
+			Map<String, Object> candidatoMAP = new HashMap<>();
+			candidatoMAP.put("id", candidato.getCandidatoId());
+			/*candidatoFound.setNombre(candidato.getNombre());*/
+			candidatoMAP.put("nombre", candidato.getNombre());
+			/*candidatoFound.setApellidopaterno(candidato.getApellidopaterno());*/
+			candidatoMAP.put("apellidopaterno", candidato.getApellidopaterno());
+			/*candidatoFound.setApellidomaterno(candidato.getApellidomaterno());*/
+			candidatoMAP.put("apellidomaterno", candidato.getApellidomaterno());
+			/*candidatoFound.setFecha(candidato.getFecha());*/
+			candidatoMAP.put("fecha", candidato.getFecha());
+			/*candidatoFound.setGenero(candidato.getGenero());*/
+			candidatoMAP.put("genero", candidato.getGenero());
+			/*candidatoFound.setEstatuscandidato(candidato.getEstatuscandidato());*/
+			candidatoMAP.put("estatuscandidato", candidato.getEstatuscandidato());
+			
+			listCandidatoMAP.add(candidatoMAP);
+		}
+		
 		response.setHeader("Access-Control-Expose-Headers", "x-total-count");
 		response.setHeader("x-total-count", String.valueOf(rows).toString());	
-
-		return listCandidato;
+		
+		return listCandidatoMAP;
 	}
-
-	/************************************* SEARCH
+		
+	/************************************** SEARCH **************************************
 	 * Obtiene informacion de un candidato.
 	 * @param id.
 	 * @return Candidato.
 	 */
-	@RequestMapping(value = "/idcandidato/{id}", method = RequestMethod.GET, produces = "application/json")
-	@PreAuthorize("hasRole('CANDIDATOSEARCH')")
-	    public @ResponseBody  Candidato getCandidato(@PathVariable("id") int id) {	        
+	@RequestMapping(value = "/srp/candidato/{id}", method = RequestMethod.GET, produces = "application/json")
+	@PreAuthorize("hasRole('ROLE_CANDIDATO:READ')")
+	public @ResponseBody  Map<String, Object> getCandidato(@PathVariable("id") String id) {	        
 	        Candidato candidato = null;
 	        
-	        candidato = candidatoService.getCandidato(id);
-			return candidato;
-	 }
-
-	/*************************** CREATE
-	 * Crea un nuevo candidato.
-	 * @param candidato.
-	 * @param ucBuilder.
-	 * @return ResponseEntity.
-	 */
-	 @RequestMapping(value = "/candidato", method = RequestMethod.POST)
-	 @PreAuthorize("hasRole('CANDIDATOCREATE')")
-	    public ResponseEntity<Void> createCandidato(@RequestBody Candidato candidato,    UriComponentsBuilder ucBuilder) {
-	   
-	        candidatoService.addCandidato(candidato);
-	 
-	        HttpHeaders headers = new HttpHeaders();
-	        headers.setLocation(ucBuilder.path("/candidato/{id}").buildAndExpand(candidato.getCandidatoId()).toUri());
-	        return new ResponseEntity<Void>(headers, HttpStatus.CREATED);
-	 }
-		
-	 /****************************************** UPDATE
-	  * Actualiza la informacion de un candidato.
-	  * @param id.
-	  * @param candidato.
-	  * @return ResponseEntity.
-	  */
-	 @RequestMapping(value = "/candidato/{id}", method = RequestMethod.PUT)
- 	 @PreAuthorize("hasRole('CANDIDATOUPDATE')") 
-	    public ResponseEntity<Candidato> actualizarCandidato(
-				@PathVariable("id") int id, 
-				@RequestBody Candidato candidato) {
+	        UUID uuid = UUID.fromString(id);
+	        candidato = candidatoService.getCandidato(uuid);
 	        
-	        Candidato candidatoFound = candidatoService.getCandidato(id);
-	         
-	        if (candidatoFound==null) {
-	            System.out.println("User with id " + id + " not found");
-	            return new ResponseEntity<Candidato>(HttpStatus.NOT_FOUND);
-	        }
+			Map<String, Object> candidatoMAP = new HashMap<>();
+			candidatoMAP.put("id", candidato.getCandidatoId());
+			/*candidatoFound.setNombre(candidato.getNombre());*/
+			candidatoMAP.put("nombre", candidato.getNombre());
+			/*candidatoFound.setApellidopaterno(candidato.getApellidopaterno());*/
+			candidatoMAP.put("apellidopaterno", candidato.getApellidopaterno());
+			/*candidatoFound.setApellidomaterno(candidato.getApellidomaterno());*/
+			candidatoMAP.put("apellidomaterno", candidato.getApellidomaterno());
+			/*candidatoFound.setFecha(candidato.getFecha());*/
+			candidatoMAP.put("fecha", candidato.getFecha());
+			/*candidatoFound.setGenero(candidato.getGenero());*/
+			candidatoMAP.put("genero", candidato.getGenero());
+			/*candidatoFound.setEstatuscandidato(candidato.getEstatuscandidato());*/
+			candidatoMAP.put("estatuscandidato", candidato.getEstatuscandidato());
+	        
+	        
+			return candidatoMAP;
+	 }
 	
-	candidatoFound.setFecha(candidato.getFecha());
-	candidatoFound.setApellidomaterno(candidato.getApellidomaterno());
-	candidatoFound.setApellidopaterno(candidato.getApellidopaterno());
-	candidatoFound.setNombre(candidato.getNombre());
-	candidatoFound.setGeneroId(candidato.getGeneroId());
-	candidatoFound.setEstatuscandidatoId(candidato.getEstatuscandidatoId());
-	candidatoFound.setCandidatoId(candidato.getCandidatoId());
-
-		    candidatoService.editCandidato(candidatoFound);
-	        return new ResponseEntity<Candidato>(candidatoFound, HttpStatus.OK);
-	  } 	
-	
-		/********************************** DELETE
-		 * Elimina un candidato.
-		 * @param id.
-		 * @return ResponseEntity<Candidato>.
-		 */
-		@RequestMapping(value = "/candidato/{id}", method = RequestMethod.DELETE)
-		@PreAuthorize("hasRole('CANDIDATODELETE')")  
-	    public ResponseEntity<Candidato> deleteCandidato(@PathVariable("id") int id) {
-			  
-			//try{
-	    	 
-	         Candidato candidato = candidatoService.getCandidato(id);
-	         if (candidato == null) {
-	             return new ResponseEntity<Candidato>(HttpStatus.NOT_FOUND);
-	         }
-	  
-           	 try{
-	             candidatoService.deleteCandidato(candidato);
-	             return new ResponseEntity<Candidato>(HttpStatus.OK);
-	         }catch (Exception e) {
-	        	 HttpHeaders responseHeaders = new HttpHeaders();
-	        	 responseHeaders.set("Exception", "Exception: "+e);
-	        	 responseHeaders.set("Message", "Candidato no se puede eliminar debido a que esta asociado con otra entidad.");	  
-	             return new ResponseEntity<Candidato>(responseHeaders,HttpStatus.INTERNAL_SERVER_ERROR);
-			}
-
-           	//} catch(GenericException e) {
-            //	 return new ResponseEntity<Candidato>(HttpStatus.PRECONDITION_FAILED);
-            //}
-		}
-
-	/**
-	 * Salva informacion de un candidato.
-	 * @param afiliadoBean.
-	 * @return String.
-	 */
-	@RequestMapping(value = "/saveCandidato", method = RequestMethod.POST)
-	@PreAuthorize("hasRole('CANDIDATO')")  
-	public @ResponseBody String saveCandidato(
-			@ModelAttribute("command") CandidatoBean candidatoBean) {
-
-		Candidato candidato = prepareModel(candidatoBean);
-		candidatoService.addCandidato(candidato);
-
-		return "SUCCESS";
-	}
-	
-	/**
-	 * Edita informacion de un candidato.
-	 * @param candidatoBean.
-	 * @return String.
-	 */
-	@RequestMapping(value = "/editCandidato", method = RequestMethod.POST)
-	@PreAuthorize("hasRole('CANDIDATO')")  
-	public @ResponseBody String editCandidato(
-			@ModelAttribute("command") CandidatoBean candidatoBean) {
-
-
-		Candidato candidato = prepareModel(candidatoBean);
-		candidatoService.editCandidato(candidato);
-		return "SUCCESS";
-	}
-
-	/**
-	 * Agrega un CANDIDATO.
-	 * @param CANDIDATOBean.
-	 * @param result.
-	 * @return ModelAndView.
-	 */
-	@RequestMapping(value = "/searchCandidato", method = RequestMethod.GET)
-	@PreAuthorize("hasRole('CANDIDATO')")  
-	public ModelAndView addCandidato(
-			@ModelAttribute("command") CandidatoBean candidatoBean,
-			BindingResult result) {
-
-		Map<String, Object> model = new HashMap<String, Object>();
-		Candidato candidato = null;
-		if (candidatoBean != null)
-			candidato = prepareModel(candidatoBean);
-		model.put("candidatos",
-				prepareListofBean(candidatoService.listCandidatos(candidato)));
-		return new ModelAndView("searchCandidato", model);
-	}
-
-	/**
-	 * Elimina un candidato.
-	 * @param candidatoBean.
-	 * @param result.
-	 * @return ModelAndView.
-	 */
-	@RequestMapping(value = "/deleteCandidato", method = RequestMethod.POST)
-	@PreAuthorize("hasRole('CANDIDATO')")  
-	public ModelAndView deleteCandidato(
-			@ModelAttribute("command") CandidatoBean candidatoBean,
-			BindingResult result) {
-		System.out.println("delete " + candidatoBean.getCandidatoId());
-		candidatoService.deleteCandidato(prepareModel(candidatoBean));
-		Map<String, Object> model = new HashMap<String, Object>();
-		model.put("candidato", null);
-		model.put("candidatos",
-				prepareListofBean(candidatoService.listCandidatos(null)));
-		return new ModelAndView("searchCandidato", model);
-	}
-
-	/**
-	 * 
-	 * @return ModelAndView.
-	 */
-	@RequestMapping(value = "/entryCandidato", method = RequestMethod.GET)
-	@PreAuthorize("hasRole('CANDIDATO')")  
-	public ModelAndView entryCandidato() {
-		return new ModelAndView("redirect:/searchCandidato");
-	}
-
-	private Candidato prepareModel(CandidatoBean candidatoBean) {
-		Candidato candidato = new Candidato();
-
-		//candidato.setHDateId(candidatoBean.getFechaId());
-		//candidato.setRadiogeneroId(candidatoBean.getEsId());
-		//candidato.setRadioestatuscandidatoId(candidatoBean.getEstadoId());
-		//candidato.setSolicitudId(candidatoBean.getSolicitudId());
-		//candidato.setEventoId(candidatoBean.getEventoId());
-		//candidato.setDisplayresultcandidatoId(candidatoBean.getCandidatoId());
-		//candidato.setExposedfiltercandidatoId(candidatoBean.getCandidatoId());
-		//candidato.setDisplaymodalcandidatoId(candidatoBean.getCandidatoId());
-		//candidato.setEntitynamecandidatoId(candidatoBean.getCandidatoId());
-		//candidato.setScaffoldcandidatoId(candidatoBean.getCandidatoId());
-		candidato.setNombre(candidatoBean.getNombre());
-		candidato.setApellidopaterno(candidatoBean.getApellidopaterno());
-		candidato.setApellidomaterno(candidatoBean.getApellidomaterno());
-		candidato.setCandidatoId(candidatoBean.getCandidatoId());
-		candidatoBean.setCandidatoId(null);
-
-		return candidato;
-	}
-
-	/**
-	 * Convierte un objeto de tipo CandidatoBean a un objeto de tipo Candidato.
-	 * @param candidatoBean.
-	 * @return Candidato.
-	 */
-	private List<CandidatoBean> prepareListofBean(List<Candidato> candidatos) {
-		List<CandidatoBean> beans = null;
-		if (candidatos != null && !candidatos.isEmpty()) {
-			beans = new ArrayList<CandidatoBean>();
-			CandidatoBean bean = null;
-			for (Candidato candidato : candidatos) {
-				bean = new CandidatoBean();
-
-				//bean.setRadiogeneroId(candidato.getEsId());
-				//bean.setRadioestatuscandidatoId(candidato.getEstadoId());
-				//bean.setSolicitudId(candidato.getSolicitudId());
-				//bean.setEventoId(candidato.getEventoId());
-				//bean.setDisplayresultcandidatoId(candidato.getCandidatoId());
-				//bean.setExposedfiltercandidatoId(candidato.getCandidatoId());
-				//bean.setDisplaymodalcandidatoId(candidato.getCandidatoId());
-				//bean.setEntitynamecandidatoId(candidato.getCandidatoId());
-				//bean.setScaffoldcandidatoId(candidato.getCandidatoId());
-				bean.setNombre(candidato.getNombre());
-				bean.setApellidopaterno(candidato.getApellidopaterno());
-				bean.setApellidomaterno(candidato.getApellidomaterno());
-				bean.setCandidatoId(candidato.getCandidatoId());
-				beans.add(bean);
-			}
-		}
-		return beans;
-	}
-
 }
-
-

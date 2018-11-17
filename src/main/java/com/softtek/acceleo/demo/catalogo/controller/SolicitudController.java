@@ -10,6 +10,7 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.UUID;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
@@ -49,26 +50,166 @@ public class SolicitudController {
 	private SolicitudService solicitudService;
 	
 	Solicitud solicitud = new Solicitud();
-
-	/************************************** SEARCH
+	/************************************** CREATE  **************************************
+	 * Crea un nuevo solicitud.
+	 * @param solicitud.
+	 * @param ucBuilder.
+	 * @return ResponseEntity.
+	 */
+	 @RequestMapping(value = "/srp/solicitud", method = RequestMethod.POST)
+	 @PreAuthorize("hasRole('ROLE_SOLICITUD:CREATE')")
+	 public ResponseEntity<Map<String, Object>> createSolicitud(@RequestBody Solicitud solicitud,    UriComponentsBuilder ucBuilder) {
+	   try{
+	        solicitudService.addSolicitud(solicitud);
+	 
+	        HttpHeaders headers = new HttpHeaders();
+	        headers.setLocation(ucBuilder.path("/solicitud/{id}").buildAndExpand(solicitud.getSolicitudId()).toUri());
+	        
+		        	Solicitud solicitudFound = solicitudService.getSolicitud(solicitud.getSolicitudId());
+	
+			Map<String, Object> solicitudMAP = new HashMap<>();
+			solicitudMAP.put("id", solicitudFound.getSolicitudId());
+			/*solicitudFound.setPosicionId(solicitud.getPosicionId());*/
+			solicitudMAP.put("posicionId", solicitud.getPosicionId());
+			/*solicitudFound.setCandidatoId(solicitud.getCandidatoId());*/
+			solicitudMAP.put("candidatoId", solicitud.getCandidatoId());
+			/*solicitudFound.setFecha(solicitud.getFecha());*/
+			solicitudMAP.put("fecha", solicitud.getFecha());
+			/*solicitudFound.setSalario(solicitud.getSalario());*/
+			solicitudMAP.put("salario", solicitud.getSalario());
+			/*solicitudFound.setCorreo(solicitud.getCorreo());*/
+			solicitudMAP.put("correo", solicitud.getCorreo());
+			/*solicitudFound.setTelefono(solicitud.getTelefono());*/
+			solicitudMAP.put("telefono", solicitud.getTelefono());
+			/*solicitudFound.setDireccionId(solicitud.getDireccionId());*/
+			solicitudMAP.put("direccionId", solicitud.getDireccionId());
+			/*solicitudFound.setTrayectoria(solicitud.getTrayectoria());*/
+			solicitudMAP.put("trayectoria", solicitud.getTrayectoria());
+			/*solicitudFound.setEstatussolicitud(solicitud.getEstatussolicitud());*/
+			solicitudMAP.put("estatussolicitud", solicitud.getEstatussolicitud());
+			
+		        	return new ResponseEntity<Map<String, Object>>(solicitudMAP, headers, HttpStatus.CREATED);
+	   }catch(Exception e){
+		        	 HttpHeaders responseHeaders = new HttpHeaders();
+		        	 responseHeaders.set("Exception", "Exception: " + e);
+		        	 responseHeaders.set("Message", "Solicitud no se puede agregar la informacion. " + e.getMessage());	  
+		             return new ResponseEntity<Map<String, Object>>(responseHeaders,HttpStatus.CONFLICT);		   	
+	   }
+	 }
+	/************************************** UPDATE **************************************
+	  * Actualiza la informacion de un solicitud.
+	  * @param id.
+	  * @param solicitud.
+	  * @return ResponseEntity.
+	  */
+	 @RequestMapping(value = "/srp/solicitud/{id}", method = RequestMethod.PUT)
+		 	 @PreAuthorize("hasRole('ROLE_SOLICITUD:UPDATE')") 
+	    public ResponseEntity<Map<String, Object>> actualizarSolicitud(
+				@PathVariable("id") String id, 
+				@RequestBody Solicitud solicitud) {
+	        
+	        UUID uuid = UUID.fromString(id);
+	        Solicitud solicitudFound = solicitudService.getSolicitud(uuid);
+	         
+	        if (solicitudFound==null) {
+	            return new ResponseEntity<Map<String, Object>>(HttpStatus.NOT_FOUND);
+	        }
+	
+		solicitud.setSolicitudId(solicitudFound.getSolicitudId());
+		solicitudService.editSolicitud(solicitud);
+		
+		Map<String, Object> solicitudMAP = new HashMap<>();
+		solicitudMAP.put("id", solicitudFound.getSolicitudId());
+		/*solicitudFound.setPosicionId(solicitud.getPosicionId());*/
+		solicitudMAP.put("posicionId", solicitud.getPosicionId());
+		/*solicitudFound.setCandidatoId(solicitud.getCandidatoId());*/
+		solicitudMAP.put("candidatoId", solicitud.getCandidatoId());
+		/*solicitudFound.setFecha(solicitud.getFecha());*/
+		solicitudMAP.put("fecha", solicitud.getFecha());
+		/*solicitudFound.setSalario(solicitud.getSalario());*/
+		solicitudMAP.put("salario", solicitud.getSalario());
+		/*solicitudFound.setCorreo(solicitud.getCorreo());*/
+		solicitudMAP.put("correo", solicitud.getCorreo());
+		/*solicitudFound.setTelefono(solicitud.getTelefono());*/
+		solicitudMAP.put("telefono", solicitud.getTelefono());
+		/*solicitudFound.setDireccionId(solicitud.getDireccionId());*/
+		solicitudMAP.put("direccionId", solicitud.getDireccionId());
+		/*solicitudFound.setTrayectoria(solicitud.getTrayectoria());*/
+		solicitudMAP.put("trayectoria", solicitud.getTrayectoria());
+		/*solicitudFound.setEstatussolicitud(solicitud.getEstatussolicitud());*/
+		solicitudMAP.put("estatussolicitud", solicitud.getEstatussolicitud());
+		
+		HttpHeaders headers = new HttpHeaders();
+	    return new ResponseEntity<Map<String, Object>>(solicitudMAP, headers, HttpStatus.OK);
+	  } 
+	/************************************** DELETE **************************************
+	 * Elimina un solicitud.
+	 * @param id.
+	 * @return ResponseEntity<Solicitud>.
+	 */
+	@RequestMapping(value = "/srp/solicitud/{id}", method = RequestMethod.DELETE)
+	@PreAuthorize("hasRole('ROLE_SOLICITUD:DELETE')")  
+		    public ResponseEntity<Map<String, Object>> deleteSolicitud(@PathVariable("id") String id) {
+		  
+		    	 UUID uuid = UUID.fromString(id);
+		         Solicitud solicitud = solicitudService.getSolicitud(uuid);
+		         if (solicitud == null) {
+		             return new ResponseEntity<Map<String, Object>>(HttpStatus.NOT_FOUND);
+		         }
+		  
+	           	 try{
+		             solicitudService.deleteSolicitud(solicitud);
+		             
+			 Map<String, Object> solicitudMAP = new HashMap<>();
+			 solicitudMAP.put("id", solicitud.getSolicitudId());
+	/*solicitudFound.setPosicionId(solicitud.getPosicionId());*/
+	solicitudMAP.put("posicionId", solicitud.getPosicionId());
+	/*solicitudFound.setCandidatoId(solicitud.getCandidatoId());*/
+	solicitudMAP.put("candidatoId", solicitud.getCandidatoId());
+	/*solicitudFound.setFecha(solicitud.getFecha());*/
+	solicitudMAP.put("fecha", solicitud.getFecha());
+	/*solicitudFound.setSalario(solicitud.getSalario());*/
+	solicitudMAP.put("salario", solicitud.getSalario());
+	/*solicitudFound.setCorreo(solicitud.getCorreo());*/
+	solicitudMAP.put("correo", solicitud.getCorreo());
+	/*solicitudFound.setTelefono(solicitud.getTelefono());*/
+	solicitudMAP.put("telefono", solicitud.getTelefono());
+	/*solicitudFound.setDireccionId(solicitud.getDireccionId());*/
+	solicitudMAP.put("direccionId", solicitud.getDireccionId());
+	/*solicitudFound.setTrayectoria(solicitud.getTrayectoria());*/
+	solicitudMAP.put("trayectoria", solicitud.getTrayectoria());
+	/*solicitudFound.setEstatussolicitud(solicitud.getEstatussolicitud());*/
+	solicitudMAP.put("estatussolicitud", solicitud.getEstatussolicitud());
+		             
+		             HttpHeaders headers = new HttpHeaders();
+		             return new ResponseEntity<Map<String, Object>>(solicitudMAP, headers, HttpStatus.OK);
+		         }catch (Exception e) {
+		        	 HttpHeaders responseHeaders = new HttpHeaders();
+		        	 responseHeaders.set("Exception", "Exception: "+e);
+		        	 responseHeaders.set("Message", "Solicitud no se puede eliminar debido a que esta asociado con otra entidad.");	  
+		             return new ResponseEntity<Map<String, Object>>(responseHeaders,HttpStatus.INTERNAL_SERVER_ERROR);
+		}
+	}
+	/************************************** SEARCH **************************************
 	 * Obtiene informacion de los solicituds.
 	 * @param requestParams.
 	 * @param request.
 	 * @param response.
 	 * @return List<Solicitud>.
 	 */
-	@RequestMapping(value = "/solicitud", method = RequestMethod.GET, produces = "application/json")
-	@PreAuthorize("hasRole('SOLICITUDSEARCH')")
-	public @ResponseBody  List<Solicitud> getSolicituds(@RequestParam Map<String,String> requestParams, HttpServletRequest request, HttpServletResponse response) {
-
-       	String query=requestParams.get("q");
+	 
+	@RequestMapping(value = "/srp/solicitud", method = RequestMethod.GET, produces = "application/json")
+	@PreAuthorize("hasRole('ROLE_SOLICITUD:READ')")
+	public @ResponseBody  List<Map<String, Object>> getSolicituds(@RequestParam Map<String,String> requestParams, HttpServletRequest request, HttpServletResponse response) {
+		
+		       	String query=requestParams.get("q");
 		int _page= requestParams.get("_page")==null?0:new Integer(requestParams.get("_page")).intValue();
 		long rows = 0;
-
+		
 		List<Solicitud> listSolicitud = null;
-
+		
 		if (query==null && _page == 0) {
-       		listSolicitud = solicitudService.listSolicituds(solicitud);
+		       		listSolicitud = solicitudService.listSolicituds(solicitud);
 			rows = solicitudService.getTotalRows();
 		} else if (query!= null){
 			listSolicitud = solicitudService.listSolicitudsQuery(solicitud, query, _page, 10);
@@ -77,309 +218,75 @@ public class SolicitudController {
 			listSolicitud = solicitudService.listSolicitudsPagination(solicitud, _page, 10);
 			rows = solicitudService.getTotalRows();
 		}
-
+		
+		List<Map<String, Object>> listSolicitudMAP = new ArrayList<>();
+		for( Solicitud solicitud : listSolicitud ){
+			Map<String, Object> solicitudMAP = new HashMap<>();
+			solicitudMAP.put("id", solicitud.getSolicitudId());
+			/*solicitudFound.setPosicionId(solicitud.getPosicionId());*/
+			solicitudMAP.put("posicionId", solicitud.getPosicionId());
+			/*solicitudFound.setCandidatoId(solicitud.getCandidatoId());*/
+			solicitudMAP.put("candidatoId", solicitud.getCandidatoId());
+			/*solicitudFound.setFecha(solicitud.getFecha());*/
+			solicitudMAP.put("fecha", solicitud.getFecha());
+			/*solicitudFound.setSalario(solicitud.getSalario());*/
+			solicitudMAP.put("salario", solicitud.getSalario());
+			/*solicitudFound.setCorreo(solicitud.getCorreo());*/
+			solicitudMAP.put("correo", solicitud.getCorreo());
+			/*solicitudFound.setTelefono(solicitud.getTelefono());*/
+			solicitudMAP.put("telefono", solicitud.getTelefono());
+			/*solicitudFound.setDireccionId(solicitud.getDireccionId());*/
+			solicitudMAP.put("direccionId", solicitud.getDireccionId());
+			/*solicitudFound.setTrayectoria(solicitud.getTrayectoria());*/
+			solicitudMAP.put("trayectoria", solicitud.getTrayectoria());
+			/*solicitudFound.setEstatussolicitud(solicitud.getEstatussolicitud());*/
+			solicitudMAP.put("estatussolicitud", solicitud.getEstatussolicitud());
+			
+			listSolicitudMAP.add(solicitudMAP);
+		}
+		
 		response.setHeader("Access-Control-Expose-Headers", "x-total-count");
 		response.setHeader("x-total-count", String.valueOf(rows).toString());	
-
-		return listSolicitud;
+		
+		return listSolicitudMAP;
 	}
-	
-	/************************************** SEARCH
-	 * Obtiene informacion de los solicitudes por candidato.
-	 * @param requestParams.
-	 * @param request.
-	 * @param response.
-	 * @return List<Solicitud>.
-	 */
-	@RequestMapping(value = "/solicitud/candidato/{id}", method = RequestMethod.GET, produces = "application/json")
-	@PreAuthorize("hasRole('SOLICITUDSEARCH')")
-	public @ResponseBody  List<Solicitud> getAllSolicitudByCandidato(@RequestParam Map<String,String> requestParams, HttpServletRequest request, HttpServletResponse response, @PathVariable("id") int candidatoId) {
-
-       	String query=requestParams.get("q");
-		int _page= requestParams.get("_page")==null?0:new Integer(requestParams.get("_page")).intValue();
-		long rows = 0;
-
-		List<Solicitud> listSolicitud = null;
-
-		if (query==null && _page == 0) {
-       		listSolicitud = solicitudService.listSolicitudsByCandidato(solicitud, candidatoId);
-			rows = solicitudService.getTotalRows();
-		} else if (query!= null){
-			listSolicitud = solicitudService.listSolicitudsQuery(solicitud, query, _page, 10);
-			rows = solicitudService.getTotalRowsSearch(query);
-		} else if (_page != 0){
-			listSolicitud = solicitudService.listSolicitudsPagination(solicitud, _page, 10);
-			rows = solicitudService.getTotalRows();
-		}
-
-		response.setHeader("Access-Control-Expose-Headers", "x-total-count");
-		response.setHeader("x-total-count", String.valueOf(rows).toString());	
-
-		return listSolicitud;
-	}
-	
-	/************************************** SEARCH
-	 * Obtiene informacion de los solicitudes por posicion.
-	 * @param requestParams.
-	 * @param request.
-	 * @param response.
-	 * @return List<Solicitud>.
-	 */
-	@RequestMapping(value = "/solicitud/posicion/{id}", method = RequestMethod.GET, produces = "application/json")
-	@PreAuthorize("hasRole('SOLICITUDSEARCH')")
-	public @ResponseBody  List<Solicitud> getAllSolicitudByPosicion(@RequestParam Map<String,String> requestParams, HttpServletRequest request, HttpServletResponse response, @PathVariable("id") int posicionId) {
-
-       	String query=requestParams.get("q");
-		int _page= requestParams.get("_page")==null?0:new Integer(requestParams.get("_page")).intValue();
-		long rows = 0;
-
-		List<Solicitud> listSolicitud = null;
-
-		if (query==null && _page == 0) {
-       		listSolicitud = solicitudService.listSolicitudsByPosicion(solicitud, posicionId);
-			rows = solicitudService.getTotalRows();
-		} else if (query!= null){
-			listSolicitud = solicitudService.listSolicitudsQuery(solicitud, query, _page, 10);
-			rows = solicitudService.getTotalRowsSearch(query);
-		} else if (_page != 0){
-			listSolicitud = solicitudService.listSolicitudsPagination(solicitud, _page, 10);
-			rows = solicitudService.getTotalRows();
-		}
-
-		response.setHeader("Access-Control-Expose-Headers", "x-total-count");
-		response.setHeader("x-total-count", String.valueOf(rows).toString());	
-
-		return listSolicitud;
-	}	
-
-	/************************************* SEARCH
+		
+	/************************************** SEARCH **************************************
 	 * Obtiene informacion de un solicitud.
 	 * @param id.
 	 * @return Solicitud.
 	 */
-	@RequestMapping(value = "/idsolicitud/{id}", method = RequestMethod.GET, produces = "application/json")
-	@PreAuthorize("hasRole('SOLICITUDSEARCH')")
-	    public @ResponseBody  Solicitud getSolicitud(@PathVariable("id") int id) {	        
+	@RequestMapping(value = "/srp/solicitud/{id}", method = RequestMethod.GET, produces = "application/json")
+	@PreAuthorize("hasRole('ROLE_SOLICITUD:READ')")
+	public @ResponseBody  Map<String, Object> getSolicitud(@PathVariable("id") String id) {	        
 	        Solicitud solicitud = null;
 	        
-	        solicitud = solicitudService.getSolicitud(id);
-			return solicitud;
-	 }
-
-	/*************************** CREATE
-	 * Crea un nuevo solicitud.
-	 * @param solicitud.
-	 * @param ucBuilder.
-	 * @return ResponseEntity.
-	 */
-	 @RequestMapping(value = "/solicitud", method = RequestMethod.POST)
-	 @PreAuthorize("hasRole('SOLICITUDCREATE')")
-	    public ResponseEntity<Void> createSolicitud(@RequestBody Solicitud solicitud,    UriComponentsBuilder ucBuilder) {
-	   
-	        solicitudService.addSolicitud(solicitud);
-	 
-	        HttpHeaders headers = new HttpHeaders();
-	        headers.setLocation(ucBuilder.path("/solicitud/{id}").buildAndExpand(solicitud.getSolicitudId()).toUri());
-	        return new ResponseEntity<Void>(headers, HttpStatus.CREATED);
-	 }
-		
-	 /****************************************** UPDATE
-	  * Actualiza la informacion de un solicitud.
-	  * @param id.
-	  * @param solicitud.
-	  * @return ResponseEntity.
-	  */
-	 @RequestMapping(value = "/solicitud/{id}", method = RequestMethod.PUT)
- 	 @PreAuthorize("hasRole('SOLICITUDUPDATE')") 
-	    public ResponseEntity<Solicitud> actualizarSolicitud(
-				@PathVariable("id") int id, 
-				@RequestBody Solicitud solicitud) {
+	        UUID uuid = UUID.fromString(id);
+	        solicitud = solicitudService.getSolicitud(uuid);
 	        
-	        Solicitud solicitudFound = solicitudService.getSolicitud(id);
-	         
-	        if (solicitudFound==null) {
-	            System.out.println("User with id " + id + " not found");
-	            return new ResponseEntity<Solicitud>(HttpStatus.NOT_FOUND);
-	        }
+			Map<String, Object> solicitudMAP = new HashMap<>();
+			solicitudMAP.put("id", solicitud.getSolicitudId());
+			/*solicitudFound.setPosicionId(solicitud.getPosicionId());*/
+			solicitudMAP.put("posicionId", solicitud.getPosicionId());
+			/*solicitudFound.setCandidatoId(solicitud.getCandidatoId());*/
+			solicitudMAP.put("candidatoId", solicitud.getCandidatoId());
+			/*solicitudFound.setFecha(solicitud.getFecha());*/
+			solicitudMAP.put("fecha", solicitud.getFecha());
+			/*solicitudFound.setSalario(solicitud.getSalario());*/
+			solicitudMAP.put("salario", solicitud.getSalario());
+			/*solicitudFound.setCorreo(solicitud.getCorreo());*/
+			solicitudMAP.put("correo", solicitud.getCorreo());
+			/*solicitudFound.setTelefono(solicitud.getTelefono());*/
+			solicitudMAP.put("telefono", solicitud.getTelefono());
+			/*solicitudFound.setDireccionId(solicitud.getDireccionId());*/
+			solicitudMAP.put("direccionId", solicitud.getDireccionId());
+			/*solicitudFound.setTrayectoria(solicitud.getTrayectoria());*/
+			solicitudMAP.put("trayectoria", solicitud.getTrayectoria());
+			/*solicitudFound.setEstatussolicitud(solicitud.getEstatussolicitud());*/
+			solicitudMAP.put("estatussolicitud", solicitud.getEstatussolicitud());
+	        
+	        
+			return solicitudMAP;
+	 }
 	
-	solicitudFound.setSalario(solicitud.getSalario());
-	solicitudFound.setCorreo(solicitud.getCorreo());
-	solicitudFound.setTelefono(solicitud.getTelefono());
-//	solicitudFound.setPosicionId(solicitud.getPosicionId());
-//	solicitudFound.setCandidatoId(solicitud.getCandidatoId());
-	solicitudFound.setEstatussolicitudId(solicitud.getEstatussolicitudId());
-	solicitudFound.setSolicitudId(solicitud.getSolicitudId());
-
-		    solicitudService.editSolicitud(solicitudFound);
-	        return new ResponseEntity<Solicitud>(solicitudFound, HttpStatus.OK);
-	  } 	
-	
-		/********************************** DELETE
-		 * Elimina un solicitud.
-		 * @param id.
-		 * @return ResponseEntity<Solicitud>.
-		 */
-		@RequestMapping(value = "/solicitud/{id}", method = RequestMethod.DELETE)
-		@PreAuthorize("hasRole('SOLICITUDDELETE')")  
-	    public ResponseEntity<Solicitud> deleteSolicitud(@PathVariable("id") int id) {
-			  
-			//try{
-	    	 
-	         Solicitud solicitud = solicitudService.getSolicitud(id);
-	         if (solicitud == null) {
-	             return new ResponseEntity<Solicitud>(HttpStatus.NOT_FOUND);
-	         }
-	  
-           	 try{
-	             solicitudService.deleteSolicitud(solicitud);
-	             return new ResponseEntity<Solicitud>(HttpStatus.OK);
-	         }catch (Exception e) {
-	        	 HttpHeaders responseHeaders = new HttpHeaders();
-	        	 responseHeaders.set("Exception", "Exception: "+e);
-	        	 responseHeaders.set("Message", "Solicitud no se puede eliminar debido a que esta asociado con otra entidad.");	  
-	             return new ResponseEntity<Solicitud>(responseHeaders,HttpStatus.INTERNAL_SERVER_ERROR);
-			}
-
-           	//} catch(GenericException e) {
-            //	 return new ResponseEntity<Solicitud>(HttpStatus.PRECONDITION_FAILED);
-            //}
-		}
-		
-	/**
-	 * Salva informacion de un solicitud.
-	 * @param afiliadoBean.
-	 * @return String.
-	 */
-	@RequestMapping(value = "/saveSolicitud", method = RequestMethod.POST)
-	@PreAuthorize("hasRole('SOLICITUD')")  
-	public @ResponseBody String saveSolicitud(
-			@ModelAttribute("command") SolicitudBean solicitudBean) {
-
-		Solicitud solicitud = prepareModel(solicitudBean);
-		solicitudService.addSolicitud(solicitud);
-
-		return "SUCCESS";
-	}
-	
-	/**
-	 * Edita informacion de un solicitud.
-	 * @param solicitudBean.
-	 * @return String.
-	 */
-	@RequestMapping(value = "/editSolicitud", method = RequestMethod.POST)
-	@PreAuthorize("hasRole('SOLICITUD')")  
-	public @ResponseBody String editSolicitud(
-			@ModelAttribute("command") SolicitudBean solicitudBean) {
-
-
-		Solicitud solicitud = prepareModel(solicitudBean);
-		solicitudService.editSolicitud(solicitud);
-		return "SUCCESS";
-	}
-
-	/**
-	 * Agrega un SOLICITUD.
-	 * @param SOLICITUDBean.
-	 * @param result.
-	 * @return ModelAndView.
-	 */
-	@RequestMapping(value = "/searchSolicitud", method = RequestMethod.GET)
-	@PreAuthorize("hasRole('SOLICITUD')")  
-	public ModelAndView addSolicitud(
-			@ModelAttribute("command") SolicitudBean solicitudBean,
-			BindingResult result) {
-
-		Map<String, Object> model = new HashMap<String, Object>();
-		Solicitud solicitud = null;
-		if (solicitudBean != null)
-			solicitud = prepareModel(solicitudBean);
-		model.put("solicituds",
-				prepareListofBean(solicitudService.listSolicituds(solicitud)));
-		return new ModelAndView("searchSolicitud", model);
-	}
-
-	/**
-	 * Elimina un solicitud.
-	 * @param solicitudBean.
-	 * @param result.
-	 * @return ModelAndView.
-	 */
-	@RequestMapping(value = "/deleteSolicitud", method = RequestMethod.POST)
-	@PreAuthorize("hasRole('SOLICITUD')")  
-	public ModelAndView deleteSolicitud(
-			@ModelAttribute("command") SolicitudBean solicitudBean,
-			BindingResult result) {
-		System.out.println("delete " + solicitudBean.getSolicitudId());
-		solicitudService.deleteSolicitud(prepareModel(solicitudBean));
-		Map<String, Object> model = new HashMap<String, Object>();
-		model.put("solicitud", null);
-		model.put("solicituds",
-				prepareListofBean(solicitudService.listSolicituds(null)));
-		return new ModelAndView("searchSolicitud", model);
-	}
-
-	/**
-	 * 
-	 * @return ModelAndView.
-	 */
-	@RequestMapping(value = "/entrySolicitud", method = RequestMethod.GET)
-	@PreAuthorize("hasRole('SOLICITUD')")  
-	public ModelAndView entrySolicitud() {
-		return new ModelAndView("redirect:/searchSolicitud");
-	}
-
-	private Solicitud prepareModel(SolicitudBean solicitudBean) {
-		Solicitud solicitud = new Solicitud();
-
-		//solicitud.setPosicionId(solicitudBean.getPosicionId());
-		//solicitud.setCandidatoId(solicitudBean.getCandidatoId());
-		//solicitud.setNotrequiredsolicitudId(solicitudBean.getFechaId());
-		//solicitud.setHCurrencyId(solicitudBean.getSalarioId());
-		//solicitud.setRadioestatussolicitudId(solicitudBean.getEstadoId());
-		//solicitud.setDisplayresultsolicitudId(solicitudBean.getSolicitudId());
-		//solicitud.setExposedfiltersolicitudId(solicitudBean.getSolicitudId());
-		//solicitud.setDisplaymodalsolicitudId(solicitudBean.getSolicitudId());
-		//solicitud.setEntitynamesolicitudId(solicitudBean.getSolicitudId());
-		//solicitud.setScaffoldsolicitudId(solicitudBean.getSolicitudId());
-		solicitud.setCorreo(solicitudBean.getCorreo());
-		solicitud.setTelefono(solicitudBean.getTelefono());
-		solicitud.setSolicitudId(solicitudBean.getSolicitudId());
-		solicitudBean.setSolicitudId(null);
-
-		return solicitud;
-	}
-
-	/**
-	 * Convierte un objeto de tipo SolicitudBean a un objeto de tipo Solicitud.
-	 * @param solicitudBean.
-	 * @return Solicitud.
-	 */
-	private List<SolicitudBean> prepareListofBean(List<Solicitud> solicituds) {
-		List<SolicitudBean> beans = null;
-		if (solicituds != null && !solicituds.isEmpty()) {
-			beans = new ArrayList<SolicitudBean>();
-			SolicitudBean bean = null;
-			for (Solicitud solicitud : solicituds) {
-				bean = new SolicitudBean();
-
-				//bean.setPosicionId(solicitud.getPosicionId());
-				//bean.setCandidatoId(solicitud.getCandidatoId());
-				//bean.setNotrequiredsolicitudId(solicitud.getFechaId());
-				//bean.setRadioestatussolicitudId(solicitud.getEstadoId());
-				//bean.setDisplayresultsolicitudId(solicitud.getSolicitudId());
-				//bean.setExposedfiltersolicitudId(solicitud.getSolicitudId());
-				//bean.setDisplaymodalsolicitudId(solicitud.getSolicitudId());
-				//bean.setEntitynamesolicitudId(solicitud.getSolicitudId());
-				//bean.setScaffoldsolicitudId(solicitud.getSolicitudId());
-				bean.setCorreo(solicitud.getCorreo());
-				bean.setTelefono(solicitud.getTelefono());
-				bean.setSolicitudId(solicitud.getSolicitudId());
-				beans.add(bean);
-			}
-		}
-		return beans;
-	}
-
 }
-
-

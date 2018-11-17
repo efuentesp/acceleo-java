@@ -2,9 +2,18 @@ package com.softtek.acceleo.demo.domain;
 
 import java.io.Serializable;
 import java.util.Date;
+import java.util.List;
+import java.util.UUID;
 
 import javax.persistence.*;
 import javax.validation.constraints.NotNull;
+import javax.validation.constraints.Size;
+
+import com.fasterxml.jackson.annotation.JsonIgnore;
+
+import org.hibernate.annotations.GenericGenerator;
+import org.hibernate.annotations.Parameter;
+
 
 @Entity
 @Table(name = "solicitud")
@@ -12,110 +21,107 @@ public class Solicitud implements Serializable {
 
 	private static final long serialVersionUID = 1L;
 
+
 	@Id
-	@GeneratedValue(strategy = GenerationType.AUTO)
-	@Column(name = "solicitudId")
-	private Integer  solicitudId;
+	@NotNull
+	@GeneratedValue(generator = "UUID")
+	@GenericGenerator(
+			          name = "UUID", 
+	                  strategy = "org.hibernate.id.UUIDGenerator", 
+	                  parameters = {
+	                		@Parameter( 
+	                				name = "uuid_gen_strategy_class", 
+	                				value = "org.hibernate.id.uuid.CustomVersionOneStrategy" 
+	                		) 
+					  } 
+					 )
+	@Column(name = "solicitudId", columnDefinition = "VARBINARY(50)")
+	private UUID solicitudId;
 
 	@NotNull
-	@Column(name = "salario") 
-	private Double salario;
-	@NotNull
-	@Column(name = "correo") 
-	private String correo;
-	@NotNull
-	@Column(name = "telefono") 
-	private String telefono;
-
-	@Column(name = "fecha") 
+	private UUID posicionId;
+	private UUID candidatoId;
+	@Column(name = "fecha")
+	@Temporal(TemporalType.TIMESTAMP)
 	private Date fecha;
 	
 	@NotNull
-	@Column(name = "estatussolicitudId", nullable = false)
-	@Enumerated(EnumType.STRING)
-	private Estatussolicitud estatussolicitudId;
+	@Column(name = "salario")
+	private Double salario;
+	
+	@NotNull
+	@Column(name = "correo")
+	private String correo;
+	
+	@NotNull
+	@Column(name = "telefono")
+	private String telefono;
+	
+	private UUID direccionId;
+	private String trayectoria;
+	@NotNull
+	private String estatussolicitud;
 
-	@OneToOne
-	@JoinColumn(name="candidatoId")
-	private Candidato candidato;
-	
-	@OneToOne
-	@JoinColumn(name="posicionId")
-	private Posicion posicion;
-
-	public Solicitud() {
-	
-	}
-	
-	public Solicitud(Integer solicitudId, Double salario, String correo,  String telefono,
-			Date fecha,  Estatussolicitud estatussolicitudId, Candidato candidato, Posicion posicion
-//			, Set<Candidato> candidatos
-			) {
-		this.solicitudId = solicitudId;
-		this.salario = salario;
-		this.correo = correo;
-		this.telefono = telefono;
-		this.fecha = fecha;
-		this.estatussolicitudId = estatussolicitudId;
-		this.candidato = candidato;
-		this.posicion = posicion;
-	}
-	
-	public Integer getSolicitudId() {
+	public UUID getSolicitudId() {
 		return solicitudId;
 	}
 
-	public void setSolicitudId(Integer solicitudId) {
+	public void setSolicitudId(UUID solicitudId) {
 		this.solicitudId = solicitudId;
 	}
-
+	
+	public UUID getPosicionId () {
+	    return posicionId;
+	    }
+	public void setPosicionId(UUID posicionId) {
+		this.posicionId = posicionId;
+	}
+	public UUID getCandidatoId () {
+	    return candidatoId;
+	    }
+	public void setCandidatoId(UUID candidatoId) {
+		this.candidatoId = candidatoId;
+	}
+	public Date getFecha () {
+	    return fecha;
+	    }
+	public void setFecha(Date fecha) {
+		this.fecha = fecha;
+	}
 	public Double getSalario () {
-	    return salario;  		
-    }
+	    return salario;
+	    }
 	public void setSalario(Double salario) {
 		this.salario = salario;
 	}
-	
 	public String getCorreo () {
-	    return correo;  		
-    }
+	    return correo;
+	    }
 	public void setCorreo(String correo) {
 		this.correo = correo;
 	}
-	
 	public String getTelefono () {
-	    return telefono;  		
-    }
+	    return telefono;
+	    }
 	public void setTelefono(String telefono) {
 		this.telefono = telefono;
 	}
-	public Estatussolicitud getEstatussolicitudId () {
-	    return estatussolicitudId;  		
-    }
-	public void setEstatussolicitudId (Estatussolicitud estatussolicitudId) {
-		this.estatussolicitudId = estatussolicitudId;
+	public UUID getDireccionId () {
+	    return direccionId;
+	    }
+	public void setDireccionId(UUID direccionId) {
+		this.direccionId = direccionId;
 	}
-	public Date  getFecha () {
-	    return fecha;  		
-    }
-	public void setFecha (Date fecha) {
-		this.fecha = fecha;
+	public String getTrayectoria () {
+	    return trayectoria;
+	    }
+	public void setTrayectoria(String trayectoria) {
+		this.trayectoria = trayectoria;
 	}
-
-	public Candidato getCandidato() {
-		return candidato;
+	public String getEstatussolicitud () {
+	    return estatussolicitud;
+	    }
+	public void setEstatussolicitud(String estatussolicitud) {
+		this.estatussolicitud = estatussolicitud;
 	}
-
-	public void setCandidato(Candidato candidato) {
-		this.candidato = candidato;
-	}
-
-	public Posicion getPosicion() {
-		return posicion;
-	}
-
-	public void setPosicion(Posicion posicion) {
-		this.posicion = posicion;
-	}	
-
-}			
+}		

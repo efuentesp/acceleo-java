@@ -7,16 +7,19 @@
 package com.softtek.acceleo.demo.repository.impl;
 
 import java.util.List;
+import java.util.UUID;
 
+import org.hibernate.Hibernate;
+import org.hibernate.Session;
 import org.hibernate.SessionFactory;
 import org.hibernate.criterion.Example;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
 import org.hibernate.criterion.Projections;
 import org.hibernate.criterion.Restrictions;
-
 import com.softtek.acceleo.demo.domain.Permiso;
 import com.softtek.acceleo.demo.repository.PermisoRepository;
+
 /**
  * Clase permisoRepositoryImpl.
  * @author PSG.
@@ -38,18 +41,37 @@ public class PermisoRepositoryImpl implements PermisoRepository {
 	 */
 	public void editPermiso(Permiso permiso) {
 		sessionFactory.getCurrentSession().update(permiso);
-
+		
 	}
 	/**
 	 * Consulta informacion de permiso.
 	 */
 	@SuppressWarnings({ "unchecked" })
 	public List<Permiso> listPermisos(Permiso permiso) {
-
-		return (List<Permiso>) sessionFactory.getCurrentSession()
-				.createCriteria(Permiso.class).list();
+		List<Permiso> permisos = sessionFactory.getCurrentSession().createCriteria(Permiso.class).list();
+		return permisos;
 	}
-
+	
+	/**
+	 * Consulta informacion de permiso.
+	 */
+	@SuppressWarnings({ "unchecked" })
+	public List<Permiso> listPermisosByPermiso(Permiso permiso, int id) {
+		List<Permiso> permisos = 
+		sessionFactory.getCurrentSession().createCriteria(Permiso.class)
+		.add(Restrictions.like("permisoId",id)).list();
+		return permisos;
+	}
+ 
+	/**
+	 * Consulta informacion de permiso.
+	 */
+	@SuppressWarnings({ "unchecked" })
+	public List<Permiso> listPermisosByUsername(Permiso permiso, String id) {
+		List<Permiso> permisos = sessionFactory.getCurrentSession().createCriteria(Permiso.class).add(Restrictions.like("username",id)).list();
+		return permisos;
+	}
+	
 	/**
 	 * Consulta informacion de permiso y la pagina.
 	 */
@@ -58,26 +80,17 @@ public class PermisoRepositoryImpl implements PermisoRepository {
 		
 		return (List<Permiso>) sessionFactory.getCurrentSession()
 			.createCriteria(Permiso.class).setFirstResult((page - 1) * size)
-			.add(					
-					Restrictions.or(Restrictions.or(Restrictions.or(Restrictions.or(Restrictions.or(Restrictions.or(Restrictions.or(Restrictions.or(	
-Restrictions.like("permiso", "%" + query +"%"),
-Restrictions.like("ruta", "%" + query +"%")),
-Restrictions.like("permiso", "%" + query +"%")),
-Restrictions.like("permiso", "%" + query +"%")),
-Restrictions.like("rol", "%" + query +"%")),
-Restrictions.like("permiso", "%" + query +"%")),
-Restrictions.like("funcion", "%" + query +"%")),
-Restrictions.like("nivelpermiso", "%" + query +"%")),
-Restrictions.like("permiso", "%" + query +"%"))
-					
-					
-					
-					
-					
-					
-					
-					
-).list();
+			.add(
+			Restrictions.or(
+			Restrictions.or(	
+			Restrictions.or(	
+			Restrictions.or(	
+			Restrictions.like("permiso", "%" + query +"%"), 
+			Restrictions.like("rolId", "%" + query +"%")),
+			Restrictions.like("funcion", "%" + query +"%")),
+			Restrictions.like("ruta", "%" + query +"%")),
+			Restrictions.like("nivelpermiso", "%" + query +"%"))
+			).list();
 	}
 
 	/**
@@ -112,18 +125,17 @@ Restrictions.like("permiso", "%" + query +"%"))
 		long totalRows = 0;
 		totalRows = (Long) sessionFactory.getCurrentSession()
 		.createCriteria(Permiso.class).setProjection(Projections.rowCount())
-					.add(	
-							Restrictions.or(Restrictions.or(Restrictions.or(Restrictions.or(Restrictions.or(Restrictions.or(Restrictions.or(Restrictions.or(	
-						Restrictions.like("permiso", "%" + query +"%"),Restrictions.like("ruta", "%" + query +"%")),Restrictions.like("permiso", "%" + query +"%")),Restrictions.like("permiso", "%" + query +"%")),Restrictions.like("rol", "%" + query +"%")),Restrictions.like("permiso", "%" + query +"%")),Restrictions.like("funcion", "%" + query +"%")),Restrictions.like("nivelpermiso", "%" + query +"%")),Restrictions.like("permiso", "%" + query +"%"))	
-	
-	
-	
-	
-	
-	
-	
-	
-).uniqueResult();
+			.add(
+			Restrictions.or(
+			Restrictions.or(	
+			Restrictions.or(	
+			Restrictions.or(	
+			Restrictions.like("permiso", "%" + query +"%"), 
+			Restrictions.like("rolId", "%" + query +"%")),
+			Restrictions.like("funcion", "%" + query +"%")),
+			Restrictions.like("ruta", "%" + query +"%")),
+			Restrictions.like("nivelpermiso", "%" + query +"%"))
+			).uniqueResult();
 		return totalRows;  
 	}
 
@@ -145,7 +157,7 @@ Restrictions.like("permiso", "%" + query +"%"))
 	/**
 	 * Consulta informacion de un permiso.
 	 */
-	public Permiso getPermiso(int empid) {
+	public Permiso getPermiso(UUID empid) {
 		return (Permiso) sessionFactory.getCurrentSession().get(
 				Permiso.class, empid);
 	}
@@ -158,3 +170,4 @@ Restrictions.like("permiso", "%" + query +"%"))
 	}
 
 }
+

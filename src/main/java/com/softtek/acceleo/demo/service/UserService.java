@@ -31,9 +31,8 @@ public interface UserService {
 	
 	public List<User> consultarUser(User user);
 	public List<User> consultarUser(String userName);
-
 	
-
+	public List<User> consultarUserPorEmail(String email);
 	
 }
 

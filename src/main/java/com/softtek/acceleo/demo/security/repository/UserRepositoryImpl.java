@@ -46,10 +46,10 @@ public class UserRepositoryImpl implements UserRepository {
 			List<Authority> lstAuthority = user.getAuthorities();
 			for (Authority authority : lstAuthority) {
 				logger.info("IdAuthority: " + authority.getIdAuthority() + "\tName: " + authority.getName()
-						+ "\tPrivilege" + authority.getPrivilege());
-				//for (Privilege privilege : authority.getPrivilege())
-
-					//logger.info("  --> IdPrivilege: " + privilege.getIdPrivilege() + "\tName: " + privilege.getName());
+						+ "\tPrivilege" + authority.getPrivileges());
+				for (Privilege privilege : authority.getPrivileges()) {
+					logger.info("  --> IdPrivilege: " + privilege.getIdPrivilege() + "\tName: " + privilege.getName());
+				}
 
 			}
 
@@ -318,7 +318,7 @@ public class UserRepositoryImpl implements UserRepository {
 		if (user != null) {
 			User userProxy = new User();
 			return (List<User>) sessionFactory.getCurrentSession().createCriteria(User.class)
-					.add(Example.create(userProxy)).add(Restrictions.eq("username", user.getUserName())).list();
+					.add(Example.create(userProxy)).add(Restrictions.eq("userName", user.getUserName())).list();
 			// .add(Example.create(userProxy)).add(Restrictions.eq("idUser",
 			// user.getIdUser())).list();
 		}
@@ -331,12 +331,12 @@ public class UserRepositoryImpl implements UserRepository {
 	 */
 	@SuppressWarnings("unchecked")
 	@Override
-	public List<User> consultarInformacionPorUsuario(String username) {
+	public List<User> consultarInformacionPorUsuario(String userName) {
 		List<User> lstUser = null;
 
 		try {
 			lstUser = (List<User>) sessionFactory.getCurrentSession().createCriteria(User.class)
-					.add(Restrictions.eq("username", username)).list();
+					.add(Restrictions.eq("userName", userName)).list();
 		} catch (HibernateException e) {
 			logger.error("Error al ejecutar la consulta para obtener los User. - " + e);
 		} catch (Exception e) {
@@ -345,4 +345,24 @@ public class UserRepositoryImpl implements UserRepository {
 
 		return lstUser;
 	}
+	
+	@SuppressWarnings("unchecked")
+	@Override
+	public List<User> consultarInformacionPorEmail(String email) {
+		List<User> lstUser = null;
+
+		try {
+			Session session = sessionFactory.getCurrentSession();
+			Criteria criteria = session.createCriteria(User.class);
+			criteria.add(Restrictions.eq("email", email)).list();
+			lstUser = (List<User>) criteria.list();
+			
+		} catch (HibernateException e) {
+			logger.error("Error al ejecutar la consulta para obtener los User. - " + e);
+		} catch (Exception e) {
+			logger.error("Error al ejecutar la consulta para obtener los User. - " + e);
+		}
+
+		return lstUser;		
+	}	
 }

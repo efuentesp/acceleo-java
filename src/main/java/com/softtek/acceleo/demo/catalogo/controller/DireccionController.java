@@ -10,6 +10,7 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.UUID;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
@@ -49,26 +50,136 @@ public class DireccionController {
 	private DireccionService direccionService;
 	
 	Direccion direccion = new Direccion();
-
-	/************************************** SEARCH
+	/************************************** CREATE  **************************************
+	 * Crea un nuevo direccion.
+	 * @param direccion.
+	 * @param ucBuilder.
+	 * @return ResponseEntity.
+	 */
+	 @RequestMapping(value = "/srp/direccion", method = RequestMethod.POST)
+	 @PreAuthorize("hasRole('ROLE_DIRECCION:CREATE')")
+	 public ResponseEntity<Map<String, Object>> createDireccion(@RequestBody Direccion direccion,    UriComponentsBuilder ucBuilder) {
+	   try{
+	        direccionService.addDireccion(direccion);
+	 
+	        HttpHeaders headers = new HttpHeaders();
+	        headers.setLocation(ucBuilder.path("/direccion/{id}").buildAndExpand(direccion.getDireccionId()).toUri());
+	        
+		        	Direccion direccionFound = direccionService.getDireccion(direccion.getDireccionId());
+	
+			Map<String, Object> direccionMAP = new HashMap<>();
+			direccionMAP.put("id", direccionFound.getDireccionId());
+			/*direccionFound.setCalle(direccion.getCalle());*/
+			direccionMAP.put("calle", direccion.getCalle());
+			/*direccionFound.setCp(direccion.getCp());*/
+			direccionMAP.put("cp", direccion.getCp());
+			/*direccionFound.setCiudad(direccion.getCiudad());*/
+			direccionMAP.put("ciudad", direccion.getCiudad());
+			/*direccionFound.setEstado(direccion.getEstado());*/
+			direccionMAP.put("estado", direccion.getEstado());
+			
+		        	return new ResponseEntity<Map<String, Object>>(direccionMAP, headers, HttpStatus.CREATED);
+	   }catch(Exception e){
+		        	 HttpHeaders responseHeaders = new HttpHeaders();
+		        	 responseHeaders.set("Exception", "Exception: " + e);
+		        	 responseHeaders.set("Message", "Direccion no se puede agregar la informacion. " + e.getMessage());	  
+		             return new ResponseEntity<Map<String, Object>>(responseHeaders,HttpStatus.CONFLICT);		   	
+	   }
+	 }
+	/************************************** UPDATE **************************************
+	  * Actualiza la informacion de un direccion.
+	  * @param id.
+	  * @param direccion.
+	  * @return ResponseEntity.
+	  */
+	 @RequestMapping(value = "/srp/direccion/{id}", method = RequestMethod.PUT)
+		 	 @PreAuthorize("hasRole('ROLE_DIRECCION:UPDATE')") 
+	    public ResponseEntity<Map<String, Object>> actualizarDireccion(
+				@PathVariable("id") String id, 
+				@RequestBody Direccion direccion) {
+	        
+	        UUID uuid = UUID.fromString(id);
+	        Direccion direccionFound = direccionService.getDireccion(uuid);
+	         
+	        if (direccionFound==null) {
+	            return new ResponseEntity<Map<String, Object>>(HttpStatus.NOT_FOUND);
+	        }
+	
+		direccion.setDireccionId(direccionFound.getDireccionId());
+		direccionService.editDireccion(direccion);
+		
+		Map<String, Object> direccionMAP = new HashMap<>();
+		direccionMAP.put("id", direccionFound.getDireccionId());
+		/*direccionFound.setCalle(direccion.getCalle());*/
+		direccionMAP.put("calle", direccion.getCalle());
+		/*direccionFound.setCp(direccion.getCp());*/
+		direccionMAP.put("cp", direccion.getCp());
+		/*direccionFound.setCiudad(direccion.getCiudad());*/
+		direccionMAP.put("ciudad", direccion.getCiudad());
+		/*direccionFound.setEstado(direccion.getEstado());*/
+		direccionMAP.put("estado", direccion.getEstado());
+		
+		HttpHeaders headers = new HttpHeaders();
+	    return new ResponseEntity<Map<String, Object>>(direccionMAP, headers, HttpStatus.OK);
+	  } 
+	/************************************** DELETE **************************************
+	 * Elimina un direccion.
+	 * @param id.
+	 * @return ResponseEntity<Direccion>.
+	 */
+	@RequestMapping(value = "/srp/direccion/{id}", method = RequestMethod.DELETE)
+	@PreAuthorize("hasRole('ROLE_DIRECCION:DELETE')")  
+		    public ResponseEntity<Map<String, Object>> deleteDireccion(@PathVariable("id") String id) {
+		  
+		    	 UUID uuid = UUID.fromString(id);
+		         Direccion direccion = direccionService.getDireccion(uuid);
+		         if (direccion == null) {
+		             return new ResponseEntity<Map<String, Object>>(HttpStatus.NOT_FOUND);
+		         }
+		  
+	           	 try{
+		             direccionService.deleteDireccion(direccion);
+		             
+			 Map<String, Object> direccionMAP = new HashMap<>();
+			 direccionMAP.put("id", direccion.getDireccionId());
+	/*direccionFound.setCalle(direccion.getCalle());*/
+	direccionMAP.put("calle", direccion.getCalle());
+	/*direccionFound.setCp(direccion.getCp());*/
+	direccionMAP.put("cp", direccion.getCp());
+	/*direccionFound.setCiudad(direccion.getCiudad());*/
+	direccionMAP.put("ciudad", direccion.getCiudad());
+	/*direccionFound.setEstado(direccion.getEstado());*/
+	direccionMAP.put("estado", direccion.getEstado());
+		             
+		             HttpHeaders headers = new HttpHeaders();
+		             return new ResponseEntity<Map<String, Object>>(direccionMAP, headers, HttpStatus.OK);
+		         }catch (Exception e) {
+		        	 HttpHeaders responseHeaders = new HttpHeaders();
+		        	 responseHeaders.set("Exception", "Exception: "+e);
+		        	 responseHeaders.set("Message", "Direccion no se puede eliminar debido a que esta asociado con otra entidad.");	  
+		             return new ResponseEntity<Map<String, Object>>(responseHeaders,HttpStatus.INTERNAL_SERVER_ERROR);
+		}
+	}
+	/************************************** SEARCH **************************************
 	 * Obtiene informacion de los direccions.
 	 * @param requestParams.
 	 * @param request.
 	 * @param response.
 	 * @return List<Direccion>.
 	 */
-	@RequestMapping(value = "/direccion", method = RequestMethod.GET, produces = "application/json")
-	@PreAuthorize("hasRole('DIRECCIONSEARCH')")
-	public @ResponseBody  List<Direccion> getDireccions(@RequestParam Map<String,String> requestParams, HttpServletRequest request, HttpServletResponse response) {
-
-       	String query=requestParams.get("q");
+	 
+	@RequestMapping(value = "/srp/direccion", method = RequestMethod.GET, produces = "application/json")
+	@PreAuthorize("hasRole('ROLE_DIRECCION:READ')")
+	public @ResponseBody  List<Map<String, Object>> getDireccions(@RequestParam Map<String,String> requestParams, HttpServletRequest request, HttpServletResponse response) {
+		
+		       	String query=requestParams.get("q");
 		int _page= requestParams.get("_page")==null?0:new Integer(requestParams.get("_page")).intValue();
 		long rows = 0;
-
+		
 		List<Direccion> listDireccion = null;
-
+		
 		if (query==null && _page == 0) {
-       		listDireccion = direccionService.listDireccions(direccion);
+		       		listDireccion = direccionService.listDireccions(direccion);
 			rows = direccionService.getTotalRows();
 		} else if (query!= null){
 			listDireccion = direccionService.listDireccionsQuery(direccion, query, _page, 10);
@@ -77,238 +188,55 @@ public class DireccionController {
 			listDireccion = direccionService.listDireccionsPagination(direccion, _page, 10);
 			rows = direccionService.getTotalRows();
 		}
-
+		
+		List<Map<String, Object>> listDireccionMAP = new ArrayList<>();
+		for( Direccion direccion : listDireccion ){
+			Map<String, Object> direccionMAP = new HashMap<>();
+			direccionMAP.put("id", direccion.getDireccionId());
+			/*direccionFound.setCalle(direccion.getCalle());*/
+			direccionMAP.put("calle", direccion.getCalle());
+			/*direccionFound.setCp(direccion.getCp());*/
+			direccionMAP.put("cp", direccion.getCp());
+			/*direccionFound.setCiudad(direccion.getCiudad());*/
+			direccionMAP.put("ciudad", direccion.getCiudad());
+			/*direccionFound.setEstado(direccion.getEstado());*/
+			direccionMAP.put("estado", direccion.getEstado());
+			
+			listDireccionMAP.add(direccionMAP);
+		}
+		
 		response.setHeader("Access-Control-Expose-Headers", "x-total-count");
 		response.setHeader("x-total-count", String.valueOf(rows).toString());	
-
-		return listDireccion;
+		
+		return listDireccionMAP;
 	}
-
-	/************************************* SEARCH
+		
+	/************************************** SEARCH **************************************
 	 * Obtiene informacion de un direccion.
 	 * @param id.
 	 * @return Direccion.
 	 */
-	@RequestMapping(value = "/iddireccion/{id}", method = RequestMethod.GET, produces = "application/json")
-	@PreAuthorize("hasRole('DIRECCIONSEARCH')")
-	    public @ResponseBody  Direccion getDireccion(@PathVariable("id") int id) {	        
+	@RequestMapping(value = "/srp/direccion/{id}", method = RequestMethod.GET, produces = "application/json")
+	@PreAuthorize("hasRole('ROLE_DIRECCION:READ')")
+	public @ResponseBody  Map<String, Object> getDireccion(@PathVariable("id") String id) {	        
 	        Direccion direccion = null;
 	        
-	        direccion = direccionService.getDireccion(id);
-			return direccion;
-	 }
-
-	/*************************** CREATE
-	 * Crea un nuevo direccion.
-	 * @param direccion.
-	 * @param ucBuilder.
-	 * @return ResponseEntity.
-	 */
-	 @RequestMapping(value = "/direccion", method = RequestMethod.POST)
-	 @PreAuthorize("hasRole('DIRECCIONCREATE')")
-	    public ResponseEntity<Void> createDireccion(@RequestBody Direccion direccion,    UriComponentsBuilder ucBuilder) {
-	   
-	        direccionService.addDireccion(direccion);
-	 
-	        HttpHeaders headers = new HttpHeaders();
-	        headers.setLocation(ucBuilder.path("/direccion/{id}").buildAndExpand(direccion.getDireccionId()).toUri());
-	        return new ResponseEntity<Void>(headers, HttpStatus.CREATED);
-	 }
-		
-	 /****************************************** UPDATE
-	  * Actualiza la informacion de un direccion.
-	  * @param id.
-	  * @param direccion.
-	  * @return ResponseEntity.
-	  */
-	 @RequestMapping(value = "/direccion/{id}", method = RequestMethod.PUT)
- 	 @PreAuthorize("hasRole('DIRECCIONUPDATE')") 
-	    public ResponseEntity<Direccion> actualizarDireccion(
-				@PathVariable("id") int id, 
-				@RequestBody Direccion direccion) {
+	        UUID uuid = UUID.fromString(id);
+	        direccion = direccionService.getDireccion(uuid);
 	        
-	        Direccion direccionFound = direccionService.getDireccion(id);
-	         
-	        if (direccionFound==null) {
-	            System.out.println("User with id " + id + " not found");
-	            return new ResponseEntity<Direccion>(HttpStatus.NOT_FOUND);
-	        }
+			Map<String, Object> direccionMAP = new HashMap<>();
+			direccionMAP.put("id", direccion.getDireccionId());
+			/*direccionFound.setCalle(direccion.getCalle());*/
+			direccionMAP.put("calle", direccion.getCalle());
+			/*direccionFound.setCp(direccion.getCp());*/
+			direccionMAP.put("cp", direccion.getCp());
+			/*direccionFound.setCiudad(direccion.getCiudad());*/
+			direccionMAP.put("ciudad", direccion.getCiudad());
+			/*direccionFound.setEstado(direccion.getEstado());*/
+			direccionMAP.put("estado", direccion.getEstado());
+	        
+	        
+			return direccionMAP;
+	 }
 	
-	System.out.println("Direccion:"+ direccion);        
-	direccionFound.setEstado(direccion.getEstado());
-	direccionFound.setCp(direccion.getCp());
-	direccionFound.setCiudad(direccion.getCiudad());
-	direccionFound.setCalle(direccion.getCalle());
-	direccionFound.setCandidato(direccion.getCandidato());
-	direccionFound.setDireccionId(direccion.getDireccionId());
-
-		    direccionService.editDireccion(direccionFound);
-	        return new ResponseEntity<Direccion>(direccionFound, HttpStatus.OK);
-	  } 	
-	
-		/********************************** DELETE
-		 * Elimina un direccion.
-		 * @param id.
-		 * @return ResponseEntity<Direccion>.
-		 */
-		@RequestMapping(value = "/direccion/{id}", method = RequestMethod.DELETE)
-		@PreAuthorize("hasRole('DIRECCIONDELETE')")  
-	    public ResponseEntity<Direccion> deleteDireccion(@PathVariable("id") int id) {
-			  
-			//try{
-	    	 
-	         Direccion direccion = direccionService.getDireccion(id);
-	         if (direccion == null) {
-	             return new ResponseEntity<Direccion>(HttpStatus.NOT_FOUND);
-	         }
-	  
-           	 try{
-	             direccionService.deleteDireccion(direccion);
-	             return new ResponseEntity<Direccion>(HttpStatus.OK);
-	         }catch (Exception e) {
-	        	 HttpHeaders responseHeaders = new HttpHeaders();
-	        	 responseHeaders.set("Exception", "Exception: "+e);
-	        	 responseHeaders.set("Message", "Direccion no se puede eliminar debido a que esta asociado con otra entidad.");	  
-	             return new ResponseEntity<Direccion>(responseHeaders,HttpStatus.INTERNAL_SERVER_ERROR);
-			}
-
-           	//} catch(GenericException e) {
-            //	 return new ResponseEntity<Direccion>(HttpStatus.PRECONDITION_FAILED);
-            //}
-		}
-
-	/**
-	 * Salva informacion de un direccion.
-	 * @param afiliadoBean.
-	 * @return String.
-	 */
-	@RequestMapping(value = "/saveDireccion", method = RequestMethod.POST)
-	@PreAuthorize("hasRole('DIRECCION')")  
-	public @ResponseBody String saveDireccion(
-			@ModelAttribute("command") DireccionBean direccionBean) {
-
-		Direccion direccion = prepareModel(direccionBean);
-		direccionService.addDireccion(direccion);
-
-		return "SUCCESS";
-	}
-	
-	/**
-	 * Edita informacion de un direccion.
-	 * @param direccionBean.
-	 * @return String.
-	 */
-	@RequestMapping(value = "/editDireccion", method = RequestMethod.POST)
-	@PreAuthorize("hasRole('DIRECCION')")  
-	public @ResponseBody String editDireccion(
-			@ModelAttribute("command") DireccionBean direccionBean) {
-
-
-		Direccion direccion = prepareModel(direccionBean);
-		direccionService.editDireccion(direccion);
-		return "SUCCESS";
-	}
-
-	/**
-	 * Agrega un DIRECCION.
-	 * @param DIRECCIONBean.
-	 * @param result.
-	 * @return ModelAndView.
-	 */
-	@RequestMapping(value = "/searchDireccion", method = RequestMethod.GET)
-	@PreAuthorize("hasRole('DIRECCION')")  
-	public ModelAndView addDireccion(
-			@ModelAttribute("command") DireccionBean direccionBean,
-			BindingResult result) {
-
-		Map<String, Object> model = new HashMap<String, Object>();
-		Direccion direccion = null;
-		if (direccionBean != null)
-			direccion = prepareModel(direccionBean);
-		model.put("direccions",
-				prepareListofBean(direccionService.listDireccions(direccion)));
-		return new ModelAndView("searchDireccion", model);
-	}
-
-	/**
-	 * Elimina un direccion.
-	 * @param direccionBean.
-	 * @param result.
-	 * @return ModelAndView.
-	 */
-	@RequestMapping(value = "/deleteDireccion", method = RequestMethod.POST)
-	@PreAuthorize("hasRole('DIRECCION')")  
-	public ModelAndView deleteDireccion(
-			@ModelAttribute("command") DireccionBean direccionBean,
-			BindingResult result) {
-		System.out.println("delete " + direccionBean.getDireccionId());
-		direccionService.deleteDireccion(prepareModel(direccionBean));
-		Map<String, Object> model = new HashMap<String, Object>();
-		model.put("direccion", null);
-		model.put("direccions",
-				prepareListofBean(direccionService.listDireccions(null)));
-		return new ModelAndView("searchDireccion", model);
-	}
-
-	/**
-	 * 
-	 * @return ModelAndView.
-	 */
-	@RequestMapping(value = "/entryDireccion", method = RequestMethod.GET)
-	@PreAuthorize("hasRole('DIRECCION')")  
-	public ModelAndView entryDireccion() {
-		return new ModelAndView("redirect:/searchDireccion");
-	}
-
-	private Direccion prepareModel(DireccionBean direccionBean) {
-		Direccion direccion = new Direccion();
-
-		//direccion.setCandidatoId(direccionBean.getCandidatoId());
-		//direccion.setDisplayresultdireccionId(direccionBean.getDireccionId());
-		//direccion.setExposedfilterdireccionId(direccionBean.getDireccionId());
-		//direccion.setDisplaymodaldireccionId(direccionBean.getDireccionId());
-		//direccion.setEntitynamedireccionId(direccionBean.getDireccionId());
-		//direccion.setScaffolddireccionId(direccionBean.getDireccionId());
-		direccion.setCalle(direccionBean.getCalle());
-		direccion.setCp(direccionBean.getCp());
-		direccion.setCiudad(direccionBean.getCiudad());
-		direccion.setEstado(direccionBean.getEstado());
-		direccion.setDireccionId(direccionBean.getDireccionId());
-		direccionBean.setDireccionId(null);
-
-		return direccion;
-	}
-
-	/**
-	 * Convierte un objeto de tipo DireccionBean a un objeto de tipo Direccion.
-	 * @param direccionBean.
-	 * @return Direccion.
-	 */
-	private List<DireccionBean> prepareListofBean(List<Direccion> direccions) {
-		List<DireccionBean> beans = null;
-		if (direccions != null && !direccions.isEmpty()) {
-			beans = new ArrayList<DireccionBean>();
-			DireccionBean bean = null;
-			for (Direccion direccion : direccions) {
-				bean = new DireccionBean();
-
-				//bean.setCandidatoId(direccion.getCandidatoId());
-				//bean.setDisplayresultdireccionId(direccion.getDireccionId());
-				//bean.setExposedfilterdireccionId(direccion.getDireccionId());
-				//bean.setDisplaymodaldireccionId(direccion.getDireccionId());
-				//bean.setEntitynamedireccionId(direccion.getDireccionId());
-				//bean.setScaffolddireccionId(direccion.getDireccionId());
-				bean.setCalle(direccion.getCalle());
-				bean.setCp(direccion.getCp());
-				bean.setCiudad(direccion.getCiudad());
-				bean.setEstado(direccion.getEstado());
-				bean.setDireccionId(direccion.getDireccionId());
-				beans.add(bean);
-			}
-		}
-		return beans;
-	}
-
 }
-
-

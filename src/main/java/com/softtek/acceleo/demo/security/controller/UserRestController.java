@@ -23,7 +23,6 @@ import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.core.userdetails.UserDetailsService;
-import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -35,6 +34,7 @@ import org.springframework.web.util.UriComponentsBuilder;
 
 import com.softtek.acceleo.demo.domain.Authority;
 import com.softtek.acceleo.demo.domain.User;
+import com.softtek.acceleo.demo.security.JwtPermission;
 import com.softtek.acceleo.demo.security.JwtTokenUtil;
 import com.softtek.acceleo.demo.security.JwtUser;
 import com.softtek.acceleo.demo.service.UserService;
@@ -61,13 +61,14 @@ public class UserRestController {
     @Qualifier("jwtUserDetailsService")
     private UserDetailsService userDetailsService;
 
-    
-    @RequestMapping(value = "user", method = RequestMethod.GET)
+    //@RequestMapping(value = "user", method = RequestMethod.GET)
+    @RequestMapping(value = "/auth/profile", method = RequestMethod.GET)
     public JwtUser getAuthenticatedUser(HttpServletRequest request) {
     	logger.info("User REST :"+tokenHeader);
         String token = request.getHeader(tokenHeader).substring(7);
         String username = jwtTokenUtil.getUsernameFromToken(token);
         JwtUser user = (JwtUser) userDetailsService.loadUserByUsername(username);
+        
         return user;
     }
     

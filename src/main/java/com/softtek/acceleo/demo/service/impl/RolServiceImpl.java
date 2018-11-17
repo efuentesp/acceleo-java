@@ -1,4 +1,3 @@
-
 /**
  * Autor: PSG.
  * Proyecto:
@@ -8,6 +7,7 @@
 package com.softtek.acceleo.demo.service.impl;
 
 import java.util.List;
+import java.util.UUID;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -34,7 +34,6 @@ public class RolServiceImpl implements RolService {
 	 */
 	@Transactional(propagation = Propagation.REQUIRED, readOnly = false)
 	public void addRol(Rol rol) {
-		
 		rolRepository.addRol(rol);
 	}
 
@@ -43,7 +42,6 @@ public class RolServiceImpl implements RolService {
 	 */
 	@Transactional(propagation = Propagation.REQUIRED, readOnly = false)
 	public void editRol(Rol rol) {
-		
 		rolRepository.editRol(rol);
 	}
 	
@@ -51,15 +49,13 @@ public class RolServiceImpl implements RolService {
 	 * Consulta informacion de rols.
 	 */
 	public List<Rol> listRols(Rol rol) {
-
 		return rolRepository.listRols(rol);
 	}
 
 	/**
 	 * Obtiene informacion de un rol.
 	 */
-	public Rol getRol(int empid) {
-
+	public Rol getRol(UUID empid) {
 		return rolRepository.getRol(empid);
 	}
 
@@ -68,8 +64,6 @@ public class RolServiceImpl implements RolService {
 	 */
 	@Transactional(propagation = Propagation.REQUIRED, readOnly = false)
 	public void deleteRol(Rol rol) {
-		System.out.println("Entrando al deleteRol");
-
 		 rolRepository.deleteRol(rol);
 	}
 
@@ -78,7 +72,6 @@ public class RolServiceImpl implements RolService {
 	 */
 	@Transactional(propagation = Propagation.REQUIRED, readOnly = false)
 	public List<Rol> listRolsPagination(Rol rol, int page, int size) {
-
 		return rolRepository.listRolsPagination(rol, page, size);
 	}
 
@@ -105,7 +98,6 @@ public class RolServiceImpl implements RolService {
 	 */
 	@Transactional(propagation = Propagation.REQUIRED, readOnly = false)
 	public long getTotalRows() {
-
 		return rolRepository.getTotalRows();
 	}
 
@@ -116,6 +108,4 @@ public class RolServiceImpl implements RolService {
 		// TODO Auto-generated method stub
 		return rolRepository.listRolsQuery(rol, query, page, size);
 	}
-
-}
-
+}	

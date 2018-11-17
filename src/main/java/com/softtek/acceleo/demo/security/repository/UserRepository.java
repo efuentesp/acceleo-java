@@ -37,6 +37,8 @@ public interface UserRepository  {
 	
 	public List<User> consultarInformacionPorUsuario2(User user);
 	
+	public List<User> consultarInformacionPorEmail(String email);
+	
 }
 
 

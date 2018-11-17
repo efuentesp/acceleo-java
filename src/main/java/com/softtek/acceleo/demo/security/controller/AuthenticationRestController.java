@@ -1,5 +1,6 @@
 package com.softtek.acceleo.demo.security.controller;
 
+import java.util.List;
 import java.util.Objects;
 import javax.servlet.http.HttpServletRequest;
 
@@ -22,23 +23,32 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RestController;
+
+import com.softtek.acceleo.demo.domain.User;
 import com.softtek.acceleo.demo.security.JwtAuthenticationRequest;
 import com.softtek.acceleo.demo.security.JwtTokenUtil;
 import com.softtek.acceleo.demo.security.JwtUser;
 import com.softtek.acceleo.demo.security.exception.AuthenticationException;
+import com.softtek.acceleo.demo.security.service.JwtAuthenticationError;
 import com.softtek.acceleo.demo.security.service.JwtAuthenticationResponse;
+import com.softtek.acceleo.demo.service.UserService;
 
 @RestController
 @PropertySource("application.properties")
 public class AuthenticationRestController {
 	
 	private final Logger logger = LoggerFactory.getLogger(this.getClass());
+	private final int HTTP_STATUS_UNAUTHORIZED = 401;
+	private final int CERO = 0;
 
     @Value("${jwt.header}")
     private String tokenHeader;
 
     @Autowired
     private AuthenticationManager authenticationManager;
+    
+    @Autowired
+    private UserService userService;         
 
     @Autowired
     private JwtTokenUtil jwtTokenUtil;
@@ -53,7 +63,7 @@ public class AuthenticationRestController {
     public ResponseEntity<?> createAuthenticationToken(@RequestBody JwtAuthenticationRequest authenticationRequest) throws AuthenticationException {
 
     	logger.info("Enter createAuthenticationToken");
-
+/**
         authenticate(authenticationRequest.getUsername(), authenticationRequest.getPassword());
 
     	logger.info("Out authenticate");
@@ -64,6 +74,32 @@ public class AuthenticationRestController {
 
         // Return the token
         return ResponseEntity.ok(new JwtAuthenticationResponse(token));
+**/
+        try {
+	    	List<User> lstUser = userService.consultarUserPorEmail(authenticationRequest.getEmail());
+	    	
+	    	if( lstUser.isEmpty() || lstUser.get(CERO).getAuthorities().isEmpty() ) {
+	    		logger.info("Incorrect email or password");
+	    		
+	    		return new ResponseEntity(new JwtAuthenticationError("Incorrect email or password", HTTP_STATUS_UNAUTHORIZED), HttpStatus.UNAUTHORIZED);
+	    	}else {
+		        //authenticate(authenticationRequest.getUsername(), authenticationRequest.getPassword());
+	    		//authenticate(lstUser.get(CERO).getUserName(), authenticationRequest.getPassword());
+		
+		    	logger.info("Out authenticate");
+		
+		        // Reload password post-security so we can generate the token
+		        //final UserDetails userDetails = userDetailsService.loadUserByUsername(authenticationRequest.getUsername());
+		    	final UserDetails userDetails = userDetailsService.loadUserByUsername(lstUser.get(CERO).getUserName());
+		        //final String token = jwtTokenUtil.generateToken(userDetails);
+		    	final String token = jwtTokenUtil.generateToken(lstUser.get(CERO));
+		
+		        // Return the token
+		        return ResponseEntity.ok(new JwtAuthenticationResponse(token));
+	    	}
+        }catch(AuthenticationException e) {
+    		return new ResponseEntity(new JwtAuthenticationError("Incorrect email or password", HTTP_STATUS_UNAUTHORIZED), HttpStatus.UNAUTHORIZED);
+    	}
     }
 
     @RequestMapping(value = "${jwt.route.authentication.refresh}", method = RequestMethod.GET)
@@ -93,7 +129,7 @@ public class AuthenticationRestController {
         Objects.requireNonNull(username);
         Objects.requireNonNull(password);
 
-        logger.info("Username: "+username);
+        logger.info("username: "+username);
         logger.info("Password: "+password);
 
         try {
@@ -104,6 +140,7 @@ public class AuthenticationRestController {
         } catch (DisabledException e) {
             throw new AuthenticationException("User is disabled!", e);
         } catch (BadCredentialsException e) {
+        	e.printStackTrace();
             throw new AuthenticationException("Bad credentials!", e);
         }
     }

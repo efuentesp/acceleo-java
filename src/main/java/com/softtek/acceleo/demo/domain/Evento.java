@@ -2,8 +2,18 @@ package com.softtek.acceleo.demo.domain;
 
 import java.io.Serializable;
 import java.util.Date;
+import java.util.List;
+import java.util.UUID;
+
 import javax.persistence.*;
 import javax.validation.constraints.NotNull;
+import javax.validation.constraints.Size;
+
+import com.fasterxml.jackson.annotation.JsonIgnore;
+
+import org.hibernate.annotations.GenericGenerator;
+import org.hibernate.annotations.Parameter;
+
 
 @Entity
 @Table(name = "evento")
@@ -11,138 +21,138 @@ public class Evento implements Serializable {
 
 	private static final long serialVersionUID = 1L;
 
+
 	@Id
-	@GeneratedValue(strategy = GenerationType.AUTO)
-	@Column(name = "eventoId")
-	private Integer  eventoId;
+	@NotNull
+	@GeneratedValue(generator = "UUID")
+	@GenericGenerator(
+			          name = "UUID", 
+	                  strategy = "org.hibernate.id.UUIDGenerator", 
+	                  parameters = {
+	                		@Parameter( 
+	                				name = "uuid_gen_strategy_class", 
+	                				value = "org.hibernate.id.uuid.CustomVersionOneStrategy" 
+	                		) 
+					  } 
+					 )
+	@Column(name = "eventoId", columnDefinition = "VARBINARY(50)")
+	private UUID eventoId;
 
-
 	@NotNull
-	@Column(name = "responsable") 
-	private String responsable;
+	private String tipoevento;
 	@NotNull
-	@Column(name = "fecha") 
-	private Date fecha;
-	@NotNull
-	@Column(name = "nombre") 
+	@Column(name = "nombre")
 	private String nombre;
-
-
-	@NotNull
-	@Column(name = "tipoeventoId", nullable = false)
-	@Enumerated(EnumType.STRING)
-	private Tipoevento tipoeventoId;
-	
-	@OneToOne
-	@JoinColumn(name = "posicionId")
-	private Posicion posicion;
-	
-	@OneToOne
-	@JoinColumn(name = "candidatoId")
-	private Candidato candidato;
 	
 	@NotNull
-	@Column(name = "estatuseventoId", nullable = false)
-	@Enumerated(EnumType.STRING)
-	private Estatusevento estatuseventoId;
-	@Column(name = "feedback") 
-	private String feedback;
-	@Column(name = "responsablereal") 
-	private String responsablereal;
-	@Column(name = "fechareal") 
-	private Date fechareal;
-	@Column(name = "comentarios") 
-	private String comentarios;
-	@Column(name = "notas") 
+	private UUID posicionId;
+	private UUID candidatoId;
+	@NotNull
+	@Column(name = "fecha")
+	@Temporal(TemporalType.TIMESTAMP)
+	private Date fecha;
+	
+	@NotNull
+	@Column(name = "responsable")
+	private String responsable;
+	
+	@Column(name = "notas")
 	private String notas;
+	
+	@Column(name = "fechareal")
+	@Temporal(TemporalType.TIMESTAMP)
+	private Date fechareal;
+	
+	@Column(name = "responsablereal")
+	private String responsablereal;
+	
+	@Column(name = "feedback")
+	private String feedback;
+	
+	@Column(name = "comentarios")
+	private String comentarios;
+	
+	@NotNull
+	private String estatusevento;
 
-	public Integer getEventoId() {
+	public UUID getEventoId() {
 		return eventoId;
 	}
 
-	public void setEventoId(Integer eventoId) {
+	public void setEventoId(UUID eventoId) {
 		this.eventoId = eventoId;
 	}
-
 	
-	public String getResponsable () {
-	    return responsable;  		
-    }
-	public void setResponsable(String responsable) {
-		this.responsable = responsable;
+	public String getTipoevento () {
+	    return tipoevento;
+	    }
+	public void setTipoevento(String tipoevento) {
+		this.tipoevento = tipoevento;
 	}
-	
-	public Date getFecha () {
-	    return fecha;  		
-    }
-	public void setFecha(Date fecha) {
-		this.fecha = fecha;
-	}
-	
 	public String getNombre () {
-	    return nombre;  		
-    }
+	    return nombre;
+	    }
 	public void setNombre(String nombre) {
 		this.nombre = nombre;
 	}
-	public Tipoevento getTipoeventoId () {
-	    return tipoeventoId;  		
-    }
-	public void setTipoeventoId (Tipoevento tipoeventoId) {
-		this.tipoeventoId = tipoeventoId;
+	public UUID getPosicionId () {
+	    return posicionId;
+	    }
+	public void setPosicionId(UUID posicionId) {
+		this.posicionId = posicionId;
 	}
-
-	public Estatusevento getEstatuseventoId () {
-	    return estatuseventoId;  		
-    }
-	public void setEstatuseventoId (Estatusevento estatuseventoId) {
-		this.estatuseventoId = estatuseventoId;
+	public UUID getCandidatoId () {
+	    return candidatoId;
+	    }
+	public void setCandidatoId(UUID candidatoId) {
+		this.candidatoId = candidatoId;
 	}
-	public String  getFeedback () {
-	    return feedback;  		
-    }
-	public void setFeedback (String feedback) {
-		this.feedback = feedback;
+	public Date getFecha () {
+	    return fecha;
+	    }
+	public void setFecha(Date fecha) {
+		this.fecha = fecha;
 	}
-	public String  getResponsablereal () {
-	    return responsablereal;  		
-    }
-	public void setResponsablereal (String responsablereal) {
-		this.responsablereal = responsablereal;
+	public String getResponsable () {
+	    return responsable;
+	    }
+	public void setResponsable(String responsable) {
+		this.responsable = responsable;
 	}
-	public Date  getFechareal () {
-	    return fechareal;  		
-    }
-	public void setFechareal (Date fechareal) {
-		this.fechareal = fechareal;
-	}
-	public String  getComentarios () {
-	    return comentarios;  		
-    }
-	public void setComentarios (String comentarios) {
-		this.comentarios = comentarios;
-	}
-	public String  getNotas () {
-	    return notas;  		
-    }
-	public void setNotas (String notas) {
+	public String getNotas () {
+	    return notas;
+	    }
+	public void setNotas(String notas) {
 		this.notas = notas;
 	}
-
-	public Posicion getPosicion() {
-		return posicion;
+	public Date getFechareal () {
+	    return fechareal;
+	    }
+	public void setFechareal(Date fechareal) {
+		this.fechareal = fechareal;
 	}
-
-	public void setPosicion(Posicion posicion) {
-		this.posicion = posicion;
+	public String getResponsablereal () {
+	    return responsablereal;
+	    }
+	public void setResponsablereal(String responsablereal) {
+		this.responsablereal = responsablereal;
 	}
-
-	public Candidato getCandidato() {
-		return candidato;
+	public String getFeedback () {
+	    return feedback;
+	    }
+	public void setFeedback(String feedback) {
+		this.feedback = feedback;
 	}
-
-	public void setCandidato(Candidato candidato) {
-		this.candidato = candidato;
+	public String getComentarios () {
+	    return comentarios;
+	    }
+	public void setComentarios(String comentarios) {
+		this.comentarios = comentarios;
 	}
-
-}			
+	public String getEstatusevento () {
+	    return estatusevento;
+	    }
+	public void setEstatusevento(String estatusevento) {
+		this.estatusevento = estatusevento;
+	}
+}		

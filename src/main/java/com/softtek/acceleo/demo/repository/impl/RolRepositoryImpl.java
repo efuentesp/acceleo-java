@@ -7,16 +7,19 @@
 package com.softtek.acceleo.demo.repository.impl;
 
 import java.util.List;
+import java.util.UUID;
 
+import org.hibernate.Hibernate;
+import org.hibernate.Session;
 import org.hibernate.SessionFactory;
 import org.hibernate.criterion.Example;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
 import org.hibernate.criterion.Projections;
 import org.hibernate.criterion.Restrictions;
-
 import com.softtek.acceleo.demo.domain.Rol;
 import com.softtek.acceleo.demo.repository.RolRepository;
+
 /**
  * Clase rolRepositoryImpl.
  * @author PSG.
@@ -38,18 +41,37 @@ public class RolRepositoryImpl implements RolRepository {
 	 */
 	public void editRol(Rol rol) {
 		sessionFactory.getCurrentSession().update(rol);
-
+		
 	}
 	/**
 	 * Consulta informacion de rol.
 	 */
 	@SuppressWarnings({ "unchecked" })
 	public List<Rol> listRols(Rol rol) {
-
-		return (List<Rol>) sessionFactory.getCurrentSession()
-				.createCriteria(Rol.class).list();
+		List<Rol> rols = sessionFactory.getCurrentSession().createCriteria(Rol.class).list();
+		return rols;
 	}
-
+	
+	/**
+	 * Consulta informacion de rol.
+	 */
+	@SuppressWarnings({ "unchecked" })
+	public List<Rol> listRolsByRol(Rol rol, int id) {
+		List<Rol> rols = 
+		sessionFactory.getCurrentSession().createCriteria(Rol.class)
+		.add(Restrictions.like("rolId",id)).list();
+		return rols;
+	}
+ 
+	/**
+	 * Consulta informacion de rol.
+	 */
+	@SuppressWarnings({ "unchecked" })
+	public List<Rol> listRolsByUsername(Rol rol, String id) {
+		List<Rol> rols = sessionFactory.getCurrentSession().createCriteria(Rol.class).add(Restrictions.like("username",id)).list();
+		return rols;
+	}
+	
 	/**
 	 * Consulta informacion de rol y la pagina.
 	 */
@@ -58,24 +80,15 @@ public class RolRepositoryImpl implements RolRepository {
 		
 		return (List<Rol>) sessionFactory.getCurrentSession()
 			.createCriteria(Rol.class).setFirstResult((page - 1) * size)
-			.add(					
-					Restrictions.or(Restrictions.or(Restrictions.or(Restrictions.or(Restrictions.or(Restrictions.or(Restrictions.or(	
-Restrictions.like("rol", "%" + query +"%"),
-Restrictions.like("activo", "%" + query +"%")),
-Restrictions.like("rol", "%" + query +"%")),
-Restrictions.like("rol", "%" + query +"%")),
-Restrictions.like("rol", "%" + query +"%")),
-Restrictions.like("clave", "%" + query +"%")),
-Restrictions.like("nombre", "%" + query +"%")),
-Restrictions.like("rol", "%" + query +"%"))
-					
-					
-					
-					
-					
-					
-					
-).list();
+			.add(
+			Restrictions.or(
+			Restrictions.or(	
+			Restrictions.or(
+			Restrictions.like("rol", "%" + query +"%"), 
+			Restrictions.like("clave", "%" + query +"%")),
+			Restrictions.like("nombre", "%" + query +"%")),
+			Restrictions.like("activo", "%" + query +"%"))
+			).list();
 	}
 
 	/**
@@ -110,17 +123,15 @@ Restrictions.like("rol", "%" + query +"%"))
 		long totalRows = 0;
 		totalRows = (Long) sessionFactory.getCurrentSession()
 		.createCriteria(Rol.class).setProjection(Projections.rowCount())
-					.add(	
-							Restrictions.or(Restrictions.or(Restrictions.or(Restrictions.or(Restrictions.or(Restrictions.or(Restrictions.or(	
-						Restrictions.like("rol", "%" + query +"%"),Restrictions.like("activo", "%" + query +"%")),Restrictions.like("rol", "%" + query +"%")),Restrictions.like("rol", "%" + query +"%")),Restrictions.like("rol", "%" + query +"%")),Restrictions.like("clave", "%" + query +"%")),Restrictions.like("nombre", "%" + query +"%")),Restrictions.like("rol", "%" + query +"%"))	
-	
-	
-	
-	
-	
-	
-	
-).uniqueResult();
+			.add(
+			Restrictions.or(
+			Restrictions.or(	
+			Restrictions.or(
+			Restrictions.like("rol", "%" + query +"%"), 
+			Restrictions.like("clave", "%" + query +"%")),
+			Restrictions.like("nombre", "%" + query +"%")),
+			Restrictions.like("activo", "%" + query +"%"))
+			).uniqueResult();
 		return totalRows;  
 	}
 
@@ -142,7 +153,7 @@ Restrictions.like("rol", "%" + query +"%"))
 	/**
 	 * Consulta informacion de un rol.
 	 */
-	public Rol getRol(int empid) {
+	public Rol getRol(UUID empid) {
 		return (Rol) sessionFactory.getCurrentSession().get(
 				Rol.class, empid);
 	}
@@ -155,3 +166,4 @@ Restrictions.like("rol", "%" + query +"%"))
 	}
 
 }
+

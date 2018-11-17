@@ -7,8 +7,12 @@
 package com.softtek.acceleo.demo.repository.impl;
 
 import java.util.List;
+import java.util.UUID;
 
+import org.hibernate.Hibernate;
+import org.hibernate.Session;
 import org.hibernate.SessionFactory;
+import org.hibernate.criterion.Example;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
 import org.hibernate.criterion.Projections;
@@ -37,47 +41,37 @@ public class SolicitudRepositoryImpl implements SolicitudRepository {
 	 */
 	public void editSolicitud(Solicitud solicitud) {
 		sessionFactory.getCurrentSession().update(solicitud);
-
+		
 	}
 	/**
 	 * Consulta informacion de solicitud.
 	 */
 	@SuppressWarnings({ "unchecked" })
-	public List<Solicitud> listSolicituds(Solicitud sol) {
-
-		List<Solicitud> solicitudes = sessionFactory.getCurrentSession().createCriteria(Solicitud.class).list();
-//		for (Solicitud s: solicitudes) {
-//			Hibernate.initialize(s.getCandidatos());
-//		}
-		return solicitudes;
+	public List<Solicitud> listSolicituds(Solicitud solicitud) {
+		List<Solicitud> solicituds = sessionFactory.getCurrentSession().createCriteria(Solicitud.class).list();
+		return solicituds;
 	}
 	
 	/**
 	 * Consulta informacion de solicitud.
 	 */
 	@SuppressWarnings({ "unchecked" })
-	public List<Solicitud> listSolicitudsByCandidato(Solicitud sol, int candidatoId) {
-
-		List<Solicitud> solicitudes = sessionFactory.getCurrentSession().createCriteria(Solicitud.class).add(Restrictions.like("candidato.candidatoId", candidatoId)).list();
-//		for (Solicitud s: solicitudes) {
-//			Hibernate.initialize(s.getCandidatos());
-//		}
-		return solicitudes;
+	public List<Solicitud> listSolicitudsBySolicitud(Solicitud solicitud, int id) {
+		List<Solicitud> solicituds = 
+		sessionFactory.getCurrentSession().createCriteria(Solicitud.class)
+		.add(Restrictions.like("solicitudId",id)).list();
+		return solicituds;
 	}
-	
+ 
 	/**
 	 * Consulta informacion de solicitud.
 	 */
 	@SuppressWarnings({ "unchecked" })
-	public List<Solicitud> listSolicitudsByPosicion(Solicitud sol, int posicionId) {
-
-		List<Solicitud> solicitudes = sessionFactory.getCurrentSession().createCriteria(Solicitud.class).add(Restrictions.like("posicionId", posicionId)).list();
-//		for (Solicitud s: solicitudes) {
-//			Hibernate.initialize(s.getCandidatos());
-//		}
-		return solicitudes;
+	public List<Solicitud> listSolicitudsByUsername(Solicitud solicitud, String id) {
+		List<Solicitud> solicituds = sessionFactory.getCurrentSession().createCriteria(Solicitud.class).add(Restrictions.like("username",id)).list();
+		return solicituds;
 	}
-
+	
 	/**
 	 * Consulta informacion de solicitud y la pagina.
 	 */
@@ -86,32 +80,27 @@ public class SolicitudRepositoryImpl implements SolicitudRepository {
 		
 		return (List<Solicitud>) sessionFactory.getCurrentSession()
 			.createCriteria(Solicitud.class).setFirstResult((page - 1) * size)
-			.add(					
-					Restrictions.or(Restrictions.or(Restrictions.or(Restrictions.or(Restrictions.or(Restrictions.or(Restrictions.or(Restrictions.or(Restrictions.or(Restrictions.or(Restrictions.or(	
-Restrictions.like("solicitud", "%" + query +"%"),
-Restrictions.like("solicitud", "%" + query +"%")),
-Restrictions.like("solicitud", "%" + query +"%")),
-Restrictions.like("salario", "%" + query +"%")),
-Restrictions.like("correo", "%" + query +"%")),
-Restrictions.like("solicitud", "%" + query +"%")),
-Restrictions.like("candidato", "%" + query +"%")),
-Restrictions.like("estado", "%" + query +"%")),
-Restrictions.like("posicion", "%" + query +"%")),
-Restrictions.like("solicitud", "%" + query +"%")),
-Restrictions.like("fecha", "%" + query +"%")),
-Restrictions.like("telefono", "%" + query +"%"))
-					
-					
-					
-					
-					
-					
-					
-					
-					
-					
-					
-).list();
+			.add(
+			Restrictions.or(
+			Restrictions.or(
+			Restrictions.or(
+			Restrictions.or(
+			Restrictions.or(	
+			Restrictions.or(	
+			Restrictions.or(
+			Restrictions.or(
+			Restrictions.or(
+			Restrictions.like("solicitud", "%" + query +"%"), 
+			Restrictions.like("posicionId", "%" + query +"%")),
+			Restrictions.like("candidatoId", "%" + query +"%")),
+			Restrictions.like("fecha", "%" + query +"%")),
+			Restrictions.like("salario", "%" + query +"%")),
+			Restrictions.like("correo", "%" + query +"%")),
+			Restrictions.like("telefono", "%" + query +"%")),
+			Restrictions.like("direccionId", "%" + query +"%")),
+			Restrictions.like("trayectoria", "%" + query +"%")),
+			Restrictions.like("estatussolicitud", "%" + query +"%"))
+			).list();
 	}
 
 	/**
@@ -146,21 +135,27 @@ Restrictions.like("telefono", "%" + query +"%"))
 		long totalRows = 0;
 		totalRows = (Long) sessionFactory.getCurrentSession()
 		.createCriteria(Solicitud.class).setProjection(Projections.rowCount())
-					.add(	
-							Restrictions.or(Restrictions.or(Restrictions.or(Restrictions.or(Restrictions.or(Restrictions.or(Restrictions.or(Restrictions.or(Restrictions.or(Restrictions.or(Restrictions.or(	
-						Restrictions.like("solicitud", "%" + query +"%"),Restrictions.like("solicitud", "%" + query +"%")),Restrictions.like("solicitud", "%" + query +"%")),Restrictions.like("salario", "%" + query +"%")),Restrictions.like("correo", "%" + query +"%")),Restrictions.like("solicitud", "%" + query +"%")),Restrictions.like("candidato", "%" + query +"%")),Restrictions.like("estado", "%" + query +"%")),Restrictions.like("posicion", "%" + query +"%")),Restrictions.like("solicitud", "%" + query +"%")),Restrictions.like("fecha", "%" + query +"%")),Restrictions.like("telefono", "%" + query +"%"))	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-).uniqueResult();
+			.add(
+			Restrictions.or(
+			Restrictions.or(
+			Restrictions.or(
+			Restrictions.or(
+			Restrictions.or(	
+			Restrictions.or(	
+			Restrictions.or(
+			Restrictions.or(
+			Restrictions.or(
+			Restrictions.like("solicitud", "%" + query +"%"), 
+			Restrictions.like("posicionId", "%" + query +"%")),
+			Restrictions.like("candidatoId", "%" + query +"%")),
+			Restrictions.like("fecha", "%" + query +"%")),
+			Restrictions.like("salario", "%" + query +"%")),
+			Restrictions.like("correo", "%" + query +"%")),
+			Restrictions.like("telefono", "%" + query +"%")),
+			Restrictions.like("direccionId", "%" + query +"%")),
+			Restrictions.like("trayectoria", "%" + query +"%")),
+			Restrictions.like("estatussolicitud", "%" + query +"%"))
+			).uniqueResult();
 		return totalRows;  
 	}
 
@@ -182,7 +177,7 @@ Restrictions.like("telefono", "%" + query +"%"))
 	/**
 	 * Consulta informacion de un solicitud.
 	 */
-	public Solicitud getSolicitud(int empid) {
+	public Solicitud getSolicitud(UUID empid) {
 		return (Solicitud) sessionFactory.getCurrentSession().get(
 				Solicitud.class, empid);
 	}
@@ -195,3 +190,4 @@ Restrictions.like("telefono", "%" + query +"%"))
 	}
 
 }
+

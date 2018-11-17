@@ -12,45 +12,58 @@ import java.util.Date;
 import java.util.List;
 
 @Entity
-@Table(name = "authority")
+@Table(name = "AUTHORITY")
 public class Authority {
 
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
-    @Column(name = "id_authority")
+    @Column(name = "ID_AUTHORITY")
     private Long idAuthority;
 
-    @Column(name = "name", length = 50)
+    @Column(name = "NAME", length = 50)
     @NotNull
     @OrderBy("name ASC")
     private String name;
     
-    @Column(name = "enabled")
+    @Column(name = "ENABLED")
     @NotNull
     private Boolean enabled;
     
     
-    @Column(name = "creationdate")
+    @Column(name = "CREATIONDATE")
     @NotNull
     private Date creationDate;
 
-    @Column(name = "modifieddate")
+    @Column(name = "MODIFIEDDATE")
     private Date modifiedDate;
     
 
 	@ManyToMany(fetch = FetchType.LAZY, cascade = CascadeType.ALL)
 	@JoinTable(name = "authority_privilege", joinColumns = { 
-			@JoinColumn(name = "id_authority", nullable = false, updatable = false) }, 
-			inverseJoinColumns = { @JoinColumn(name = "id_privilege", nullable = false, updatable = false) })
-	@WhereJoinTable(clause = "enabled = '1'") 
-	@JsonIgnore 
-	private List<Privilege> privilege;
-    
-    
+			@JoinColumn(name = "ID_AUTHORITY", nullable = false, updatable = false) }, 
+			inverseJoinColumns = { @JoinColumn(name = "ID_PRIVILEGE", nullable = false, updatable = false) })
+	@WhereJoinTable(clause = "ENABLED = '1'") 
+	@JsonIgnore
+	private List<Privilege> privileges;
+	
+//    @ManyToMany(mappedBy = "authorities")
+//    @JsonIgnore
+//    private List<Privilege> privileges;
+//	
+//    
+//    
+//	public List<Privilege> getPrivileges() {
+//		return privileges;
+//	}
+//
+//	public void setPrivileges(List<Privilege> privileges) {
+//		this.privileges = privileges;
+//	}
+
 	@ManyToMany(fetch = FetchType.LAZY, cascade = CascadeType.ALL)
 	@JoinTable(name = "user_authority", joinColumns = { 
-			@JoinColumn(name = "id_authority", nullable = false, updatable = false) }, 
-			inverseJoinColumns = { @JoinColumn(name = "id_user", nullable = false, updatable = false) })
+			@JoinColumn(name = "ID_AUTHORITY", nullable = false, updatable = false) }, 
+			inverseJoinColumns = { @JoinColumn(name = "ID_USER", nullable = false, updatable = false) })
 	//@WhereJoinTable(clause = "ENABLED = '1'")
 	@JsonIgnore 
 	private List<User> user;
@@ -63,8 +76,8 @@ public class Authority {
         this.idAuthority = idAuthority;
     }
     
-    public List<Privilege> getPrivilege() {
-		return privilege;
+    public List<Privilege> getPrivileges() {
+		return privileges;
 	}
 
 	public String getName() {
@@ -75,8 +88,8 @@ public class Authority {
 		this.name = name;
 	}
 
-	public void setPrivilege(List<Privilege> privilege) {
-		this.privilege = privilege;
+	public void setPrivileges(List<Privilege> privilege) {
+		this.privileges = privilege;
 	}
         
     public List<User> getUser() {

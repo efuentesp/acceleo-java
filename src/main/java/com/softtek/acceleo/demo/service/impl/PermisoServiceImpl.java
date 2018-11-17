@@ -1,4 +1,3 @@
-
 /**
  * Autor: PSG.
  * Proyecto:
@@ -8,6 +7,7 @@
 package com.softtek.acceleo.demo.service.impl;
 
 import java.util.List;
+import java.util.UUID;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -34,7 +34,6 @@ public class PermisoServiceImpl implements PermisoService {
 	 */
 	@Transactional(propagation = Propagation.REQUIRED, readOnly = false)
 	public void addPermiso(Permiso permiso) {
-		
 		permisoRepository.addPermiso(permiso);
 	}
 
@@ -43,7 +42,6 @@ public class PermisoServiceImpl implements PermisoService {
 	 */
 	@Transactional(propagation = Propagation.REQUIRED, readOnly = false)
 	public void editPermiso(Permiso permiso) {
-		
 		permisoRepository.editPermiso(permiso);
 	}
 	
@@ -51,15 +49,13 @@ public class PermisoServiceImpl implements PermisoService {
 	 * Consulta informacion de permisos.
 	 */
 	public List<Permiso> listPermisos(Permiso permiso) {
-
 		return permisoRepository.listPermisos(permiso);
 	}
 
 	/**
 	 * Obtiene informacion de un permiso.
 	 */
-	public Permiso getPermiso(int empid) {
-
+	public Permiso getPermiso(UUID empid) {
 		return permisoRepository.getPermiso(empid);
 	}
 
@@ -68,8 +64,6 @@ public class PermisoServiceImpl implements PermisoService {
 	 */
 	@Transactional(propagation = Propagation.REQUIRED, readOnly = false)
 	public void deletePermiso(Permiso permiso) {
-		System.out.println("Entrando al deletePermiso");
-
 		 permisoRepository.deletePermiso(permiso);
 	}
 
@@ -78,7 +72,6 @@ public class PermisoServiceImpl implements PermisoService {
 	 */
 	@Transactional(propagation = Propagation.REQUIRED, readOnly = false)
 	public List<Permiso> listPermisosPagination(Permiso permiso, int page, int size) {
-
 		return permisoRepository.listPermisosPagination(permiso, page, size);
 	}
 
@@ -105,7 +98,6 @@ public class PermisoServiceImpl implements PermisoService {
 	 */
 	@Transactional(propagation = Propagation.REQUIRED, readOnly = false)
 	public long getTotalRows() {
-
 		return permisoRepository.getTotalRows();
 	}
 
@@ -116,6 +108,4 @@ public class PermisoServiceImpl implements PermisoService {
 		// TODO Auto-generated method stub
 		return permisoRepository.listPermisosQuery(permiso, query, page, size);
 	}
-
-}
-
+}	

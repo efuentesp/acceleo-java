@@ -10,6 +10,7 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.UUID;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
@@ -49,26 +50,126 @@ public class PosicionController {
 	private PosicionService posicionService;
 	
 	Posicion posicion = new Posicion();
-
-	/************************************** SEARCH
+	/************************************** CREATE  **************************************
+	 * Crea un nuevo posicion.
+	 * @param posicion.
+	 * @param ucBuilder.
+	 * @return ResponseEntity.
+	 */
+	 @RequestMapping(value = "/srp/posicion", method = RequestMethod.POST)
+	 @PreAuthorize("hasRole('ROLE_POSICION:CREATE')")
+	 public ResponseEntity<Map<String, Object>> createPosicion(@RequestBody Posicion posicion,    UriComponentsBuilder ucBuilder) {
+	   try{
+	        posicionService.addPosicion(posicion);
+	 
+	        HttpHeaders headers = new HttpHeaders();
+	        headers.setLocation(ucBuilder.path("/posicion/{id}").buildAndExpand(posicion.getPosicionId()).toUri());
+	        
+		        	Posicion posicionFound = posicionService.getPosicion(posicion.getPosicionId());
+	
+			Map<String, Object> posicionMAP = new HashMap<>();
+			posicionMAP.put("id", posicionFound.getPosicionId());
+			/*posicionFound.setFilialId(posicion.getFilialId());*/
+			posicionMAP.put("filialId", posicion.getFilialId());
+			/*posicionFound.setPuestos(posicion.getPuestos());*/
+			posicionMAP.put("puestos", posicion.getPuestos());
+			/*posicionFound.setNombre(posicion.getNombre());*/
+			posicionMAP.put("nombre", posicion.getNombre());
+			/*posicionFound.setDescripcion(posicion.getDescripcion());*/
+			posicionMAP.put("descripcion", posicion.getDescripcion());
+			/*posicionFound.setFecha(posicion.getFecha());*/
+			posicionMAP.put("fecha", posicion.getFecha());
+			/*posicionFound.setContacto(posicion.getContacto());*/
+			posicionMAP.put("contacto", posicion.getContacto());
+			/*posicionFound.setSalario(posicion.getSalario());*/
+			posicionMAP.put("salario", posicion.getSalario());
+			/*posicionFound.setVacantes(posicion.getVacantes());*/
+			posicionMAP.put("vacantes", posicion.getVacantes());
+			/*posicionFound.setTiponomina(posicion.getTiponomina());*/
+			posicionMAP.put("tiponomina", posicion.getTiponomina());
+			/*posicionFound.setReclutadorId(posicion.getReclutadorId());*/
+			posicionMAP.put("reclutadorId", posicion.getReclutadorId());
+			/*posicionFound.setEstatusposicion(posicion.getEstatusposicion());*/
+			posicionMAP.put("estatusposicion", posicion.getEstatusposicion());
+			
+		        	return new ResponseEntity<Map<String, Object>>(posicionMAP, headers, HttpStatus.CREATED);
+	   }catch(Exception e){
+		        	 HttpHeaders responseHeaders = new HttpHeaders();
+		        	 responseHeaders.set("Exception", "Exception: " + e);
+		        	 responseHeaders.set("Message", "Posicion no se puede agregar la informacion. " + e.getMessage());	  
+		             return new ResponseEntity<Map<String, Object>>(responseHeaders,HttpStatus.CONFLICT);		   	
+	   }
+	 }
+	/************************************** UPDATE **************************************
+	  * Actualiza la informacion de un posicion.
+	  * @param id.
+	  * @param posicion.
+	  * @return ResponseEntity.
+	  */
+	 @RequestMapping(value = "/srp/posicion/{id}", method = RequestMethod.PUT)
+		 	 @PreAuthorize("hasRole('ROLE_POSICION:UPDATE')") 
+	    public ResponseEntity<Map<String, Object>> actualizarPosicion(
+				@PathVariable("id") String id, 
+				@RequestBody Posicion posicion) {
+	        
+	        UUID uuid = UUID.fromString(id);
+	        Posicion posicionFound = posicionService.getPosicion(uuid);
+	         
+	        if (posicionFound==null) {
+	            return new ResponseEntity<Map<String, Object>>(HttpStatus.NOT_FOUND);
+	        }
+	
+		posicion.setPosicionId(posicionFound.getPosicionId());
+		posicionService.editPosicion(posicion);
+		
+		Map<String, Object> posicionMAP = new HashMap<>();
+		posicionMAP.put("id", posicionFound.getPosicionId());
+		/*posicionFound.setFilialId(posicion.getFilialId());*/
+		posicionMAP.put("filialId", posicion.getFilialId());
+		/*posicionFound.setPuestos(posicion.getPuestos());*/
+		posicionMAP.put("puestos", posicion.getPuestos());
+		/*posicionFound.setNombre(posicion.getNombre());*/
+		posicionMAP.put("nombre", posicion.getNombre());
+		/*posicionFound.setDescripcion(posicion.getDescripcion());*/
+		posicionMAP.put("descripcion", posicion.getDescripcion());
+		/*posicionFound.setFecha(posicion.getFecha());*/
+		posicionMAP.put("fecha", posicion.getFecha());
+		/*posicionFound.setContacto(posicion.getContacto());*/
+		posicionMAP.put("contacto", posicion.getContacto());
+		/*posicionFound.setSalario(posicion.getSalario());*/
+		posicionMAP.put("salario", posicion.getSalario());
+		/*posicionFound.setVacantes(posicion.getVacantes());*/
+		posicionMAP.put("vacantes", posicion.getVacantes());
+		/*posicionFound.setTiponomina(posicion.getTiponomina());*/
+		posicionMAP.put("tiponomina", posicion.getTiponomina());
+		/*posicionFound.setReclutadorId(posicion.getReclutadorId());*/
+		posicionMAP.put("reclutadorId", posicion.getReclutadorId());
+		/*posicionFound.setEstatusposicion(posicion.getEstatusposicion());*/
+		posicionMAP.put("estatusposicion", posicion.getEstatusposicion());
+		
+		HttpHeaders headers = new HttpHeaders();
+	    return new ResponseEntity<Map<String, Object>>(posicionMAP, headers, HttpStatus.OK);
+	  } 
+	/************************************** SEARCH **************************************
 	 * Obtiene informacion de los posicions.
 	 * @param requestParams.
 	 * @param request.
 	 * @param response.
 	 * @return List<Posicion>.
 	 */
-	@RequestMapping(value = "/posicion", method = RequestMethod.GET, produces = "application/json")
-	@PreAuthorize("hasRole('POSICIONSEARCH')")
-	public @ResponseBody  List<Posicion> getPosicions(@RequestParam Map<String,String> requestParams, HttpServletRequest request, HttpServletResponse response) {
-
-       	String query=requestParams.get("q");
+	 
+	@RequestMapping(value = "/srp/posicion", method = RequestMethod.GET, produces = "application/json")
+	@PreAuthorize("hasRole('ROLE_POSICION:READ')")
+	public @ResponseBody  List<Map<String, Object>> getPosicions(@RequestParam Map<String,String> requestParams, HttpServletRequest request, HttpServletResponse response) {
+		
+		       	String query=requestParams.get("q");
 		int _page= requestParams.get("_page")==null?0:new Integer(requestParams.get("_page")).intValue();
 		long rows = 0;
-
+		
 		List<Posicion> listPosicion = null;
-
+		
 		if (query==null && _page == 0) {
-       		listPosicion = posicionService.listPosicions(posicion);
+		       		listPosicion = posicionService.listPosicions(posicion);
 			rows = posicionService.getTotalRows();
 		} else if (query!= null){
 			listPosicion = posicionService.listPosicionsQuery(posicion, query, _page, 10);
@@ -77,258 +178,83 @@ public class PosicionController {
 			listPosicion = posicionService.listPosicionsPagination(posicion, _page, 10);
 			rows = posicionService.getTotalRows();
 		}
-
+		
+		List<Map<String, Object>> listPosicionMAP = new ArrayList<>();
+		for( Posicion posicion : listPosicion ){
+			Map<String, Object> posicionMAP = new HashMap<>();
+			posicionMAP.put("id", posicion.getPosicionId());
+			/*posicionFound.setFilialId(posicion.getFilialId());*/
+			posicionMAP.put("filialId", posicion.getFilialId());
+			/*posicionFound.setPuestos(posicion.getPuestos());*/
+			posicionMAP.put("puestos", posicion.getPuestos());
+			/*posicionFound.setNombre(posicion.getNombre());*/
+			posicionMAP.put("nombre", posicion.getNombre());
+			/*posicionFound.setDescripcion(posicion.getDescripcion());*/
+			posicionMAP.put("descripcion", posicion.getDescripcion());
+			/*posicionFound.setFecha(posicion.getFecha());*/
+			posicionMAP.put("fecha", posicion.getFecha());
+			/*posicionFound.setContacto(posicion.getContacto());*/
+			posicionMAP.put("contacto", posicion.getContacto());
+			/*posicionFound.setSalario(posicion.getSalario());*/
+			posicionMAP.put("salario", posicion.getSalario());
+			/*posicionFound.setVacantes(posicion.getVacantes());*/
+			posicionMAP.put("vacantes", posicion.getVacantes());
+			/*posicionFound.setTiponomina(posicion.getTiponomina());*/
+			posicionMAP.put("tiponomina", posicion.getTiponomina());
+			/*posicionFound.setReclutadorId(posicion.getReclutadorId());*/
+			posicionMAP.put("reclutadorId", posicion.getReclutadorId());
+			/*posicionFound.setEstatusposicion(posicion.getEstatusposicion());*/
+			posicionMAP.put("estatusposicion", posicion.getEstatusposicion());
+			
+			listPosicionMAP.add(posicionMAP);
+		}
+		
 		response.setHeader("Access-Control-Expose-Headers", "x-total-count");
 		response.setHeader("x-total-count", String.valueOf(rows).toString());	
-
-		return listPosicion;
+		
+		return listPosicionMAP;
 	}
-
-	/************************************* SEARCH
+		
+	/************************************** SEARCH **************************************
 	 * Obtiene informacion de un posicion.
 	 * @param id.
 	 * @return Posicion.
 	 */
-	@RequestMapping(value = "/idposicion/{id}", method = RequestMethod.GET, produces = "application/json")
-	@PreAuthorize("hasRole('POSICIONSEARCH')")
-	    public @ResponseBody  Posicion getPosicion(@PathVariable("id") int id) {	        
+	@RequestMapping(value = "/srp/posicion/{id}", method = RequestMethod.GET, produces = "application/json")
+	@PreAuthorize("hasRole('ROLE_POSICION:READ')")
+	public @ResponseBody  Map<String, Object> getPosicion(@PathVariable("id") String id) {	        
 	        Posicion posicion = null;
 	        
-	        posicion = posicionService.getPosicion(id);
-			return posicion;
-	 }
-
-	/*************************** CREATE
-	 * Crea un nuevo posicion.
-	 * @param posicion.
-	 * @param ucBuilder.
-	 * @return ResponseEntity.
-	 */
-	 @RequestMapping(value = "/posicion", method = RequestMethod.POST)
-	 @PreAuthorize("hasRole('POSICIONCREATE')")
-	    public ResponseEntity<Void> createPosicion(@RequestBody Posicion posicion,    UriComponentsBuilder ucBuilder) {
-	   
-	        posicionService.addPosicion(posicion);
-	 
-	        HttpHeaders headers = new HttpHeaders();
-	        headers.setLocation(ucBuilder.path("/posicion/{id}").buildAndExpand(posicion.getPosicionId()).toUri());
-	        return new ResponseEntity<Void>(headers, HttpStatus.CREATED);
-	 }
-		
-	 /****************************************** UPDATE
-	  * Actualiza la informacion de un posicion.
-	  * @param id.
-	  * @param posicion.
-	  * @return ResponseEntity.
-	  */
-	 @RequestMapping(value = "/posicion/{id}", method = RequestMethod.PUT)
- 	 @PreAuthorize("hasRole('POSICIONUPDATE')") 
-	    public ResponseEntity<Posicion> actualizarPosicion(
-				@PathVariable("id") int id, 
-				@RequestBody Posicion posicion) {
+	        UUID uuid = UUID.fromString(id);
+	        posicion = posicionService.getPosicion(uuid);
 	        
-	        Posicion posicionFound = posicionService.getPosicion(id);
-	         
-	        if (posicionFound==null) {
-	            System.out.println("User with id " + id + " not found");
-	            return new ResponseEntity<Posicion>(HttpStatus.NOT_FOUND);
-	        }
+			Map<String, Object> posicionMAP = new HashMap<>();
+			posicionMAP.put("id", posicion.getPosicionId());
+			/*posicionFound.setFilialId(posicion.getFilialId());*/
+			posicionMAP.put("filialId", posicion.getFilialId());
+			/*posicionFound.setPuestos(posicion.getPuestos());*/
+			posicionMAP.put("puestos", posicion.getPuestos());
+			/*posicionFound.setNombre(posicion.getNombre());*/
+			posicionMAP.put("nombre", posicion.getNombre());
+			/*posicionFound.setDescripcion(posicion.getDescripcion());*/
+			posicionMAP.put("descripcion", posicion.getDescripcion());
+			/*posicionFound.setFecha(posicion.getFecha());*/
+			posicionMAP.put("fecha", posicion.getFecha());
+			/*posicionFound.setContacto(posicion.getContacto());*/
+			posicionMAP.put("contacto", posicion.getContacto());
+			/*posicionFound.setSalario(posicion.getSalario());*/
+			posicionMAP.put("salario", posicion.getSalario());
+			/*posicionFound.setVacantes(posicion.getVacantes());*/
+			posicionMAP.put("vacantes", posicion.getVacantes());
+			/*posicionFound.setTiponomina(posicion.getTiponomina());*/
+			posicionMAP.put("tiponomina", posicion.getTiponomina());
+			/*posicionFound.setReclutadorId(posicion.getReclutadorId());*/
+			posicionMAP.put("reclutadorId", posicion.getReclutadorId());
+			/*posicionFound.setEstatusposicion(posicion.getEstatusposicion());*/
+			posicionMAP.put("estatusposicion", posicion.getEstatusposicion());
+	        
+	        
+			return posicionMAP;
+	 }
 	
-	posicionFound.setDescripcion(posicion.getDescripcion());
-	posicionFound.setContacto(posicion.getContacto());
-	posicionFound.setSalario(posicion.getSalario());
-	posicionFound.setVacantes(posicion.getVacantes());
-	posicionFound.setNombre(posicion.getNombre());
-	posicionFound.setFecha(posicion.getFecha());
-	posicionFound.setFilial(posicion.getFilial());
-	posicionFound.setPuesto(posicion.getPuesto());
-	posicionFound.setTiponominaId(posicion.getTiponominaId());
-	posicionFound.setReclutador(posicion.getReclutador());
-	posicionFound.setEstatusposicionId(posicion.getEstatusposicionId());
-//	posicionFound.setSolicitudId(posicion.getSolicitudId());
-//	posicionFound.setEventoId(posicion.getEventoId());
-	posicionFound.setPosicionId(posicion.getPosicionId());
-
-		    posicionService.editPosicion(posicionFound);
-	        return new ResponseEntity<Posicion>(posicionFound, HttpStatus.OK);
-	  } 	
-	
-		/********************************** DELETE
-		 * Elimina un posicion.
-		 * @param id.
-		 * @return ResponseEntity<Posicion>.
-		 */
-		@RequestMapping(value = "/posicion/{id}", method = RequestMethod.DELETE)
-		@PreAuthorize("hasRole('POSICIONDELETE')")  
-	    public ResponseEntity<Posicion> deletePosicion(@PathVariable("id") int id) {
-			  
-			//try{
-	    	 
-	         Posicion posicion = posicionService.getPosicion(id);
-	         if (posicion == null) {
-	             return new ResponseEntity<Posicion>(HttpStatus.NOT_FOUND);
-	         }
-	  
-           	 try{
-	             posicionService.deletePosicion(posicion);
-	             return new ResponseEntity<Posicion>(HttpStatus.OK);
-	         }catch (Exception e) {
-	        	 HttpHeaders responseHeaders = new HttpHeaders();
-	        	 responseHeaders.set("Exception", "Exception: "+e);
-	        	 responseHeaders.set("Message", "Posicion no se puede eliminar debido a que esta asociado con otra entidad.");	  
-	             return new ResponseEntity<Posicion>(responseHeaders,HttpStatus.INTERNAL_SERVER_ERROR);
-			}
-
-           	//} catch(GenericException e) {
-            //	 return new ResponseEntity<Posicion>(HttpStatus.PRECONDITION_FAILED);
-            //}
-		}
-
-	/**
-	 * Salva informacion de un posicion.
-	 * @param afiliadoBean.
-	 * @return String.
-	 */
-	@RequestMapping(value = "/savePosicion", method = RequestMethod.POST)
-	@PreAuthorize("hasRole('POSICION')")  
-	public @ResponseBody String savePosicion(
-			@ModelAttribute("command") PosicionBean posicionBean) {
-
-		Posicion posicion = prepareModel(posicionBean);
-		posicionService.addPosicion(posicion);
-
-		return "SUCCESS";
-	}
-	
-	/**
-	 * Edita informacion de un posicion.
-	 * @param posicionBean.
-	 * @return String.
-	 */
-	@RequestMapping(value = "/editPosicion", method = RequestMethod.POST)
-	@PreAuthorize("hasRole('POSICION')")  
-	public @ResponseBody String editPosicion(
-			@ModelAttribute("command") PosicionBean posicionBean) {
-
-
-		Posicion posicion = prepareModel(posicionBean);
-		posicionService.editPosicion(posicion);
-		return "SUCCESS";
-	}
-
-	/**
-	 * Agrega un POSICION.
-	 * @param POSICIONBean.
-	 * @param result.
-	 * @return ModelAndView.
-	 */
-	@RequestMapping(value = "/searchPosicion", method = RequestMethod.GET)
-	@PreAuthorize("hasRole('POSICION')")  
-	public ModelAndView addPosicion(
-			@ModelAttribute("command") PosicionBean posicionBean,
-			BindingResult result) {
-
-		Map<String, Object> model = new HashMap<String, Object>();
-		Posicion posicion = null;
-		if (posicionBean != null)
-			posicion = prepareModel(posicionBean);
-		model.put("posicions",
-				prepareListofBean(posicionService.listPosicions(posicion)));
-		return new ModelAndView("searchPosicion", model);
-	}
-
-	/**
-	 * Elimina un posicion.
-	 * @param posicionBean.
-	 * @param result.
-	 * @return ModelAndView.
-	 */
-	@RequestMapping(value = "/deletePosicion", method = RequestMethod.POST)
-	@PreAuthorize("hasRole('POSICION')")  
-	public ModelAndView deletePosicion(
-			@ModelAttribute("command") PosicionBean posicionBean,
-			BindingResult result) {
-		System.out.println("delete " + posicionBean.getPosicionId());
-		posicionService.deletePosicion(prepareModel(posicionBean));
-		Map<String, Object> model = new HashMap<String, Object>();
-		model.put("posicion", null);
-		model.put("posicions",
-				prepareListofBean(posicionService.listPosicions(null)));
-		return new ModelAndView("searchPosicion", model);
-	}
-
-	/**
-	 * 
-	 * @return ModelAndView.
-	 */
-	@RequestMapping(value = "/entryPosicion", method = RequestMethod.GET)
-	@PreAuthorize("hasRole('POSICION')")  
-	public ModelAndView entryPosicion() {
-		return new ModelAndView("redirect:/searchPosicion");
-	}
-
-	private Posicion prepareModel(PosicionBean posicionBean) {
-		Posicion posicion = new Posicion();
-
-		//posicion.setFilialId(posicionBean.getFilialId());
-		//posicion.setPuestoId(posicionBean.getPuestoId());
-		//posicion.setHDateId(posicionBean.getFechaId());
-		//posicion.setHCurrencyId(posicionBean.getSalarioId());
-		//posicion.setHIntegerId(posicionBean.getVacantesId());
-		//posicion.setRadiotiponominaId(posicionBean.getTipoId());
-		//posicion.setReclutadorId(posicionBean.getReclutadorId());
-		//posicion.setRadioestatusposicionId(posicionBean.getEstadoId());
-		//posicion.setSolicitudId(posicionBean.getSolicitudId());
-		//posicion.setEventoId(posicionBean.getEventoId());
-		//posicion.setDisplayresultposicionId(posicionBean.getPosicionId());
-		//posicion.setExposedfilterposicionId(posicionBean.getPosicionId());
-		//posicion.setDisplaymodalposicionId(posicionBean.getPosicionId());
-		//posicion.setEntitynameposicionId(posicionBean.getPosicionId());
-		//posicion.setScaffoldposicionId(posicionBean.getPosicionId());
-		posicion.setNombre(posicionBean.getNombre());
-		posicion.setDescripcion(posicionBean.getDescripcion());
-		posicion.setContacto(posicionBean.getContacto());
-		posicion.setPosicionId(posicionBean.getPosicionId());
-		posicionBean.setPosicionId(null);
-
-		return posicion;
-	}
-
-	/**
-	 * Convierte un objeto de tipo PosicionBean a un objeto de tipo Posicion.
-	 * @param posicionBean.
-	 * @return Posicion.
-	 */
-	private List<PosicionBean> prepareListofBean(List<Posicion> posicions) {
-		List<PosicionBean> beans = null;
-		if (posicions != null && !posicions.isEmpty()) {
-			beans = new ArrayList<PosicionBean>();
-			PosicionBean bean = null;
-			for (Posicion posicion : posicions) {
-				bean = new PosicionBean();
-
-				//bean.setFilialId(posicion.getFilialId());
-				//bean.setPuestoId(posicion.getPuestoId());
-				//bean.setRadiotiponominaId(posicion.getTipoId());
-				//bean.setReclutadorId(posicion.getReclutadorId());
-				//bean.setRadioestatusposicionId(posicion.getEstadoId());
-				//bean.setSolicitudId(posicion.getSolicitudId());
-				//bean.setEventoId(posicion.getEventoId());
-				//bean.setDisplayresultposicionId(posicion.getPosicionId());
-				//bean.setExposedfilterposicionId(posicion.getPosicionId());
-				//bean.setDisplaymodalposicionId(posicion.getPosicionId());
-				//bean.setEntitynameposicionId(posicion.getPosicionId());
-				//bean.setScaffoldposicionId(posicion.getPosicionId());
-				bean.setNombre(posicion.getNombre());
-				bean.setDescripcion(posicion.getDescripcion());
-				bean.setContacto(posicion.getContacto());
-				bean.setPosicionId(posicion.getPosicionId());
-				beans.add(bean);
-			}
-		}
-		return beans;
-	}
-
 }
-
-

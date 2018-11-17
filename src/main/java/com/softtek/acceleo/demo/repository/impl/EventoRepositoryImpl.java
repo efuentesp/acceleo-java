@@ -7,17 +7,19 @@
 package com.softtek.acceleo.demo.repository.impl;
 
 import java.util.List;
+import java.util.UUID;
 
+import org.hibernate.Hibernate;
+import org.hibernate.Session;
 import org.hibernate.SessionFactory;
 import org.hibernate.criterion.Example;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
 import org.hibernate.criterion.Projections;
 import org.hibernate.criterion.Restrictions;
-
 import com.softtek.acceleo.demo.domain.Evento;
-import com.softtek.acceleo.demo.domain.Solicitud;
 import com.softtek.acceleo.demo.repository.EventoRepository;
+
 /**
  * Clase eventoRepositoryImpl.
  * @author PSG.
@@ -39,31 +41,37 @@ public class EventoRepositoryImpl implements EventoRepository {
 	 */
 	public void editEvento(Evento evento) {
 		sessionFactory.getCurrentSession().update(evento);
-
+		
 	}
 	/**
 	 * Consulta informacion de evento.
 	 */
 	@SuppressWarnings({ "unchecked" })
 	public List<Evento> listEventos(Evento evento) {
-
-		return (List<Evento>) sessionFactory.getCurrentSession()
-				.createCriteria(Evento.class).list();
+		List<Evento> eventos = sessionFactory.getCurrentSession().createCriteria(Evento.class).list();
+		return eventos;
 	}
 	
 	/**
 	 * Consulta informacion de evento.
 	 */
 	@SuppressWarnings({ "unchecked" })
-	public List<Evento> listEventosByCandidato(Evento evento, int candidatoId) {
-
-		List<Evento> eventos = sessionFactory.getCurrentSession().createCriteria(Evento.class).add(Restrictions.like("candidato.candidatoId", candidatoId)).list();
-//		for (Solicitud s: solicitudes) {
-//			Hibernate.initialize(s.getCandidatos());
-//		}
+	public List<Evento> listEventosByEvento(Evento evento, int id) {
+		List<Evento> eventos = 
+		sessionFactory.getCurrentSession().createCriteria(Evento.class)
+		.add(Restrictions.like("eventoId",id)).list();
 		return eventos;
 	}
-
+ 
+	/**
+	 * Consulta informacion de evento.
+	 */
+	@SuppressWarnings({ "unchecked" })
+	public List<Evento> listEventosByUsername(Evento evento, String id) {
+		List<Evento> eventos = sessionFactory.getCurrentSession().createCriteria(Evento.class).add(Restrictions.like("username",id)).list();
+		return eventos;
+	}
+	
 	/**
 	 * Consulta informacion de evento y la pagina.
 	 */
@@ -72,42 +80,33 @@ public class EventoRepositoryImpl implements EventoRepository {
 		
 		return (List<Evento>) sessionFactory.getCurrentSession()
 			.createCriteria(Evento.class).setFirstResult((page - 1) * size)
-			.add(					
-					Restrictions.or(Restrictions.or(Restrictions.or(Restrictions.or(Restrictions.or(Restrictions.or(Restrictions.or(Restrictions.or(Restrictions.or(Restrictions.or(Restrictions.or(Restrictions.or(Restrictions.or(Restrictions.or(Restrictions.or(Restrictions.or(	
-Restrictions.like("notas", "%" + query +"%"),
-Restrictions.like("posicion", "%" + query +"%")),
-Restrictions.like("estado", "%" + query +"%")),
-Restrictions.like("evento", "%" + query +"%")),
-Restrictions.like("comentarios", "%" + query +"%")),
-Restrictions.like("responsable", "%" + query +"%")),
-Restrictions.like("tipo", "%" + query +"%")),
-Restrictions.like("evento", "%" + query +"%")),
-Restrictions.like("fecha", "%" + query +"%")),
-Restrictions.like("evento", "%" + query +"%")),
-Restrictions.like("feedback", "%" + query +"%")),
-Restrictions.like("evento", "%" + query +"%")),
-Restrictions.like("fechareal", "%" + query +"%")),
-Restrictions.like("responsablereal", "%" + query +"%")),
-Restrictions.like("candidato", "%" + query +"%")),
-Restrictions.like("nombre", "%" + query +"%")),
-Restrictions.like("evento", "%" + query +"%"))
-					
-					
-					
-					
-					
-					
-					
-					
-					
-					
-					
-					
-					
-					
-					
-					
-).list();
+			.add(
+			Restrictions.or(
+			Restrictions.or(	
+			Restrictions.or(
+			Restrictions.or(
+			Restrictions.or(
+			Restrictions.or(	
+			Restrictions.or(	
+			Restrictions.or(
+			Restrictions.or(	
+			Restrictions.or(	
+			Restrictions.or(	
+			Restrictions.or(
+			Restrictions.like("evento", "%" + query +"%"), 
+			Restrictions.like("tipoevento", "%" + query +"%")),
+			Restrictions.like("nombre", "%" + query +"%")),
+			Restrictions.like("posicionId", "%" + query +"%")),
+			Restrictions.like("candidatoId", "%" + query +"%")),
+			Restrictions.like("fecha", "%" + query +"%")),
+			Restrictions.like("responsable", "%" + query +"%")),
+			Restrictions.like("notas", "%" + query +"%")),
+			Restrictions.like("fechareal", "%" + query +"%")),
+			Restrictions.like("responsablereal", "%" + query +"%")),
+			Restrictions.like("feedback", "%" + query +"%")),
+			Restrictions.like("comentarios", "%" + query +"%")),
+			Restrictions.like("estatusevento", "%" + query +"%"))
+			).list();
 	}
 
 	/**
@@ -142,26 +141,33 @@ Restrictions.like("evento", "%" + query +"%"))
 		long totalRows = 0;
 		totalRows = (Long) sessionFactory.getCurrentSession()
 		.createCriteria(Evento.class).setProjection(Projections.rowCount())
-					.add(	
-							Restrictions.or(Restrictions.or(Restrictions.or(Restrictions.or(Restrictions.or(Restrictions.or(Restrictions.or(Restrictions.or(Restrictions.or(Restrictions.or(Restrictions.or(Restrictions.or(Restrictions.or(Restrictions.or(Restrictions.or(Restrictions.or(	
-						Restrictions.like("notas", "%" + query +"%"),Restrictions.like("posicion", "%" + query +"%")),Restrictions.like("estado", "%" + query +"%")),Restrictions.like("evento", "%" + query +"%")),Restrictions.like("comentarios", "%" + query +"%")),Restrictions.like("responsable", "%" + query +"%")),Restrictions.like("tipo", "%" + query +"%")),Restrictions.like("evento", "%" + query +"%")),Restrictions.like("fecha", "%" + query +"%")),Restrictions.like("evento", "%" + query +"%")),Restrictions.like("feedback", "%" + query +"%")),Restrictions.like("evento", "%" + query +"%")),Restrictions.like("fechareal", "%" + query +"%")),Restrictions.like("responsablereal", "%" + query +"%")),Restrictions.like("candidato", "%" + query +"%")),Restrictions.like("nombre", "%" + query +"%")),Restrictions.like("evento", "%" + query +"%"))	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-).uniqueResult();
+			.add(
+			Restrictions.or(
+			Restrictions.or(	
+			Restrictions.or(
+			Restrictions.or(
+			Restrictions.or(
+			Restrictions.or(	
+			Restrictions.or(	
+			Restrictions.or(
+			Restrictions.or(	
+			Restrictions.or(	
+			Restrictions.or(	
+			Restrictions.or(
+			Restrictions.like("evento", "%" + query +"%"), 
+			Restrictions.like("tipoevento", "%" + query +"%")),
+			Restrictions.like("nombre", "%" + query +"%")),
+			Restrictions.like("posicionId", "%" + query +"%")),
+			Restrictions.like("candidatoId", "%" + query +"%")),
+			Restrictions.like("fecha", "%" + query +"%")),
+			Restrictions.like("responsable", "%" + query +"%")),
+			Restrictions.like("notas", "%" + query +"%")),
+			Restrictions.like("fechareal", "%" + query +"%")),
+			Restrictions.like("responsablereal", "%" + query +"%")),
+			Restrictions.like("feedback", "%" + query +"%")),
+			Restrictions.like("comentarios", "%" + query +"%")),
+			Restrictions.like("estatusevento", "%" + query +"%"))
+			).uniqueResult();
 		return totalRows;  
 	}
 
@@ -183,7 +189,7 @@ Restrictions.like("evento", "%" + query +"%"))
 	/**
 	 * Consulta informacion de un evento.
 	 */
-	public Evento getEvento(int empid) {
+	public Evento getEvento(UUID empid) {
 		return (Evento) sessionFactory.getCurrentSession().get(
 				Evento.class, empid);
 	}
@@ -196,3 +202,4 @@ Restrictions.like("evento", "%" + query +"%"))
 	}
 
 }
+

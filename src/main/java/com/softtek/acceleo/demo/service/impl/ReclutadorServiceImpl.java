@@ -1,4 +1,3 @@
-
 /**
  * Autor: PSG.
  * Proyecto:
@@ -8,6 +7,7 @@
 package com.softtek.acceleo.demo.service.impl;
 
 import java.util.List;
+import java.util.UUID;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -34,7 +34,6 @@ public class ReclutadorServiceImpl implements ReclutadorService {
 	 */
 	@Transactional(propagation = Propagation.REQUIRED, readOnly = false)
 	public void addReclutador(Reclutador reclutador) {
-		
 		reclutadorRepository.addReclutador(reclutador);
 	}
 
@@ -43,7 +42,6 @@ public class ReclutadorServiceImpl implements ReclutadorService {
 	 */
 	@Transactional(propagation = Propagation.REQUIRED, readOnly = false)
 	public void editReclutador(Reclutador reclutador) {
-		
 		reclutadorRepository.editReclutador(reclutador);
 	}
 	
@@ -51,15 +49,13 @@ public class ReclutadorServiceImpl implements ReclutadorService {
 	 * Consulta informacion de reclutadors.
 	 */
 	public List<Reclutador> listReclutadors(Reclutador reclutador) {
-
 		return reclutadorRepository.listReclutadors(reclutador);
 	}
 
 	/**
 	 * Obtiene informacion de un reclutador.
 	 */
-	public Reclutador getReclutador(int empid) {
-
+	public Reclutador getReclutador(UUID empid) {
 		return reclutadorRepository.getReclutador(empid);
 	}
 
@@ -68,8 +64,6 @@ public class ReclutadorServiceImpl implements ReclutadorService {
 	 */
 	@Transactional(propagation = Propagation.REQUIRED, readOnly = false)
 	public void deleteReclutador(Reclutador reclutador) {
-		System.out.println("Entrando al deleteReclutador");
-
 		 reclutadorRepository.deleteReclutador(reclutador);
 	}
 
@@ -78,7 +72,6 @@ public class ReclutadorServiceImpl implements ReclutadorService {
 	 */
 	@Transactional(propagation = Propagation.REQUIRED, readOnly = false)
 	public List<Reclutador> listReclutadorsPagination(Reclutador reclutador, int page, int size) {
-
 		return reclutadorRepository.listReclutadorsPagination(reclutador, page, size);
 	}
 
@@ -105,7 +98,6 @@ public class ReclutadorServiceImpl implements ReclutadorService {
 	 */
 	@Transactional(propagation = Propagation.REQUIRED, readOnly = false)
 	public long getTotalRows() {
-
 		return reclutadorRepository.getTotalRows();
 	}
 
@@ -116,6 +108,4 @@ public class ReclutadorServiceImpl implements ReclutadorService {
 		// TODO Auto-generated method stub
 		return reclutadorRepository.listReclutadorsQuery(reclutador, query, page, size);
 	}
-
-}
-
+}	

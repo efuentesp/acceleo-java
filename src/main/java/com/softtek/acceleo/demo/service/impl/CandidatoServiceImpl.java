@@ -1,4 +1,3 @@
-
 /**
  * Autor: PSG.
  * Proyecto:
@@ -8,6 +7,7 @@
 package com.softtek.acceleo.demo.service.impl;
 
 import java.util.List;
+import java.util.UUID;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -34,7 +34,6 @@ public class CandidatoServiceImpl implements CandidatoService {
 	 */
 	@Transactional(propagation = Propagation.REQUIRED, readOnly = false)
 	public void addCandidato(Candidato candidato) {
-		
 		candidatoRepository.addCandidato(candidato);
 	}
 
@@ -43,7 +42,6 @@ public class CandidatoServiceImpl implements CandidatoService {
 	 */
 	@Transactional(propagation = Propagation.REQUIRED, readOnly = false)
 	public void editCandidato(Candidato candidato) {
-		
 		candidatoRepository.editCandidato(candidato);
 	}
 	
@@ -51,15 +49,13 @@ public class CandidatoServiceImpl implements CandidatoService {
 	 * Consulta informacion de candidatos.
 	 */
 	public List<Candidato> listCandidatos(Candidato candidato) {
-
 		return candidatoRepository.listCandidatos(candidato);
 	}
 
 	/**
 	 * Obtiene informacion de un candidato.
 	 */
-	public Candidato getCandidato(int empid) {
-
+	public Candidato getCandidato(UUID empid) {
 		return candidatoRepository.getCandidato(empid);
 	}
 
@@ -68,8 +64,6 @@ public class CandidatoServiceImpl implements CandidatoService {
 	 */
 	@Transactional(propagation = Propagation.REQUIRED, readOnly = false)
 	public void deleteCandidato(Candidato candidato) {
-		System.out.println("Entrando al deleteCandidato");
-
 		 candidatoRepository.deleteCandidato(candidato);
 	}
 
@@ -78,7 +72,6 @@ public class CandidatoServiceImpl implements CandidatoService {
 	 */
 	@Transactional(propagation = Propagation.REQUIRED, readOnly = false)
 	public List<Candidato> listCandidatosPagination(Candidato candidato, int page, int size) {
-
 		return candidatoRepository.listCandidatosPagination(candidato, page, size);
 	}
 
@@ -105,7 +98,6 @@ public class CandidatoServiceImpl implements CandidatoService {
 	 */
 	@Transactional(propagation = Propagation.REQUIRED, readOnly = false)
 	public long getTotalRows() {
-
 		return candidatoRepository.getTotalRows();
 	}
 
@@ -116,6 +108,4 @@ public class CandidatoServiceImpl implements CandidatoService {
 		// TODO Auto-generated method stub
 		return candidatoRepository.listCandidatosQuery(candidato, query, page, size);
 	}
-
-}
-
+}	

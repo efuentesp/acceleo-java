@@ -1,17 +1,19 @@
 package com.softtek.acceleo.demo.domain;
 
 import java.io.Serializable;
-import javax.persistence.EnumType;
-import javax.persistence.Enumerated;
-import javax.persistence.Column;
-import javax.persistence.Entity;
-import javax.persistence.GeneratedValue;
-import javax.persistence.GenerationType;
-import javax.persistence.Id;
-import javax.persistence.Table;
 import java.util.Date;
+import java.util.List;
+import java.util.UUID;
+
 import javax.persistence.*;
 import javax.validation.constraints.NotNull;
+import javax.validation.constraints.Size;
+
+import com.fasterxml.jackson.annotation.JsonIgnore;
+
+import org.hibernate.annotations.GenericGenerator;
+import org.hibernate.annotations.Parameter;
+
 
 @Entity
 @Table(name = "rol")
@@ -19,52 +21,60 @@ public class Rol implements Serializable {
 
 	private static final long serialVersionUID = 1L;
 
+
 	@Id
-	@GeneratedValue(strategy = GenerationType.AUTO)
-	@Column(name = "rolId")
-	private Integer  rolId;
-
+	@NotNull
+	@GeneratedValue(generator = "UUID")
+	@GenericGenerator(
+			          name = "UUID", 
+	                  strategy = "org.hibernate.id.UUIDGenerator", 
+	                  parameters = {
+	                		@Parameter( 
+	                				name = "uuid_gen_strategy_class", 
+	                				value = "org.hibernate.id.uuid.CustomVersionOneStrategy" 
+	                		) 
+					  } 
+					 )
+	@Column(name = "rolId", columnDefinition = "VARBINARY(50)")
+	private UUID rolId;
 
 	@NotNull
-	@Column(name = "activo") 
-	private Integer activo;
-	@NotNull
-	@Column(name = "clave") 
+	@Column(name = "clave")
 	private Integer clave;
+	
 	@NotNull
-	@Column(name = "nombre") 
+	@Column(name = "nombre")
 	private String nombre;
+	
+	@NotNull
+	@Column(name = "activo")
+	private Integer activo;
+	
 
-
-
-	public Integer getRolId() {
+	public UUID getRolId() {
 		return rolId;
 	}
 
-	public void setRolId(Integer rolId) {
+	public void setRolId(UUID rolId) {
 		this.rolId = rolId;
-	}
-
-	
-	public Integer getActivo () {
-	    return activo;  		
-    }
-	public void setActivo(Integer activo) {
-		this.activo = activo;
 	}
 	
 	public Integer getClave () {
-	    return clave;  		
-    }
+	    return clave;
+	    }
 	public void setClave(Integer clave) {
 		this.clave = clave;
-	}
-	
+	}	
 	public String getNombre () {
-	    return nombre;  		
-    }
+	    return nombre;
+	    }
 	public void setNombre(String nombre) {
 		this.nombre = nombre;
 	}
-
-}			
+	public Integer getActivo () {
+	    return activo;
+	    }
+	public void setActivo(Integer activo) {
+		this.activo = activo;
+	}	
+}		

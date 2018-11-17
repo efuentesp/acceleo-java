@@ -10,6 +10,7 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.UUID;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
@@ -49,26 +50,160 @@ public class FilialController {
 	private FilialService filialService;
 	
 	Filial filial = new Filial();
-
-	/************************************** SEARCH
+	/************************************** CREATE  **************************************
+	 * Crea un nuevo filial.
+	 * @param filial.
+	 * @param ucBuilder.
+	 * @return ResponseEntity.
+	 */
+	 @RequestMapping(value = "/srp/filial", method = RequestMethod.POST)
+	 @PreAuthorize("hasRole('ROLE_FILIAL:CREATE')")
+	 public ResponseEntity<Map<String, Object>> createFilial(@RequestBody Filial filial,    UriComponentsBuilder ucBuilder) {
+	   try{
+	        filialService.addFilial(filial);
+	 
+	        HttpHeaders headers = new HttpHeaders();
+	        headers.setLocation(ucBuilder.path("/filial/{id}").buildAndExpand(filial.getFilialId()).toUri());
+	        
+		        	Filial filialFound = filialService.getFilial(filial.getFilialId());
+	
+			Map<String, Object> filialMAP = new HashMap<>();
+			filialMAP.put("id", filialFound.getFilialId());
+			/*filialFound.setNombre(filial.getNombre());*/
+			filialMAP.put("nombre", filial.getNombre());
+			/*filialFound.setUbicacion(filial.getUbicacion());*/
+			filialMAP.put("ubicacion", filial.getUbicacion());
+			/*filialFound.setCiudad(filial.getCiudad());*/
+			filialMAP.put("ciudad", filial.getCiudad());
+			/*filialFound.setEstado(filial.getEstado());*/
+			filialMAP.put("estado", filial.getEstado());
+			/*filialFound.setTelefono(filial.getTelefono());*/
+			filialMAP.put("telefono", filial.getTelefono());
+			/*filialFound.setSitio(filial.getSitio());*/
+			filialMAP.put("sitio", filial.getSitio());
+			/*filialFound.setContacto(filial.getContacto());*/
+			filialMAP.put("contacto", filial.getContacto());
+			/*filialFound.setNotas(filial.getNotas());*/
+			filialMAP.put("notas", filial.getNotas());
+			
+		        	return new ResponseEntity<Map<String, Object>>(filialMAP, headers, HttpStatus.CREATED);
+	   }catch(Exception e){
+		        	 HttpHeaders responseHeaders = new HttpHeaders();
+		        	 responseHeaders.set("Exception", "Exception: " + e);
+		        	 responseHeaders.set("Message", "Filial no se puede agregar la informacion. " + e.getMessage());	  
+		             return new ResponseEntity<Map<String, Object>>(responseHeaders,HttpStatus.CONFLICT);		   	
+	   }
+	 }
+	/************************************** UPDATE **************************************
+	  * Actualiza la informacion de un filial.
+	  * @param id.
+	  * @param filial.
+	  * @return ResponseEntity.
+	  */
+	 @RequestMapping(value = "/srp/filial/{id}", method = RequestMethod.PUT)
+		 	 @PreAuthorize("hasRole('ROLE_FILIAL:UPDATE')") 
+	    public ResponseEntity<Map<String, Object>> actualizarFilial(
+				@PathVariable("id") String id, 
+				@RequestBody Filial filial) {
+	        
+	        UUID uuid = UUID.fromString(id);
+	        Filial filialFound = filialService.getFilial(uuid);
+	         
+	        if (filialFound==null) {
+	            return new ResponseEntity<Map<String, Object>>(HttpStatus.NOT_FOUND);
+	        }
+	
+		filial.setFilialId(filialFound.getFilialId());
+		filialService.editFilial(filial);
+		
+		Map<String, Object> filialMAP = new HashMap<>();
+		filialMAP.put("id", filialFound.getFilialId());
+		/*filialFound.setNombre(filial.getNombre());*/
+		filialMAP.put("nombre", filial.getNombre());
+		/*filialFound.setUbicacion(filial.getUbicacion());*/
+		filialMAP.put("ubicacion", filial.getUbicacion());
+		/*filialFound.setCiudad(filial.getCiudad());*/
+		filialMAP.put("ciudad", filial.getCiudad());
+		/*filialFound.setEstado(filial.getEstado());*/
+		filialMAP.put("estado", filial.getEstado());
+		/*filialFound.setTelefono(filial.getTelefono());*/
+		filialMAP.put("telefono", filial.getTelefono());
+		/*filialFound.setSitio(filial.getSitio());*/
+		filialMAP.put("sitio", filial.getSitio());
+		/*filialFound.setContacto(filial.getContacto());*/
+		filialMAP.put("contacto", filial.getContacto());
+		/*filialFound.setNotas(filial.getNotas());*/
+		filialMAP.put("notas", filial.getNotas());
+		
+		HttpHeaders headers = new HttpHeaders();
+	    return new ResponseEntity<Map<String, Object>>(filialMAP, headers, HttpStatus.OK);
+	  } 
+	/************************************** DELETE **************************************
+	 * Elimina un filial.
+	 * @param id.
+	 * @return ResponseEntity<Filial>.
+	 */
+	@RequestMapping(value = "/srp/filial/{id}", method = RequestMethod.DELETE)
+	@PreAuthorize("hasRole('ROLE_FILIAL:DELETE')")  
+		    public ResponseEntity<Map<String, Object>> deleteFilial(@PathVariable("id") String id) {
+		  
+		    	 UUID uuid = UUID.fromString(id);
+		         Filial filial = filialService.getFilial(uuid);
+		         if (filial == null) {
+		             return new ResponseEntity<Map<String, Object>>(HttpStatus.NOT_FOUND);
+		         }
+		  
+	           	 try{
+		             filialService.deleteFilial(filial);
+		             
+			 Map<String, Object> filialMAP = new HashMap<>();
+			 filialMAP.put("id", filial.getFilialId());
+	/*filialFound.setNombre(filial.getNombre());*/
+	filialMAP.put("nombre", filial.getNombre());
+	/*filialFound.setUbicacion(filial.getUbicacion());*/
+	filialMAP.put("ubicacion", filial.getUbicacion());
+	/*filialFound.setCiudad(filial.getCiudad());*/
+	filialMAP.put("ciudad", filial.getCiudad());
+	/*filialFound.setEstado(filial.getEstado());*/
+	filialMAP.put("estado", filial.getEstado());
+	/*filialFound.setTelefono(filial.getTelefono());*/
+	filialMAP.put("telefono", filial.getTelefono());
+	/*filialFound.setSitio(filial.getSitio());*/
+	filialMAP.put("sitio", filial.getSitio());
+	/*filialFound.setContacto(filial.getContacto());*/
+	filialMAP.put("contacto", filial.getContacto());
+	/*filialFound.setNotas(filial.getNotas());*/
+	filialMAP.put("notas", filial.getNotas());
+		             
+		             HttpHeaders headers = new HttpHeaders();
+		             return new ResponseEntity<Map<String, Object>>(filialMAP, headers, HttpStatus.OK);
+		         }catch (Exception e) {
+		        	 HttpHeaders responseHeaders = new HttpHeaders();
+		        	 responseHeaders.set("Exception", "Exception: "+e);
+		        	 responseHeaders.set("Message", "Filial no se puede eliminar debido a que esta asociado con otra entidad.");	  
+		             return new ResponseEntity<Map<String, Object>>(responseHeaders,HttpStatus.INTERNAL_SERVER_ERROR);
+		}
+	}
+	/************************************** SEARCH **************************************
 	 * Obtiene informacion de los filials.
 	 * @param requestParams.
 	 * @param request.
 	 * @param response.
 	 * @return List<Filial>.
 	 */
-	@RequestMapping(value = "/filial", method = RequestMethod.GET, produces = "application/json")
-	@PreAuthorize("hasRole('FILIALSEARCH')")
-	public @ResponseBody  List<Filial> getFilials(@RequestParam Map<String,String> requestParams, HttpServletRequest request, HttpServletResponse response) {
-
-       	String query=requestParams.get("q");
+	 
+	@RequestMapping(value = "/srp/filial", method = RequestMethod.GET, produces = "application/json")
+	@PreAuthorize("hasRole('ROLE_FILIAL:READ')")
+	public @ResponseBody  List<Map<String, Object>> getFilials(@RequestParam Map<String,String> requestParams, HttpServletRequest request, HttpServletResponse response) {
+		
+		       	String query=requestParams.get("q");
 		int _page= requestParams.get("_page")==null?0:new Integer(requestParams.get("_page")).intValue();
 		long rows = 0;
-
+		
 		List<Filial> listFilial = null;
-
+		
 		if (query==null && _page == 0) {
-       		listFilial = filialService.listFilials(filial);
+		       		listFilial = filialService.listFilials(filial);
 			rows = filialService.getTotalRows();
 		} else if (query!= null){
 			listFilial = filialService.listFilialsQuery(filial, query, _page, 10);
@@ -77,246 +212,71 @@ public class FilialController {
 			listFilial = filialService.listFilialsPagination(filial, _page, 10);
 			rows = filialService.getTotalRows();
 		}
-
+		
+		List<Map<String, Object>> listFilialMAP = new ArrayList<>();
+		for( Filial filial : listFilial ){
+			Map<String, Object> filialMAP = new HashMap<>();
+			filialMAP.put("id", filial.getFilialId());
+			/*filialFound.setNombre(filial.getNombre());*/
+			filialMAP.put("nombre", filial.getNombre());
+			/*filialFound.setUbicacion(filial.getUbicacion());*/
+			filialMAP.put("ubicacion", filial.getUbicacion());
+			/*filialFound.setCiudad(filial.getCiudad());*/
+			filialMAP.put("ciudad", filial.getCiudad());
+			/*filialFound.setEstado(filial.getEstado());*/
+			filialMAP.put("estado", filial.getEstado());
+			/*filialFound.setTelefono(filial.getTelefono());*/
+			filialMAP.put("telefono", filial.getTelefono());
+			/*filialFound.setSitio(filial.getSitio());*/
+			filialMAP.put("sitio", filial.getSitio());
+			/*filialFound.setContacto(filial.getContacto());*/
+			filialMAP.put("contacto", filial.getContacto());
+			/*filialFound.setNotas(filial.getNotas());*/
+			filialMAP.put("notas", filial.getNotas());
+			
+			listFilialMAP.add(filialMAP);
+		}
+		
 		response.setHeader("Access-Control-Expose-Headers", "x-total-count");
 		response.setHeader("x-total-count", String.valueOf(rows).toString());	
-
-		return listFilial;
+		
+		return listFilialMAP;
 	}
-
-	/************************************* SEARCH
+		
+	/************************************** SEARCH **************************************
 	 * Obtiene informacion de un filial.
 	 * @param id.
 	 * @return Filial.
 	 */
-	@RequestMapping(value = "/idfilial/{id}", method = RequestMethod.GET, produces = "application/json")
-	@PreAuthorize("hasRole('FILIALSEARCH')")
-	    public @ResponseBody  Filial getFilial(@PathVariable("id") int id) {	        
+	@RequestMapping(value = "/srp/filial/{id}", method = RequestMethod.GET, produces = "application/json")
+	@PreAuthorize("hasRole('ROLE_FILIAL:READ')")
+	public @ResponseBody  Map<String, Object> getFilial(@PathVariable("id") String id) {	        
 	        Filial filial = null;
 	        
-	        filial = filialService.getFilial(id);
-			return filial;
-	 }
-
-	/*************************** CREATE
-	 * Crea un nuevo filial.
-	 * @param filial.
-	 * @param ucBuilder.
-	 * @return ResponseEntity.
-	 */
-	 @RequestMapping(value = "/filial", method = RequestMethod.POST)
-	 @PreAuthorize("hasRole('FILIALCREATE')")
-	    public ResponseEntity<Void> createFilial(@RequestBody Filial filial,    UriComponentsBuilder ucBuilder) {
-	   
-	        filialService.addFilial(filial);
-	 
-	        HttpHeaders headers = new HttpHeaders();
-	        headers.setLocation(ucBuilder.path("/filial/{id}").buildAndExpand(filial.getFilialId()).toUri());
-	        return new ResponseEntity<Void>(headers, HttpStatus.CREATED);
-	 }
-		
-	 /****************************************** UPDATE
-	  * Actualiza la informacion de un filial.
-	  * @param id.
-	  * @param filial.
-	  * @return ResponseEntity.
-	  */
-	 @RequestMapping(value = "/filial/{id}", method = RequestMethod.PUT)
- 	 @PreAuthorize("hasRole('FILIALUPDATE')") 
-	    public ResponseEntity<Filial> actualizarFilial(
-				@PathVariable("id") int id, 
-				@RequestBody Filial filial) {
+	        UUID uuid = UUID.fromString(id);
+	        filial = filialService.getFilial(uuid);
 	        
-	        Filial filialFound = filialService.getFilial(id);
-	         
-	        if (filialFound==null) {
-	            System.out.println("User with id " + id + " not found");
-	            return new ResponseEntity<Filial>(HttpStatus.NOT_FOUND);
-	        }
+			Map<String, Object> filialMAP = new HashMap<>();
+			filialMAP.put("id", filial.getFilialId());
+			/*filialFound.setNombre(filial.getNombre());*/
+			filialMAP.put("nombre", filial.getNombre());
+			/*filialFound.setUbicacion(filial.getUbicacion());*/
+			filialMAP.put("ubicacion", filial.getUbicacion());
+			/*filialFound.setCiudad(filial.getCiudad());*/
+			filialMAP.put("ciudad", filial.getCiudad());
+			/*filialFound.setEstado(filial.getEstado());*/
+			filialMAP.put("estado", filial.getEstado());
+			/*filialFound.setTelefono(filial.getTelefono());*/
+			filialMAP.put("telefono", filial.getTelefono());
+			/*filialFound.setSitio(filial.getSitio());*/
+			filialMAP.put("sitio", filial.getSitio());
+			/*filialFound.setContacto(filial.getContacto());*/
+			filialMAP.put("contacto", filial.getContacto());
+			/*filialFound.setNotas(filial.getNotas());*/
+			filialMAP.put("notas", filial.getNotas());
+	        
+	        
+			return filialMAP;
+	 }
 	
-	filialFound.setSitio(filial.getSitio());
-	filialFound.setTelefono(filial.getTelefono());
-	filialFound.setNombre(filial.getNombre());
-	filialFound.setCiudad(filial.getCiudad());
-	filialFound.setEstado(filial.getEstado());
-	filialFound.setUbicacion(filial.getUbicacion());
-	filialFound.setContacto(filial.getContacto());
-	filialFound.setNotas(filial.getNotas());
-	filialFound.setFilialId(filial.getFilialId());
-
-		    filialService.editFilial(filialFound);
-	        return new ResponseEntity<Filial>(filialFound, HttpStatus.OK);
-	  } 	
-	
-		/********************************** DELETE
-		 * Elimina un filial.
-		 * @param id.
-		 * @return ResponseEntity<Filial>.
-		 */
-		@RequestMapping(value = "/filial/{id}", method = RequestMethod.DELETE)
-		@PreAuthorize("hasRole('FILIALDELETE')")  
-	    public ResponseEntity<Filial> deleteFilial(@PathVariable("id") int id) {
-			  
-			//try{
-	    	 
-	         Filial filial = filialService.getFilial(id);
-	         if (filial == null) {
-	             return new ResponseEntity<Filial>(HttpStatus.NOT_FOUND);
-	         }
-	  
-           	 try{
-	             filialService.deleteFilial(filial);
-	             return new ResponseEntity<Filial>(HttpStatus.OK);
-	         }catch (Exception e) {
-	        	 HttpHeaders responseHeaders = new HttpHeaders();
-	        	 responseHeaders.set("Exception", "Exception: "+e);
-	        	 responseHeaders.set("Message", "Filial no se puede eliminar debido a que esta asociado con otra entidad.");	  
-	             return new ResponseEntity<Filial>(responseHeaders,HttpStatus.INTERNAL_SERVER_ERROR);
-			}
-
-           	//} catch(GenericException e) {
-            //	 return new ResponseEntity<Filial>(HttpStatus.PRECONDITION_FAILED);
-            //}
-		}
-
-	/**
-	 * Salva informacion de un filial.
-	 * @param afiliadoBean.
-	 * @return String.
-	 */
-	@RequestMapping(value = "/saveFilial", method = RequestMethod.POST)
-	@PreAuthorize("hasRole('FILIAL')")  
-	public @ResponseBody String saveFilial(
-			@ModelAttribute("command") FilialBean filialBean) {
-
-		Filial filial = prepareModel(filialBean);
-		filialService.addFilial(filial);
-
-		return "SUCCESS";
-	}
-	
-	/**
-	 * Edita informacion de un filial.
-	 * @param filialBean.
-	 * @return String.
-	 */
-	@RequestMapping(value = "/editFilial", method = RequestMethod.POST)
-	@PreAuthorize("hasRole('FILIAL')")  
-	public @ResponseBody String editFilial(
-			@ModelAttribute("command") FilialBean filialBean) {
-
-
-		Filial filial = prepareModel(filialBean);
-		filialService.editFilial(filial);
-		return "SUCCESS";
-	}
-
-	/**
-	 * Agrega un FILIAL.
-	 * @param FILIALBean.
-	 * @param result.
-	 * @return ModelAndView.
-	 */
-	@RequestMapping(value = "/searchFilial", method = RequestMethod.GET)
-	@PreAuthorize("hasRole('FILIAL')")  
-	public ModelAndView addFilial(
-			@ModelAttribute("command") FilialBean filialBean,
-			BindingResult result) {
-
-		Map<String, Object> model = new HashMap<String, Object>();
-		Filial filial = null;
-		if (filialBean != null)
-			filial = prepareModel(filialBean);
-		model.put("filials",
-				prepareListofBean(filialService.listFilials(filial)));
-		return new ModelAndView("searchFilial", model);
-	}
-
-	/**
-	 * Elimina un filial.
-	 * @param filialBean.
-	 * @param result.
-	 * @return ModelAndView.
-	 */
-	@RequestMapping(value = "/deleteFilial", method = RequestMethod.POST)
-	@PreAuthorize("hasRole('FILIAL')")  
-	public ModelAndView deleteFilial(
-			@ModelAttribute("command") FilialBean filialBean,
-			BindingResult result) {
-		System.out.println("delete " + filialBean.getFilialId());
-		filialService.deleteFilial(prepareModel(filialBean));
-		Map<String, Object> model = new HashMap<String, Object>();
-		model.put("filial", null);
-		model.put("filials",
-				prepareListofBean(filialService.listFilials(null)));
-		return new ModelAndView("searchFilial", model);
-	}
-
-	/**
-	 * 
-	 * @return ModelAndView.
-	 */
-	@RequestMapping(value = "/entryFilial", method = RequestMethod.GET)
-	@PreAuthorize("hasRole('FILIAL')")  
-	public ModelAndView entryFilial() {
-		return new ModelAndView("redirect:/searchFilial");
-	}
-
-	private Filial prepareModel(FilialBean filialBean) {
-		Filial filial = new Filial();
-
-		//filial.setNotrequiredfilialId(filialBean.getNotasId());
-		//filial.setDisplayresultfilialId(filialBean.getFilialId());
-		//filial.setExposedfilterfilialId(filialBean.getFilialId());
-		//filial.setDisplaymodalfilialId(filialBean.getFilialId());
-		//filial.setEntitynamefilialId(filialBean.getFilialId());
-		//filial.setScaffoldfilialId(filialBean.getFilialId());
-		filial.setNombre(filialBean.getNombre());
-		filial.setUbicacion(filialBean.getUbicacion());
-		filial.setCiudad(filialBean.getCiudad());
-		filial.setEstado(filialBean.getEstado());
-		filial.setTelefono(filialBean.getTelefono());
-		filial.setSitio(filialBean.getSitio());
-		filial.setContacto(filialBean.getContacto());
-		filial.setFilialId(filialBean.getFilialId());
-		filialBean.setFilialId(null);
-
-		return filial;
-	}
-
-	/**
-	 * Convierte un objeto de tipo FilialBean a un objeto de tipo Filial.
-	 * @param filialBean.
-	 * @return Filial.
-	 */
-	private List<FilialBean> prepareListofBean(List<Filial> filials) {
-		List<FilialBean> beans = null;
-		if (filials != null && !filials.isEmpty()) {
-			beans = new ArrayList<FilialBean>();
-			FilialBean bean = null;
-			for (Filial filial : filials) {
-				bean = new FilialBean();
-
-				//bean.setNotrequiredfilialId(filial.getNotasId());
-				//bean.setDisplayresultfilialId(filial.getFilialId());
-				//bean.setExposedfilterfilialId(filial.getFilialId());
-				//bean.setDisplaymodalfilialId(filial.getFilialId());
-				//bean.setEntitynamefilialId(filial.getFilialId());
-				//bean.setScaffoldfilialId(filial.getFilialId());
-				bean.setNombre(filial.getNombre());
-				bean.setUbicacion(filial.getUbicacion());
-				bean.setCiudad(filial.getCiudad());
-				bean.setEstado(filial.getEstado());
-				bean.setTelefono(filial.getTelefono());
-				bean.setSitio(filial.getSitio());
-				bean.setContacto(filial.getContacto());
-				bean.setFilialId(filial.getFilialId());
-				beans.add(bean);
-			}
-		}
-		return beans;
-	}
-
 }
-
-

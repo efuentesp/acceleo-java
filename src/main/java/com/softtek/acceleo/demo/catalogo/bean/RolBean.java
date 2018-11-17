@@ -1,50 +1,44 @@
-/**
- * Autor: PSG.
- * Proyecto:
- * Version: 0.1 
- * Clase para encapsular informacion de un Rol.
- */
 package com.softtek.acceleo.demo.catalogo.bean;
 
 import java.util.Date;
+import java.util.UUID;
 
 public class RolBean {
+
 /**
  * Clase RolBean.
  * @author PSG.
  *
  */
-	private Integer rolId;
+ 
+private UUID rolId; 
+private Integer clave;	
+private String nombre;
+private Integer activo;	
 
-	private Integer activo;
-	private Integer clave;
-	private String nombre;
-
-	public Integer getRolId() {
-		return rolId;
-	}
-	public void setRolId(Integer rolId) {
+	public UUID getRolId () {
+	    return rolId;  		
+    }
+	public void setRolId (UUID rolId) {
 		this.rolId = rolId;
 	}
-	public Integer getActivo () {
-	    return activo;  		
-    }
-	public void setActivo(Integer activo) {
-		this.activo = activo;
-	}
-	public Integer getClave () {
-	    return clave;  		
-    }
-	public void setClave(Integer clave) {
-		this.clave = clave;
-	}
-	public String getNombre () {
-	    return nombre;  		
-    }
-	public void setNombre(String nombre) {
-		this.nombre = nombre;
-	}
 
-
-
+public Integer getClave () {
+    return clave;
+    }
+public void setClave(Integer clave) {
+	this.clave = clave;
+}	
+public String getNombre () {
+    return nombre;
+    }
+public void setNombre(String nombre) {
+	this.nombre = nombre;
+}
+public Integer getActivo () {
+    return activo;
+    }
+public void setActivo(Integer activo) {
+	this.activo = activo;
+}	
 }

@@ -1,4 +1,3 @@
-
 /**
  * Autor: PSG.
  * Proyecto:
@@ -8,6 +7,7 @@
 package com.softtek.acceleo.demo.service.impl;
 
 import java.util.List;
+import java.util.UUID;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -34,7 +34,6 @@ public class PosicionServiceImpl implements PosicionService {
 	 */
 	@Transactional(propagation = Propagation.REQUIRED, readOnly = false)
 	public void addPosicion(Posicion posicion) {
-		
 		posicionRepository.addPosicion(posicion);
 	}
 
@@ -43,7 +42,6 @@ public class PosicionServiceImpl implements PosicionService {
 	 */
 	@Transactional(propagation = Propagation.REQUIRED, readOnly = false)
 	public void editPosicion(Posicion posicion) {
-		
 		posicionRepository.editPosicion(posicion);
 	}
 	
@@ -51,15 +49,13 @@ public class PosicionServiceImpl implements PosicionService {
 	 * Consulta informacion de posicions.
 	 */
 	public List<Posicion> listPosicions(Posicion posicion) {
-
 		return posicionRepository.listPosicions(posicion);
 	}
 
 	/**
 	 * Obtiene informacion de un posicion.
 	 */
-	public Posicion getPosicion(int empid) {
-
+	public Posicion getPosicion(UUID empid) {
 		return posicionRepository.getPosicion(empid);
 	}
 
@@ -68,8 +64,6 @@ public class PosicionServiceImpl implements PosicionService {
 	 */
 	@Transactional(propagation = Propagation.REQUIRED, readOnly = false)
 	public void deletePosicion(Posicion posicion) {
-		System.out.println("Entrando al deletePosicion");
-
 		 posicionRepository.deletePosicion(posicion);
 	}
 
@@ -78,7 +72,6 @@ public class PosicionServiceImpl implements PosicionService {
 	 */
 	@Transactional(propagation = Propagation.REQUIRED, readOnly = false)
 	public List<Posicion> listPosicionsPagination(Posicion posicion, int page, int size) {
-
 		return posicionRepository.listPosicionsPagination(posicion, page, size);
 	}
 
@@ -105,7 +98,6 @@ public class PosicionServiceImpl implements PosicionService {
 	 */
 	@Transactional(propagation = Propagation.REQUIRED, readOnly = false)
 	public long getTotalRows() {
-
 		return posicionRepository.getTotalRows();
 	}
 
@@ -116,6 +108,4 @@ public class PosicionServiceImpl implements PosicionService {
 		// TODO Auto-generated method stub
 		return posicionRepository.listPosicionsQuery(posicion, query, page, size);
 	}
-
-}
-
+}	

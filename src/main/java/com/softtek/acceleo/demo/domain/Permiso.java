@@ -2,8 +2,18 @@ package com.softtek.acceleo.demo.domain;
 
 import java.io.Serializable;
 import java.util.Date;
+import java.util.List;
+import java.util.UUID;
+
 import javax.persistence.*;
 import javax.validation.constraints.NotNull;
+import javax.validation.constraints.Size;
+
+import com.fasterxml.jackson.annotation.JsonIgnore;
+
+import org.hibernate.annotations.GenericGenerator;
+import org.hibernate.annotations.Parameter;
+
 
 @Entity
 @Table(name = "permiso")
@@ -11,81 +21,68 @@ public class Permiso implements Serializable {
 
 	private static final long serialVersionUID = 1L;
 
+
 	@Id
-	@GeneratedValue(strategy = GenerationType.AUTO)
-	@Column(name = "permisoId")
-	private Integer  permisoId;
-
+	@NotNull
+	@GeneratedValue(generator = "UUID")
+	@GenericGenerator(
+			          name = "UUID", 
+	                  strategy = "org.hibernate.id.UUIDGenerator", 
+	                  parameters = {
+	                		@Parameter( 
+	                				name = "uuid_gen_strategy_class", 
+	                				value = "org.hibernate.id.uuid.CustomVersionOneStrategy" 
+	                		) 
+					  } 
+					 )
+	@Column(name = "permisoId", columnDefinition = "VARBINARY(50)")
+	private UUID permisoId;
 
 	@NotNull
-	@Column(name = "ruta") 
-	private String ruta;
+	private UUID rolId;
 	@NotNull
-	@Column(name = "funcion") 
+	@Column(name = "funcion")
 	private String funcion;
+	
 	@NotNull
-	@Column(name = "nivelpermiso") 
+	@Column(name = "ruta")
+	private String ruta;
+	
+	@NotNull
+	@Column(name = "nivelpermiso")
 	private String nivelpermiso;
+	
 
-
-	//@NotNull
-	//@Column(name = "rolId") 
-	@OneToOne
-	@JoinColumn(name="rolId") 
-	private Rol rol;
-//	@OneToMany(cascade= CascadeType.ALL)
-//	@JoinColumn(name="rolId")
-//	@IndexColumn(name="idx")
-//	private List<RolId> rolList;
-
-	public Integer getPermisoId() {
+	public UUID getPermisoId() {
 		return permisoId;
 	}
 
-	public void setPermisoId(Integer permisoId) {
+	public void setPermisoId(UUID permisoId) {
 		this.permisoId = permisoId;
 	}
-
 	
-	public String getRuta () {
-	    return ruta;  		
-    }
-	public void setRuta(String ruta) {
-		this.ruta = ruta;
+	public UUID getRolId () {
+	    return rolId;
+	    }
+	public void setRolId(UUID rolId) {
+		this.rolId = rolId;
 	}
-	
 	public String getFuncion () {
-	    return funcion;  		
-    }
+	    return funcion;
+	    }
 	public void setFuncion(String funcion) {
 		this.funcion = funcion;
 	}
-	
+	public String getRuta () {
+	    return ruta;
+	    }
+	public void setRuta(String ruta) {
+		this.ruta = ruta;
+	}
 	public String getNivelpermiso () {
-	    return nivelpermiso;  		
-    }
+	    return nivelpermiso;
+	    }
 	public void setNivelpermiso(String nivelpermiso) {
 		this.nivelpermiso = nivelpermiso;
 	}
-	//public List<Rol> getRolList () {
-	//    return rolList;  		
-    //}
-	//public void setRolList (List<Rol> rolList) {
-	//	this.rolList = rolList;
-	//}
-//	public Integer getRolId () {
-//	    return rolId;  		
-//    }
-//	public void setRolId (Integer rolId) {
-//		this.rolId = rolId;
-//	}
-
-	public Rol getRol() {
-		return rol;
-	}
-
-	public void setRol(Rol rol) {
-		this.rol = rol;
-	}
-
-}			
+}		

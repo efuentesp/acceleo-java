@@ -1,14 +1,19 @@
 package com.softtek.acceleo.demo.domain;
 
 import java.io.Serializable;
-import javax.persistence.Column;
-import javax.persistence.Entity;
-import javax.persistence.GeneratedValue;
-import javax.persistence.GenerationType;
-import javax.persistence.Id;
-import javax.persistence.Table;
+import java.util.Date;
+import java.util.List;
+import java.util.UUID;
+
 import javax.persistence.*;
 import javax.validation.constraints.NotNull;
+import javax.validation.constraints.Size;
+
+import com.fasterxml.jackson.annotation.JsonIgnore;
+
+import org.hibernate.annotations.GenericGenerator;
+import org.hibernate.annotations.Parameter;
+
 
 @Entity
 @Table(name = "direccion")
@@ -16,79 +21,70 @@ public class Direccion implements Serializable {
 
 	private static final long serialVersionUID = 1L;
 
+
 	@Id
-	@GeneratedValue(strategy = GenerationType.AUTO)
-	@Column(name = "direccionId")
-	private Integer  direccionId;
+	@NotNull
+	@GeneratedValue(generator = "UUID")
+	@GenericGenerator(
+			          name = "UUID", 
+	                  strategy = "org.hibernate.id.UUIDGenerator", 
+	                  parameters = {
+	                		@Parameter( 
+	                				name = "uuid_gen_strategy_class", 
+	                				value = "org.hibernate.id.uuid.CustomVersionOneStrategy" 
+	                		) 
+					  } 
+					 )
+	@Column(name = "direccionId", columnDefinition = "VARBINARY(50)")
+	private UUID direccionId;
 
-
 	@NotNull
-	@Column(name = "estado") 
-	private String estado;
-	@NotNull
-	@Column(name = "cp") 
-	private String cp;
-	@NotNull
-	@Column(name = "ciudad") 
-	private String ciudad;
-	@NotNull
-	@Column(name = "calle") 
+	@Column(name = "calle")
 	private String calle;
+	
+	@NotNull
+	@Column(name = "cp")
+	private String cp;
+	
+	@NotNull
+	@Column(name = "ciudad")
+	private String ciudad;
+	
+	@NotNull
+	@Column(name = "estado")
+	private String estado;
+	
 
-	//@OneToOne(mappedBy="direccion")
-	//@JoinColumn(name="candidatoId")
-	@OneToOne
-	@JoinColumn(name="candidatoId")
-	private Candidato candidato;
-
-
-	public Integer getDireccionId() {
+	public UUID getDireccionId() {
 		return direccionId;
 	}
 
-	public void setDireccionId(Integer direccionId) {
+	public void setDireccionId(UUID direccionId) {
 		this.direccionId = direccionId;
-	}
-
-	
-	public String getEstado () {
-	    return estado;  		
-    }
-	public void setEstado(String estado) {
-		this.estado = estado;
-	}
-	
-	public String getCp () {
-	    return cp;  		
-    }
-	public void setCp(String cp) {
-		this.cp = cp;
-	}
-	
-	public String getCiudad () {
-	    return ciudad;  		
-    }
-	public void setCiudad(String ciudad) {
-		this.ciudad = ciudad;
 	}
 	
 	public String getCalle () {
-	    return calle;  		
-    }
+	    return calle;
+	    }
 	public void setCalle(String calle) {
 		this.calle = calle;
 	}
-	
-	public Candidato getCandidato() {
-		return candidato;
+	public String getCp () {
+	    return cp;
+	    }
+	public void setCp(String cp) {
+		this.cp = cp;
 	}
-
-	public void setCandidato(Candidato candidato) {
-		this.candidato = candidato;
+	public String getCiudad () {
+	    return ciudad;
+	    }
+	public void setCiudad(String ciudad) {
+		this.ciudad = ciudad;
 	}
-
-
-	
-	
-
-}			
+	public String getEstado () {
+	    return estado;
+	    }
+	public void setEstado(String estado) {
+		this.estado = estado;
+	}
+}		

@@ -1,4 +1,3 @@
-
 /**
  * Autor: PSG.
  * Proyecto:
@@ -8,6 +7,7 @@
 package com.softtek.acceleo.demo.service.impl;
 
 import java.util.List;
+import java.util.UUID;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -34,7 +34,6 @@ public class SolicitudServiceImpl implements SolicitudService {
 	 */
 	@Transactional(propagation = Propagation.REQUIRED, readOnly = false)
 	public void addSolicitud(Solicitud solicitud) {
-		
 		solicitudRepository.addSolicitud(solicitud);
 	}
 
@@ -43,7 +42,6 @@ public class SolicitudServiceImpl implements SolicitudService {
 	 */
 	@Transactional(propagation = Propagation.REQUIRED, readOnly = false)
 	public void editSolicitud(Solicitud solicitud) {
-		
 		solicitudRepository.editSolicitud(solicitud);
 	}
 	
@@ -53,26 +51,11 @@ public class SolicitudServiceImpl implements SolicitudService {
 	public List<Solicitud> listSolicituds(Solicitud solicitud) {
 		return solicitudRepository.listSolicituds(solicitud);
 	}
-	
-	/**
-	 * Consulta informacion de solicituds.
-	 */
-	public List<Solicitud> listSolicitudsByCandidato(Solicitud solicitud, int candidatoId) {
-		return solicitudRepository.listSolicitudsByCandidato(solicitud, candidatoId);
-	}
-	
-	/**
-	 * Consulta informacion de solicituds.
-	 */
-	public List<Solicitud> listSolicitudsByPosicion(Solicitud solicitud, int posicionId) {
-		return solicitudRepository.listSolicitudsByPosicion(solicitud, posicionId);
-	}
 
 	/**
 	 * Obtiene informacion de un solicitud.
 	 */
-	public Solicitud getSolicitud(int empid) {
-
+	public Solicitud getSolicitud(UUID empid) {
 		return solicitudRepository.getSolicitud(empid);
 	}
 
@@ -81,8 +64,6 @@ public class SolicitudServiceImpl implements SolicitudService {
 	 */
 	@Transactional(propagation = Propagation.REQUIRED, readOnly = false)
 	public void deleteSolicitud(Solicitud solicitud) {
-		System.out.println("Entrando al deleteSolicitud");
-
 		 solicitudRepository.deleteSolicitud(solicitud);
 	}
 
@@ -91,7 +72,6 @@ public class SolicitudServiceImpl implements SolicitudService {
 	 */
 	@Transactional(propagation = Propagation.REQUIRED, readOnly = false)
 	public List<Solicitud> listSolicitudsPagination(Solicitud solicitud, int page, int size) {
-
 		return solicitudRepository.listSolicitudsPagination(solicitud, page, size);
 	}
 
@@ -118,7 +98,6 @@ public class SolicitudServiceImpl implements SolicitudService {
 	 */
 	@Transactional(propagation = Propagation.REQUIRED, readOnly = false)
 	public long getTotalRows() {
-
 		return solicitudRepository.getTotalRows();
 	}
 
@@ -129,6 +108,4 @@ public class SolicitudServiceImpl implements SolicitudService {
 		// TODO Auto-generated method stub
 		return solicitudRepository.listSolicitudsQuery(solicitud, query, page, size);
 	}
-
-}
-
+}	

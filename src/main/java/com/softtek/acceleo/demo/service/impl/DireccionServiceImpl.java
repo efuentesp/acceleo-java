@@ -1,4 +1,3 @@
-
 /**
  * Autor: PSG.
  * Proyecto:
@@ -8,6 +7,7 @@
 package com.softtek.acceleo.demo.service.impl;
 
 import java.util.List;
+import java.util.UUID;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -34,7 +34,6 @@ public class DireccionServiceImpl implements DireccionService {
 	 */
 	@Transactional(propagation = Propagation.REQUIRED, readOnly = false)
 	public void addDireccion(Direccion direccion) {
-		
 		direccionRepository.addDireccion(direccion);
 	}
 
@@ -43,7 +42,6 @@ public class DireccionServiceImpl implements DireccionService {
 	 */
 	@Transactional(propagation = Propagation.REQUIRED, readOnly = false)
 	public void editDireccion(Direccion direccion) {
-		
 		direccionRepository.editDireccion(direccion);
 	}
 	
@@ -51,15 +49,13 @@ public class DireccionServiceImpl implements DireccionService {
 	 * Consulta informacion de direccions.
 	 */
 	public List<Direccion> listDireccions(Direccion direccion) {
-
 		return direccionRepository.listDireccions(direccion);
 	}
 
 	/**
 	 * Obtiene informacion de un direccion.
 	 */
-	public Direccion getDireccion(int empid) {
-
+	public Direccion getDireccion(UUID empid) {
 		return direccionRepository.getDireccion(empid);
 	}
 
@@ -68,8 +64,6 @@ public class DireccionServiceImpl implements DireccionService {
 	 */
 	@Transactional(propagation = Propagation.REQUIRED, readOnly = false)
 	public void deleteDireccion(Direccion direccion) {
-		System.out.println("Entrando al deleteDireccion");
-
 		 direccionRepository.deleteDireccion(direccion);
 	}
 
@@ -78,7 +72,6 @@ public class DireccionServiceImpl implements DireccionService {
 	 */
 	@Transactional(propagation = Propagation.REQUIRED, readOnly = false)
 	public List<Direccion> listDireccionsPagination(Direccion direccion, int page, int size) {
-
 		return direccionRepository.listDireccionsPagination(direccion, page, size);
 	}
 
@@ -105,7 +98,6 @@ public class DireccionServiceImpl implements DireccionService {
 	 */
 	@Transactional(propagation = Propagation.REQUIRED, readOnly = false)
 	public long getTotalRows() {
-
 		return direccionRepository.getTotalRows();
 	}
 
@@ -116,6 +108,4 @@ public class DireccionServiceImpl implements DireccionService {
 		// TODO Auto-generated method stub
 		return direccionRepository.listDireccionsQuery(direccion, query, page, size);
 	}
-
-}
-
+}	

@@ -1,4 +1,3 @@
-
 /**
  * Autor: PSG.
  * Proyecto:
@@ -8,6 +7,7 @@
 package com.softtek.acceleo.demo.service.impl;
 
 import java.util.List;
+import java.util.UUID;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -34,7 +34,6 @@ public class FilialServiceImpl implements FilialService {
 	 */
 	@Transactional(propagation = Propagation.REQUIRED, readOnly = false)
 	public void addFilial(Filial filial) {
-		
 		filialRepository.addFilial(filial);
 	}
 
@@ -43,7 +42,6 @@ public class FilialServiceImpl implements FilialService {
 	 */
 	@Transactional(propagation = Propagation.REQUIRED, readOnly = false)
 	public void editFilial(Filial filial) {
-		
 		filialRepository.editFilial(filial);
 	}
 	
@@ -51,15 +49,13 @@ public class FilialServiceImpl implements FilialService {
 	 * Consulta informacion de filials.
 	 */
 	public List<Filial> listFilials(Filial filial) {
-
 		return filialRepository.listFilials(filial);
 	}
 
 	/**
 	 * Obtiene informacion de un filial.
 	 */
-	public Filial getFilial(int empid) {
-
+	public Filial getFilial(UUID empid) {
 		return filialRepository.getFilial(empid);
 	}
 
@@ -68,8 +64,6 @@ public class FilialServiceImpl implements FilialService {
 	 */
 	@Transactional(propagation = Propagation.REQUIRED, readOnly = false)
 	public void deleteFilial(Filial filial) {
-		System.out.println("Entrando al deleteFilial");
-
 		 filialRepository.deleteFilial(filial);
 	}
 
@@ -78,7 +72,6 @@ public class FilialServiceImpl implements FilialService {
 	 */
 	@Transactional(propagation = Propagation.REQUIRED, readOnly = false)
 	public List<Filial> listFilialsPagination(Filial filial, int page, int size) {
-
 		return filialRepository.listFilialsPagination(filial, page, size);
 	}
 
@@ -105,7 +98,6 @@ public class FilialServiceImpl implements FilialService {
 	 */
 	@Transactional(propagation = Propagation.REQUIRED, readOnly = false)
 	public long getTotalRows() {
-
 		return filialRepository.getTotalRows();
 	}
 
@@ -116,6 +108,4 @@ public class FilialServiceImpl implements FilialService {
 		// TODO Auto-generated method stub
 		return filialRepository.listFilialsQuery(filial, query, page, size);
 	}
-
-}
-
+}	

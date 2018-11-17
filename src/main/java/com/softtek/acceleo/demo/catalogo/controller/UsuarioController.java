@@ -10,6 +10,7 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.UUID;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
@@ -49,26 +50,136 @@ public class UsuarioController {
 	private UsuarioService usuarioService;
 	
 	Usuario usuario = new Usuario();
-
-	/************************************** SEARCH
+	/************************************** CREATE  **************************************
+	 * Crea un nuevo usuario.
+	 * @param usuario.
+	 * @param ucBuilder.
+	 * @return ResponseEntity.
+	 */
+	 @RequestMapping(value = "/srp/usuario", method = RequestMethod.POST)
+	 @PreAuthorize("hasRole('ROLE_USUARIO:CREATE')")
+	 public ResponseEntity<Map<String, Object>> createUsuario(@RequestBody Usuario usuario,    UriComponentsBuilder ucBuilder) {
+	   try{
+	        usuarioService.addUsuario(usuario);
+	 
+	        HttpHeaders headers = new HttpHeaders();
+	        headers.setLocation(ucBuilder.path("/usuario/{id}").buildAndExpand(usuario.getUsuarioId()).toUri());
+	        
+		        	Usuario usuarioFound = usuarioService.getUsuario(usuario.getUsuarioId());
+	
+			Map<String, Object> usuarioMAP = new HashMap<>();
+			usuarioMAP.put("id", usuarioFound.getUsuarioId());
+			/*usuarioFound.setNombreclave(usuario.getNombreclave());*/
+			usuarioMAP.put("nombreclave", usuario.getNombreclave());
+			/*usuarioFound.setPassword(usuario.getPassword());*/
+			usuarioMAP.put("password", usuario.getPassword());
+			/*usuarioFound.setActivo(usuario.getActivo());*/
+			usuarioMAP.put("activo", usuario.getActivo());
+			/*usuarioFound.setRolId(usuario.getRolId());*/
+			usuarioMAP.put("rolId", usuario.getRolId());
+			
+		        	return new ResponseEntity<Map<String, Object>>(usuarioMAP, headers, HttpStatus.CREATED);
+	   }catch(Exception e){
+		        	 HttpHeaders responseHeaders = new HttpHeaders();
+		        	 responseHeaders.set("Exception", "Exception: " + e);
+		        	 responseHeaders.set("Message", "Usuario no se puede agregar la informacion. " + e.getMessage());	  
+		             return new ResponseEntity<Map<String, Object>>(responseHeaders,HttpStatus.CONFLICT);		   	
+	   }
+	 }
+	/************************************** UPDATE **************************************
+	  * Actualiza la informacion de un usuario.
+	  * @param id.
+	  * @param usuario.
+	  * @return ResponseEntity.
+	  */
+	 @RequestMapping(value = "/srp/usuario/{id}", method = RequestMethod.PUT)
+		 	 @PreAuthorize("hasRole('ROLE_USUARIO:UPDATE')") 
+	    public ResponseEntity<Map<String, Object>> actualizarUsuario(
+				@PathVariable("id") String id, 
+				@RequestBody Usuario usuario) {
+	        
+	        UUID uuid = UUID.fromString(id);
+	        Usuario usuarioFound = usuarioService.getUsuario(uuid);
+	         
+	        if (usuarioFound==null) {
+	            return new ResponseEntity<Map<String, Object>>(HttpStatus.NOT_FOUND);
+	        }
+	
+		usuario.setUsuarioId(usuarioFound.getUsuarioId());
+		usuarioService.editUsuario(usuario);
+		
+		Map<String, Object> usuarioMAP = new HashMap<>();
+		usuarioMAP.put("id", usuarioFound.getUsuarioId());
+		/*usuarioFound.setNombreclave(usuario.getNombreclave());*/
+		usuarioMAP.put("nombreclave", usuario.getNombreclave());
+		/*usuarioFound.setPassword(usuario.getPassword());*/
+		usuarioMAP.put("password", usuario.getPassword());
+		/*usuarioFound.setActivo(usuario.getActivo());*/
+		usuarioMAP.put("activo", usuario.getActivo());
+		/*usuarioFound.setRolId(usuario.getRolId());*/
+		usuarioMAP.put("rolId", usuario.getRolId());
+		
+		HttpHeaders headers = new HttpHeaders();
+	    return new ResponseEntity<Map<String, Object>>(usuarioMAP, headers, HttpStatus.OK);
+	  } 
+	/************************************** DELETE **************************************
+	 * Elimina un usuario.
+	 * @param id.
+	 * @return ResponseEntity<Usuario>.
+	 */
+	@RequestMapping(value = "/srp/usuario/{id}", method = RequestMethod.DELETE)
+	@PreAuthorize("hasRole('ROLE_USUARIO:DELETE')")  
+		    public ResponseEntity<Map<String, Object>> deleteUsuario(@PathVariable("id") String id) {
+		  
+		    	 UUID uuid = UUID.fromString(id);
+		         Usuario usuario = usuarioService.getUsuario(uuid);
+		         if (usuario == null) {
+		             return new ResponseEntity<Map<String, Object>>(HttpStatus.NOT_FOUND);
+		         }
+		  
+	           	 try{
+		             usuarioService.deleteUsuario(usuario);
+		             
+			 Map<String, Object> usuarioMAP = new HashMap<>();
+			 usuarioMAP.put("id", usuario.getUsuarioId());
+	/*usuarioFound.setNombreclave(usuario.getNombreclave());*/
+	usuarioMAP.put("nombreclave", usuario.getNombreclave());
+	/*usuarioFound.setPassword(usuario.getPassword());*/
+	usuarioMAP.put("password", usuario.getPassword());
+	/*usuarioFound.setActivo(usuario.getActivo());*/
+	usuarioMAP.put("activo", usuario.getActivo());
+	/*usuarioFound.setRolId(usuario.getRolId());*/
+	usuarioMAP.put("rolId", usuario.getRolId());
+		             
+		             HttpHeaders headers = new HttpHeaders();
+		             return new ResponseEntity<Map<String, Object>>(usuarioMAP, headers, HttpStatus.OK);
+		         }catch (Exception e) {
+		        	 HttpHeaders responseHeaders = new HttpHeaders();
+		        	 responseHeaders.set("Exception", "Exception: "+e);
+		        	 responseHeaders.set("Message", "Usuario no se puede eliminar debido a que esta asociado con otra entidad.");	  
+		             return new ResponseEntity<Map<String, Object>>(responseHeaders,HttpStatus.INTERNAL_SERVER_ERROR);
+		}
+	}
+	/************************************** SEARCH **************************************
 	 * Obtiene informacion de los usuarios.
 	 * @param requestParams.
 	 * @param request.
 	 * @param response.
 	 * @return List<Usuario>.
 	 */
-	@RequestMapping(value = "/usuario", method = RequestMethod.GET, produces = "application/json")
-	@PreAuthorize("hasRole('USUARIOSEARCH')")
-	public @ResponseBody  List<Usuario> getUsuarios(@RequestParam Map<String,String> requestParams, HttpServletRequest request, HttpServletResponse response) {
-
-       	String query=requestParams.get("q");
+	 
+	@RequestMapping(value = "/srp/usuario", method = RequestMethod.GET, produces = "application/json")
+	@PreAuthorize("hasRole('ROLE_USUARIO:READ')")
+	public @ResponseBody  List<Map<String, Object>> getUsuarios(@RequestParam Map<String,String> requestParams, HttpServletRequest request, HttpServletResponse response) {
+		
+		       	String query=requestParams.get("q");
 		int _page= requestParams.get("_page")==null?0:new Integer(requestParams.get("_page")).intValue();
 		long rows = 0;
-
+		
 		List<Usuario> listUsuario = null;
-
+		
 		if (query==null && _page == 0) {
-       		listUsuario = usuarioService.listUsuarios(usuario);
+		       		listUsuario = usuarioService.listUsuarios(usuario);
 			rows = usuarioService.getTotalRows();
 		} else if (query!= null){
 			listUsuario = usuarioService.listUsuariosQuery(usuario, query, _page, 10);
@@ -77,233 +188,55 @@ public class UsuarioController {
 			listUsuario = usuarioService.listUsuariosPagination(usuario, _page, 10);
 			rows = usuarioService.getTotalRows();
 		}
-
+		
+		List<Map<String, Object>> listUsuarioMAP = new ArrayList<>();
+		for( Usuario usuario : listUsuario ){
+			Map<String, Object> usuarioMAP = new HashMap<>();
+			usuarioMAP.put("id", usuario.getUsuarioId());
+			/*usuarioFound.setNombreclave(usuario.getNombreclave());*/
+			usuarioMAP.put("nombreclave", usuario.getNombreclave());
+			/*usuarioFound.setPassword(usuario.getPassword());*/
+			usuarioMAP.put("password", usuario.getPassword());
+			/*usuarioFound.setActivo(usuario.getActivo());*/
+			usuarioMAP.put("activo", usuario.getActivo());
+			/*usuarioFound.setRolId(usuario.getRolId());*/
+			usuarioMAP.put("rolId", usuario.getRolId());
+			
+			listUsuarioMAP.add(usuarioMAP);
+		}
+		
 		response.setHeader("Access-Control-Expose-Headers", "x-total-count");
 		response.setHeader("x-total-count", String.valueOf(rows).toString());	
-
-		return listUsuario;
+		
+		return listUsuarioMAP;
 	}
-
-	/************************************* SEARCH
+		
+	/************************************** SEARCH **************************************
 	 * Obtiene informacion de un usuario.
 	 * @param id.
 	 * @return Usuario.
 	 */
-	@RequestMapping(value = "/idusuario/{id}", method = RequestMethod.GET, produces = "application/json")
-	@PreAuthorize("hasRole('USUARIOSEARCH')")
-	    public @ResponseBody  Usuario getUsuario(@PathVariable("id") int id) {	        
+	@RequestMapping(value = "/srp/usuario/{id}", method = RequestMethod.GET, produces = "application/json")
+	@PreAuthorize("hasRole('ROLE_USUARIO:READ')")
+	public @ResponseBody  Map<String, Object> getUsuario(@PathVariable("id") String id) {	        
 	        Usuario usuario = null;
 	        
-	        usuario = usuarioService.getUsuario(id);
-			return usuario;
-	 }
-
-	/*************************** CREATE
-	 * Crea un nuevo usuario.
-	 * @param usuario.
-	 * @param ucBuilder.
-	 * @return ResponseEntity.
-	 */
-	 @RequestMapping(value = "/usuario", method = RequestMethod.POST)
-	 @PreAuthorize("hasRole('USUARIOCREATE')")
-	    public ResponseEntity<Void> createUsuario(@RequestBody Usuario usuario,    UriComponentsBuilder ucBuilder) {
-	   
-	        usuarioService.addUsuario(usuario);
-	 
-	        HttpHeaders headers = new HttpHeaders();
-	        headers.setLocation(ucBuilder.path("/usuario/{id}").buildAndExpand(usuario.getUsuarioId()).toUri());
-	        return new ResponseEntity<Void>(headers, HttpStatus.CREATED);
-	 }
-		
-	 /****************************************** UPDATE
-	  * Actualiza la informacion de un usuario.
-	  * @param id.
-	  * @param usuario.
-	  * @return ResponseEntity.
-	  */
-	 @RequestMapping(value = "/usuario/{id}", method = RequestMethod.PUT)
- 	 @PreAuthorize("hasRole('USUARIOUPDATE')") 
-	    public ResponseEntity<Usuario> actualizarUsuario(
-				@PathVariable("id") int id, 
-				@RequestBody Usuario usuario) {
+	        UUID uuid = UUID.fromString(id);
+	        usuario = usuarioService.getUsuario(uuid);
 	        
-	        Usuario usuarioFound = usuarioService.getUsuario(id);
-	         
-	        if (usuarioFound==null) {
-	            System.out.println("User with id " + id + " not found");
-	            return new ResponseEntity<Usuario>(HttpStatus.NOT_FOUND);
-	        }
+			Map<String, Object> usuarioMAP = new HashMap<>();
+			usuarioMAP.put("id", usuario.getUsuarioId());
+			/*usuarioFound.setNombreclave(usuario.getNombreclave());*/
+			usuarioMAP.put("nombreclave", usuario.getNombreclave());
+			/*usuarioFound.setPassword(usuario.getPassword());*/
+			usuarioMAP.put("password", usuario.getPassword());
+			/*usuarioFound.setActivo(usuario.getActivo());*/
+			usuarioMAP.put("activo", usuario.getActivo());
+			/*usuarioFound.setRolId(usuario.getRolId());*/
+			usuarioMAP.put("rolId", usuario.getRolId());
+	        
+	        
+			return usuarioMAP;
+	 }
 	
-	usuarioFound.setActivo(usuario.getActivo());
-	usuarioFound.setNombreclave(usuario.getNombreclave());
-	usuarioFound.setPassword(usuario.getPassword());
-	usuarioFound.setRol(usuario.getRol());
-	usuarioFound.setUsuarioId(usuario.getUsuarioId());
-
-		    usuarioService.editUsuario(usuarioFound);
-	        return new ResponseEntity<Usuario>(usuarioFound, HttpStatus.OK);
-	  } 	
-	
-		/********************************** DELETE
-		 * Elimina un usuario.
-		 * @param id.
-		 * @return ResponseEntity<Usuario>.
-		 */
-		@RequestMapping(value = "/usuario/{id}", method = RequestMethod.DELETE)
-		@PreAuthorize("hasRole('USUARIODELETE')")  
-	    public ResponseEntity<Usuario> deleteUsuario(@PathVariable("id") int id) {
-			  
-			//try{
-	    	 
-	         Usuario usuario = usuarioService.getUsuario(id);
-	         if (usuario == null) {
-	             return new ResponseEntity<Usuario>(HttpStatus.NOT_FOUND);
-	         }
-	  
-           	 try{
-	             usuarioService.deleteUsuario(usuario);
-	             return new ResponseEntity<Usuario>(HttpStatus.OK);
-	         }catch (Exception e) {
-	        	 HttpHeaders responseHeaders = new HttpHeaders();
-	        	 responseHeaders.set("Exception", "Exception: "+e);
-	        	 responseHeaders.set("Message", "Usuario no se puede eliminar debido a que esta asociado con otra entidad.");	  
-	             return new ResponseEntity<Usuario>(responseHeaders,HttpStatus.INTERNAL_SERVER_ERROR);
-			}
-
-           	//} catch(GenericException e) {
-            //	 return new ResponseEntity<Usuario>(HttpStatus.PRECONDITION_FAILED);
-            //}
-		}
-
-	/**
-	 * Salva informacion de un usuario.
-	 * @param afiliadoBean.
-	 * @return String.
-	 */
-	@RequestMapping(value = "/saveUsuario", method = RequestMethod.POST)
-	@PreAuthorize("hasRole('USUARIO')")  
-	public @ResponseBody String saveUsuario(
-			@ModelAttribute("command") UsuarioBean usuarioBean) {
-
-		Usuario usuario = prepareModel(usuarioBean);
-		usuarioService.addUsuario(usuario);
-
-		return "SUCCESS";
-	}
-	
-	/**
-	 * Edita informacion de un usuario.
-	 * @param usuarioBean.
-	 * @return String.
-	 */
-	@RequestMapping(value = "/editUsuario", method = RequestMethod.POST)
-	@PreAuthorize("hasRole('USUARIO')")  
-	public @ResponseBody String editUsuario(
-			@ModelAttribute("command") UsuarioBean usuarioBean) {
-
-
-		Usuario usuario = prepareModel(usuarioBean);
-		usuarioService.editUsuario(usuario);
-		return "SUCCESS";
-	}
-
-	/**
-	 * Agrega un USUARIO.
-	 * @param USUARIOBean.
-	 * @param result.
-	 * @return ModelAndView.
-	 */
-	@RequestMapping(value = "/searchUsuario", method = RequestMethod.GET)
-	@PreAuthorize("hasRole('USUARIO')")  
-	public ModelAndView addUsuario(
-			@ModelAttribute("command") UsuarioBean usuarioBean,
-			BindingResult result) {
-
-		Map<String, Object> model = new HashMap<String, Object>();
-		Usuario usuario = null;
-		if (usuarioBean != null)
-			usuario = prepareModel(usuarioBean);
-		model.put("usuarios",
-				prepareListofBean(usuarioService.listUsuarios(usuario)));
-		return new ModelAndView("searchUsuario", model);
-	}
-
-	/**
-	 * Elimina un usuario.
-	 * @param usuarioBean.
-	 * @param result.
-	 * @return ModelAndView.
-	 */
-	@RequestMapping(value = "/deleteUsuario", method = RequestMethod.POST)
-	@PreAuthorize("hasRole('USUARIO')")  
-	public ModelAndView deleteUsuario(
-			@ModelAttribute("command") UsuarioBean usuarioBean,
-			BindingResult result) {
-		System.out.println("delete " + usuarioBean.getUsuarioId());
-		usuarioService.deleteUsuario(prepareModel(usuarioBean));
-		Map<String, Object> model = new HashMap<String, Object>();
-		model.put("usuario", null);
-		model.put("usuarios",
-				prepareListofBean(usuarioService.listUsuarios(null)));
-		return new ModelAndView("searchUsuario", model);
-	}
-
-	/**
-	 * 
-	 * @return ModelAndView.
-	 */
-	@RequestMapping(value = "/entryUsuario", method = RequestMethod.GET)
-	@PreAuthorize("hasRole('USUARIO')")  
-	public ModelAndView entryUsuario() {
-		return new ModelAndView("redirect:/searchUsuario");
-	}
-
-	private Usuario prepareModel(UsuarioBean usuarioBean) {
-		Usuario usuario = new Usuario();
-
-		//usuario.setHIntegerId(usuarioBean.getActivoId());
-		//usuario.setRolId(usuarioBean.getRolId());
-		//usuario.setDisplayresultusuarioId(usuarioBean.getUsuarioId());
-		//usuario.setExposedfilterusuarioId(usuarioBean.getUsuarioId());
-		//usuario.setDisplaymodalusuarioId(usuarioBean.getUsuarioId());
-		//usuario.setEntitynameusuarioId(usuarioBean.getUsuarioId());
-		//usuario.setScaffoldusuarioId(usuarioBean.getUsuarioId());
-		usuario.setNombreclave(usuarioBean.getNombreclave());
-		usuario.setPassword(usuarioBean.getPassword());
-		usuario.setUsuarioId(usuarioBean.getUsuarioId());
-		usuarioBean.setUsuarioId(null);
-
-		return usuario;
-	}
-
-	/**
-	 * Convierte un objeto de tipo UsuarioBean a un objeto de tipo Usuario.
-	 * @param usuarioBean.
-	 * @return Usuario.
-	 */
-	private List<UsuarioBean> prepareListofBean(List<Usuario> usuarios) {
-		List<UsuarioBean> beans = null;
-		if (usuarios != null && !usuarios.isEmpty()) {
-			beans = new ArrayList<UsuarioBean>();
-			UsuarioBean bean = null;
-			for (Usuario usuario : usuarios) {
-				bean = new UsuarioBean();
-
-				//bean.setRolId(usuario.getRolId());
-				//bean.setDisplayresultusuarioId(usuario.getUsuarioId());
-				//bean.setExposedfilterusuarioId(usuario.getUsuarioId());
-				//bean.setDisplaymodalusuarioId(usuario.getUsuarioId());
-				//bean.setEntitynameusuarioId(usuario.getUsuarioId());
-				//bean.setScaffoldusuarioId(usuario.getUsuarioId());
-				bean.setNombreclave(usuario.getNombreclave());
-				bean.setPassword(usuario.getPassword());
-				bean.setUsuarioId(usuario.getUsuarioId());
-				beans.add(bean);
-			}
-		}
-		return beans;
-	}
-
 }
-
-

@@ -7,16 +7,19 @@
 package com.softtek.acceleo.demo.repository.impl;
 
 import java.util.List;
+import java.util.UUID;
 
+import org.hibernate.Hibernate;
+import org.hibernate.Session;
 import org.hibernate.SessionFactory;
 import org.hibernate.criterion.Example;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
 import org.hibernate.criterion.Projections;
 import org.hibernate.criterion.Restrictions;
-
 import com.softtek.acceleo.demo.domain.Posicion;
 import com.softtek.acceleo.demo.repository.PosicionRepository;
+
 /**
  * Clase posicionRepositoryImpl.
  * @author PSG.
@@ -38,18 +41,37 @@ public class PosicionRepositoryImpl implements PosicionRepository {
 	 */
 	public void editPosicion(Posicion posicion) {
 		sessionFactory.getCurrentSession().update(posicion);
-
+		
 	}
 	/**
 	 * Consulta informacion de posicion.
 	 */
 	@SuppressWarnings({ "unchecked" })
 	public List<Posicion> listPosicions(Posicion posicion) {
-
-		return (List<Posicion>) sessionFactory.getCurrentSession()
-				.createCriteria(Posicion.class).list();
+		List<Posicion> posicions = sessionFactory.getCurrentSession().createCriteria(Posicion.class).list();
+		return posicions;
 	}
-
+	
+	/**
+	 * Consulta informacion de posicion.
+	 */
+	@SuppressWarnings({ "unchecked" })
+	public List<Posicion> listPosicionsByPosicion(Posicion posicion, int id) {
+		List<Posicion> posicions = 
+		sessionFactory.getCurrentSession().createCriteria(Posicion.class)
+		.add(Restrictions.like("posicionId",id)).list();
+		return posicions;
+	}
+ 
+	/**
+	 * Consulta informacion de posicion.
+	 */
+	@SuppressWarnings({ "unchecked" })
+	public List<Posicion> listPosicionsByUsername(Posicion posicion, String id) {
+		List<Posicion> posicions = sessionFactory.getCurrentSession().createCriteria(Posicion.class).add(Restrictions.like("username",id)).list();
+		return posicions;
+	}
+	
 	/**
 	 * Consulta informacion de posicion y la pagina.
 	 */
@@ -58,44 +80,35 @@ public class PosicionRepositoryImpl implements PosicionRepository {
 		
 		return (List<Posicion>) sessionFactory.getCurrentSession()
 			.createCriteria(Posicion.class).setFirstResult((page - 1) * size)
-			.add(					
-					Restrictions.or(Restrictions.or(Restrictions.or(Restrictions.or(Restrictions.or(Restrictions.or(Restrictions.or(Restrictions.or(Restrictions.or(Restrictions.or(Restrictions.or(Restrictions.or(Restrictions.or(Restrictions.or(Restrictions.or(Restrictions.or(Restrictions.or(	
-Restrictions.like("reclutador", "%" + query +"%"),
-Restrictions.like("posicion", "%" + query +"%")),
-Restrictions.like("descripcion", "%" + query +"%")),
-Restrictions.like("posicion", "%" + query +"%")),
-Restrictions.like("contacto", "%" + query +"%")),
-Restrictions.like("evento", "%" + query +"%")),
-Restrictions.like("salario", "%" + query +"%")),
-Restrictions.like("posicion", "%" + query +"%")),
-Restrictions.like("puesto", "%" + query +"%")),
-Restrictions.like("vacantes", "%" + query +"%")),
-Restrictions.like("solicitud", "%" + query +"%")),
-Restrictions.like("tipo", "%" + query +"%")),
-Restrictions.like("posicion", "%" + query +"%")),
-Restrictions.like("nombre", "%" + query +"%")),
-Restrictions.like("fecha", "%" + query +"%")),
-Restrictions.like("estado", "%" + query +"%")),
-Restrictions.like("filial", "%" + query +"%")),
-Restrictions.like("posicion", "%" + query +"%"))
-					
-					
-					
-					
-					
-					
-					
-					
-					
-					
-					
-					
-					
-					
-					
-					
-					
-).list();
+			.add(
+			Restrictions.or(
+			Restrictions.or(
+			Restrictions.or(	
+			Restrictions.or(	
+			Restrictions.or(
+			Restrictions.or(	
+			Restrictions.or(
+			Restrictions.or(
+			Restrictions.or(
+			Restrictions.or(
+			Restrictions.or(
+			Restrictions.or(
+			Restrictions.or(
+			Restrictions.like("posicion", "%" + query +"%"), 
+			Restrictions.like("filialId", "%" + query +"%")),
+			Restrictions.like("puestos", "%" + query +"%")),
+			Restrictions.like("nombre", "%" + query +"%")),
+			Restrictions.like("descripcion", "%" + query +"%")),
+			Restrictions.like("fecha", "%" + query +"%")),
+			Restrictions.like("contacto", "%" + query +"%")),
+			Restrictions.like("salario", "%" + query +"%")),
+			Restrictions.like("vacantes", "%" + query +"%")),
+			Restrictions.like("tiponomina", "%" + query +"%")),
+			Restrictions.like("reclutadorId", "%" + query +"%")),
+			Restrictions.like("estatusposicion", "%" + query +"%")),
+			Restrictions.like("posicionId", "%" + query +"%")),
+			Restrictions.like("posicionId", "%" + query +"%"))
+			).list();
 	}
 
 	/**
@@ -130,27 +143,35 @@ Restrictions.like("posicion", "%" + query +"%"))
 		long totalRows = 0;
 		totalRows = (Long) sessionFactory.getCurrentSession()
 		.createCriteria(Posicion.class).setProjection(Projections.rowCount())
-					.add(	
-							Restrictions.or(Restrictions.or(Restrictions.or(Restrictions.or(Restrictions.or(Restrictions.or(Restrictions.or(Restrictions.or(Restrictions.or(Restrictions.or(Restrictions.or(Restrictions.or(Restrictions.or(Restrictions.or(Restrictions.or(Restrictions.or(Restrictions.or(	
-						Restrictions.like("reclutador", "%" + query +"%"),Restrictions.like("posicion", "%" + query +"%")),Restrictions.like("descripcion", "%" + query +"%")),Restrictions.like("posicion", "%" + query +"%")),Restrictions.like("contacto", "%" + query +"%")),Restrictions.like("evento", "%" + query +"%")),Restrictions.like("salario", "%" + query +"%")),Restrictions.like("posicion", "%" + query +"%")),Restrictions.like("puesto", "%" + query +"%")),Restrictions.like("vacantes", "%" + query +"%")),Restrictions.like("solicitud", "%" + query +"%")),Restrictions.like("tipo", "%" + query +"%")),Restrictions.like("posicion", "%" + query +"%")),Restrictions.like("nombre", "%" + query +"%")),Restrictions.like("fecha", "%" + query +"%")),Restrictions.like("estado", "%" + query +"%")),Restrictions.like("filial", "%" + query +"%")),Restrictions.like("posicion", "%" + query +"%"))	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-).uniqueResult();
+			.add(
+			Restrictions.or(
+			Restrictions.or(
+			Restrictions.or(	
+			Restrictions.or(	
+			Restrictions.or(
+			Restrictions.or(	
+			Restrictions.or(
+			Restrictions.or(
+			Restrictions.or(
+			Restrictions.or(
+			Restrictions.or(
+			Restrictions.or(
+			Restrictions.or(
+			Restrictions.like("posicion", "%" + query +"%"), 
+			Restrictions.like("filialId", "%" + query +"%")),
+			Restrictions.like("puestos", "%" + query +"%")),
+			Restrictions.like("nombre", "%" + query +"%")),
+			Restrictions.like("descripcion", "%" + query +"%")),
+			Restrictions.like("fecha", "%" + query +"%")),
+			Restrictions.like("contacto", "%" + query +"%")),
+			Restrictions.like("salario", "%" + query +"%")),
+			Restrictions.like("vacantes", "%" + query +"%")),
+			Restrictions.like("tiponomina", "%" + query +"%")),
+			Restrictions.like("reclutadorId", "%" + query +"%")),
+			Restrictions.like("estatusposicion", "%" + query +"%")),
+			Restrictions.like("posicionId", "%" + query +"%")),
+			Restrictions.like("posicionId", "%" + query +"%"))
+			).uniqueResult();
 		return totalRows;  
 	}
 
@@ -172,7 +193,7 @@ Restrictions.like("posicion", "%" + query +"%"))
 	/**
 	 * Consulta informacion de un posicion.
 	 */
-	public Posicion getPosicion(int empid) {
+	public Posicion getPosicion(UUID empid) {
 		return (Posicion) sessionFactory.getCurrentSession().get(
 				Posicion.class, empid);
 	}
@@ -185,3 +206,4 @@ Restrictions.like("posicion", "%" + query +"%"))
 	}
 
 }
+

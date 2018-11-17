@@ -9,11 +9,14 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
+import org.springframework.transaction.annotation.Propagation;
+import org.springframework.transaction.annotation.Transactional;
 
 import com.softtek.acceleo.demo.domain.Authority;
 import com.softtek.acceleo.demo.domain.Privilege;
 
 @Repository("privilegeRepository")
+@Transactional(propagation = Propagation.SUPPORTS, readOnly = true)
 public class PrivilegeRepositoryImpl implements PrivilegeRepository{
 	private final Logger logger = LoggerFactory.getLogger(this.getClass());
 
@@ -21,17 +24,23 @@ public class PrivilegeRepositoryImpl implements PrivilegeRepository{
 	private SessionFactory sessionFactory;
 
 	@Override
+	@Transactional(propagation = Propagation.REQUIRED, readOnly = true)
 	public List<Privilege> getPrivilege() {
 		List<Privilege> lstPrivilege = null;
 		
-		Session session = sessionFactory.getCurrentSession();
-		Criteria criteria = session.createCriteria(Privilege.class);
-		lstPrivilege = (List<Privilege>) criteria.list();
+		try {
+			Session session = sessionFactory.getCurrentSession();
+			Criteria criteria = session.createCriteria(Privilege.class);
+			lstPrivilege = (List<Privilege>) criteria.list();
+		}catch(Exception e) {
+			logger.error("Error: ", e);
+		}
 		
 		return lstPrivilege;
 	}
 
 	@Override
+	@Transactional(propagation = Propagation.REQUIRED, readOnly = true)
 	public Privilege getPrivilege(long idPrivilege) {
 		Privilege privilege = null;
 		

@@ -16,6 +16,7 @@ import org.springframework.transaction.annotation.Transactional;
 
 import com.softtek.acceleo.demo.domain.Authority;
 import com.softtek.acceleo.demo.domain.AuthorityPrivilege;
+import com.softtek.acceleo.demo.domain.Privilege;
 
 
 @Repository("authorityPrivilegeRepository")
@@ -123,6 +124,38 @@ public class AuthorityPrivilegeRepositoryImpl implements AuthorityPrivilegeRepos
 		return lstAuthorityPrivilege;
 	}
 	
+	@Override
+	public List<AuthorityPrivilege> getAuthorityPrivilegePorIdPrivilege(Privilege privilege){
+		List<AuthorityPrivilege> lstAuthorityPrivilege = null;
+		
+		try {
+			Session session = sessionFactory.getCurrentSession();
+			Criteria criteria = session.createCriteria(AuthorityPrivilege.class);
+			criteria.add(Restrictions.eq("idPrivilege.idPrivilege", privilege.getIdPrivilege()));
+			
+			lstAuthorityPrivilege = (List<AuthorityPrivilege>) criteria.list();			
+		}catch(Exception e) {
+			logger.error("Error: ", e);
+		}
+		
+		return lstAuthorityPrivilege;		
+	}
 	
-
+	@Override
+	public AuthorityPrivilege getAuthorityPrivilege(Long idAuthority, Long idPrivilege ) {
+		AuthorityPrivilege authorityPrivilege = null;
+		
+		try {
+			Session session = sessionFactory.getCurrentSession();
+			Criteria criteria = session.createCriteria(AuthorityPrivilege.class);
+			criteria.add(Restrictions.eq("idAuthority.idAuthority", idAuthority));
+			criteria.add(Restrictions.eq("idPrivilege.idPrivilege", idPrivilege));
+			
+			authorityPrivilege = (AuthorityPrivilege) criteria.uniqueResult();			
+		}catch(Exception e) {
+			logger.error("Error: ", e);
+		}
+		
+		return authorityPrivilege;
+	}
 }

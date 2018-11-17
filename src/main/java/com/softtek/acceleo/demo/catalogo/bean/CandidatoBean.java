@@ -1,87 +1,65 @@
-/**
- * Autor: PSG.
- * Proyecto:
- * Version: 0.1 
- * Clase para encapsular informacion de un Candidato.
- */
 package com.softtek.acceleo.demo.catalogo.bean;
 
 import java.util.Date;
+import java.util.UUID;
 
 public class CandidatoBean {
+
 /**
  * Clase CandidatoBean.
  * @author PSG.
  *
  */
-	private Integer candidatoId;
+ 
+private UUID candidatoId; 
+private String nombre;
+private String apellidopaterno;
+private String apellidomaterno;
+private Date fecha;	
+private String genero;
+private String estatuscandidato;
 
-	private Date fecha;
-	private String apellidomaterno;
-	private String apellidopaterno;
-	private String nombre;
-	private Genero esId;
-	private enum Genero { mas,fem}
-	private Estatuscandidato estadoId;
-	private enum Estatuscandidato { e4,e1,e6,e2,e5,e3,e7}
-	private Integer solicitudId;
-	private Integer eventoId;
-
-	public Integer getCandidatoId() {
-		return candidatoId;
-	}
-	public void setCandidatoId(Integer candidatoId) {
+	public UUID getCandidatoId () {
+	    return candidatoId;  		
+    }
+	public void setCandidatoId (UUID candidatoId) {
 		this.candidatoId = candidatoId;
 	}
-	public Date getFecha () {
-	    return fecha;  		
-    }
-	public void setFecha(Date fecha) {
-		this.fecha = fecha;
-	}
-	public String getApellidomaterno () {
-	    return apellidomaterno;  		
-    }
-	public void setApellidomaterno(String apellidomaterno) {
-		this.apellidomaterno = apellidomaterno;
-	}
-	public String getApellidopaterno () {
-	    return apellidopaterno;  		
-    }
-	public void setApellidopaterno(String apellidopaterno) {
-		this.apellidopaterno = apellidopaterno;
-	}
-	public String getNombre () {
-	    return nombre;  		
-    }
-	public void setNombre(String nombre) {
-		this.nombre = nombre;
-	}
 
-	public Genero getEsId () {
-	    return esId;  		
+public String getNombre () {
+    return nombre;
     }
-	public void setEsId (Genero esId) {
-		this.esId = esId;
-	}
-	public Estatuscandidato getEstadoId () {
-	    return estadoId;  		
+public void setNombre(String nombre) {
+	this.nombre = nombre;
+}
+public String getApellidopaterno () {
+    return apellidopaterno;
     }
-	public void setEstadoId (Estatuscandidato estadoId) {
-		this.estadoId = estadoId;
-	}
-	public Integer getSolicitudId () {
-	    return solicitudId;  		
+public void setApellidopaterno(String apellidopaterno) {
+	this.apellidopaterno = apellidopaterno;
+}
+public String getApellidomaterno () {
+    return apellidomaterno;
     }
-	public void setSolicitudId (Integer solicitudId) {
-		this.solicitudId = solicitudId;
-	}
-	public Integer getEventoId () {
-	    return eventoId;  		
+public void setApellidomaterno(String apellidomaterno) {
+	this.apellidomaterno = apellidomaterno;
+}
+public Date getFecha () {
+    return fecha;
     }
-	public void setEventoId (Integer eventoId) {
-		this.eventoId = eventoId;
-	}
-
-
+public void setFecha(Date fecha) {
+	this.fecha = fecha;
+}
+public String getGenero () {
+    return genero;
+    }
+public void setGenero(String genero) {
+	this.genero = genero;
+}
+public String getEstatuscandidato () {
+    return estatuscandidato;
+    }
+public void setEstatuscandidato(String estatuscandidato) {
+	this.estatuscandidato = estatuscandidato;
+}
 }

@@ -7,16 +7,19 @@
 package com.softtek.acceleo.demo.repository.impl;
 
 import java.util.List;
+import java.util.UUID;
 
+import org.hibernate.Hibernate;
+import org.hibernate.Session;
 import org.hibernate.SessionFactory;
 import org.hibernate.criterion.Example;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
 import org.hibernate.criterion.Projections;
 import org.hibernate.criterion.Restrictions;
-
 import com.softtek.acceleo.demo.domain.Reclutador;
 import com.softtek.acceleo.demo.repository.ReclutadorRepository;
+
 /**
  * Clase reclutadorRepositoryImpl.
  * @author PSG.
@@ -38,18 +41,37 @@ public class ReclutadorRepositoryImpl implements ReclutadorRepository {
 	 */
 	public void editReclutador(Reclutador reclutador) {
 		sessionFactory.getCurrentSession().update(reclutador);
-
+		
 	}
 	/**
 	 * Consulta informacion de reclutador.
 	 */
 	@SuppressWarnings({ "unchecked" })
 	public List<Reclutador> listReclutadors(Reclutador reclutador) {
-
-		return (List<Reclutador>) sessionFactory.getCurrentSession()
-				.createCriteria(Reclutador.class).list();
+		List<Reclutador> reclutadors = sessionFactory.getCurrentSession().createCriteria(Reclutador.class).list();
+		return reclutadors;
 	}
-
+	
+	/**
+	 * Consulta informacion de reclutador.
+	 */
+	@SuppressWarnings({ "unchecked" })
+	public List<Reclutador> listReclutadorsByReclutador(Reclutador reclutador, int id) {
+		List<Reclutador> reclutadors = 
+		sessionFactory.getCurrentSession().createCriteria(Reclutador.class)
+		.add(Restrictions.like("reclutadorId",id)).list();
+		return reclutadors;
+	}
+ 
+	/**
+	 * Consulta informacion de reclutador.
+	 */
+	@SuppressWarnings({ "unchecked" })
+	public List<Reclutador> listReclutadorsByUsername(Reclutador reclutador, String id) {
+		List<Reclutador> reclutadors = sessionFactory.getCurrentSession().createCriteria(Reclutador.class).add(Restrictions.like("username",id)).list();
+		return reclutadors;
+	}
+	
 	/**
 	 * Consulta informacion de reclutador y la pagina.
 	 */
@@ -58,26 +80,17 @@ public class ReclutadorRepositoryImpl implements ReclutadorRepository {
 		
 		return (List<Reclutador>) sessionFactory.getCurrentSession()
 			.createCriteria(Reclutador.class).setFirstResult((page - 1) * size)
-			.add(					
-					Restrictions.or(Restrictions.or(Restrictions.or(Restrictions.or(Restrictions.or(Restrictions.or(Restrictions.or(Restrictions.or(	
-Restrictions.like("reclutador", "%" + query +"%"),
-Restrictions.like("apellidomaterno", "%" + query +"%")),
-Restrictions.like("es", "%" + query +"%")),
-Restrictions.like("reclutador", "%" + query +"%")),
-Restrictions.like("reclutador", "%" + query +"%")),
-Restrictions.like("reclutador", "%" + query +"%")),
-Restrictions.like("nombre", "%" + query +"%")),
-Restrictions.like("reclutador", "%" + query +"%")),
-Restrictions.like("apellidopaterno", "%" + query +"%"))
-					
-					
-					
-					
-					
-					
-					
-					
-).list();
+			.add(
+			Restrictions.or(	
+			Restrictions.or(	
+			Restrictions.or(	
+			Restrictions.or(
+			Restrictions.like("reclutador", "%" + query +"%"), 
+			Restrictions.like("nombre", "%" + query +"%")),
+			Restrictions.like("apellidopaterno", "%" + query +"%")),
+			Restrictions.like("apellidomaterno", "%" + query +"%")),
+			Restrictions.like("genero", "%" + query +"%"))
+			).list();
 	}
 
 	/**
@@ -112,18 +125,17 @@ Restrictions.like("apellidopaterno", "%" + query +"%"))
 		long totalRows = 0;
 		totalRows = (Long) sessionFactory.getCurrentSession()
 		.createCriteria(Reclutador.class).setProjection(Projections.rowCount())
-					.add(	
-							Restrictions.or(Restrictions.or(Restrictions.or(Restrictions.or(Restrictions.or(Restrictions.or(Restrictions.or(Restrictions.or(	
-						Restrictions.like("reclutador", "%" + query +"%"),Restrictions.like("apellidomaterno", "%" + query +"%")),Restrictions.like("es", "%" + query +"%")),Restrictions.like("reclutador", "%" + query +"%")),Restrictions.like("reclutador", "%" + query +"%")),Restrictions.like("reclutador", "%" + query +"%")),Restrictions.like("nombre", "%" + query +"%")),Restrictions.like("reclutador", "%" + query +"%")),Restrictions.like("apellidopaterno", "%" + query +"%"))	
-	
-	
-	
-	
-	
-	
-	
-	
-).uniqueResult();
+			.add(
+			Restrictions.or(	
+			Restrictions.or(	
+			Restrictions.or(	
+			Restrictions.or(
+			Restrictions.like("reclutador", "%" + query +"%"), 
+			Restrictions.like("nombre", "%" + query +"%")),
+			Restrictions.like("apellidopaterno", "%" + query +"%")),
+			Restrictions.like("apellidomaterno", "%" + query +"%")),
+			Restrictions.like("genero", "%" + query +"%"))
+			).uniqueResult();
 		return totalRows;  
 	}
 
@@ -145,7 +157,7 @@ Restrictions.like("apellidopaterno", "%" + query +"%"))
 	/**
 	 * Consulta informacion de un reclutador.
 	 */
-	public Reclutador getReclutador(int empid) {
+	public Reclutador getReclutador(UUID empid) {
 		return (Reclutador) sessionFactory.getCurrentSession().get(
 				Reclutador.class, empid);
 	}
@@ -158,3 +170,4 @@ Restrictions.like("apellidopaterno", "%" + query +"%"))
 	}
 
 }
+

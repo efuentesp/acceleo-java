@@ -33,30 +33,30 @@ public class AdminPermisosRepositoryImpl implements AdminPermisosRepository {
 			Session session = sessionFactory.getCurrentSession();
 			Transaction transaction = session.beginTransaction();
 			
-			SQLQuery query = session.createSQLQuery("select g.id_grupo, g.name, p.id_privilege, p.name as role, (CASE WHEN ra.enabled is null THEN 0 ELSE ra.enabled END) as 'ADMIN', (CASE WHEN ru.enabled is null THEN 0 ELSE ru.enabled END) as 'USER', (CASE WHEN ran.enabled is null THEN 0 ELSE ran.enabled END) as 'ANONYMOUS', ra.id_privilege as id_privilege_admin, ra.id_authority as id_authority_admin, ru.id_privilege as id_privilege_user, ru.id_authority as id_authority_user, ran.id_privilege as id_privilege_anonymous, ran.id_authority as id_authority_anonymous\r\n" + 
-					"from grupo g, privilege p \r\n" + 
-					"left outer join (select a.enabled, a.id_privilege, a.id_authority\r\n" + 
-					"				 from authority_privilege a, authority b, privilege c\r\n" + 
-					"				 where a.id_authority = b.id_authority\r\n" + 
-					"				 and a.id_privilege = c.id_privilege\r\n" + 
+			SQLQuery query = session.createSQLQuery("select g.ID_GRUPO, g.NAME, p.ID_PRIVILEGE, p.NAME as ROLE, (CASE WHEN ra.ENABLED is null THEN 0 ELSE ra.ENABLED END) as 'ADMIN', (CASE WHEN ru.ENABLED is null THEN 0 ELSE ru.ENABLED END) as 'USER', (CASE WHEN ran.ENABLED is null THEN 0 ELSE ran.ENABLED END) as 'ANONYMOUS', ra.ID_PRIVILEGE as ID_PRIVILEGE_ADMIN, ra.ID_AUTHORITY as ID_AUTHORITY_ADMIN, ru.ID_PRIVILEGE as ID_PRIVILEGE_USER, ru.ID_AUTHORITY as ID_AUTHORITY_USER, ran.ID_PRIVILEGE as ID_PRIVILEGE_ANONYMOUS, ran.ID_AUTHORITY as ID_AUTHORITY_ANONYMOUS\r\n" + 
+					"from demoacceleo.grupo g, demoacceleo.privilege p \r\n" + 
+					"left outer join (select a.ENABLED, a.ID_PRIVILEGE, a.ID_AUTHORITY\r\n" + 
+					"				 from demoacceleo.authority_privilege a, demoacceleo.authority b, demoacceleo.privilege c\r\n" + 
+					"				 where a.ID_AUTHORITY = b.ID_AUTHORITY\r\n" + 
+					"				 and a.ID_PRIVILEGE = c.ID_PRIVILEGE\r\n" + 
 					"				 and b.name = 'ROLE_ADMIN'\r\n" + 
-					"				 order by c.name desc) ra\r\n" + 
-					"ON(p.id_privilege = ra.id_privilege) \r\n" + 
-					"left outer join (select a.enabled, a.id_privilege, a.id_authority\r\n" + 
-					"				 from authority_privilege a, authority b, privilege c\r\n" + 
-					"				 where a.id_authority = b.id_authority\r\n" + 
-					"				 and a.id_privilege = c.id_privilege\r\n" + 
+					"				 order by c.NAME desc) ra\r\n" + 
+					"ON(p.ID_PRIVILEGE = ra.ID_PRIVILEGE) \r\n" + 
+					"left outer join (select a.ENABLED, a.ID_PRIVILEGE, a.ID_AUTHORITY\r\n" + 
+					"				 from demoacceleo.authority_privilege a, demoacceleo.authority b, demoacceleo.privilege c\r\n" + 
+					"				 where a.ID_AUTHORITY = b.ID_AUTHORITY\r\n" + 
+					"				 and a.ID_PRIVILEGE = c.ID_PRIVILEGE\r\n" + 
 					"				 and b.name = 'ROLE_USER'\r\n" + 
-					"				 order by c.name desc) ru\r\n" + 
-					"ON(p.id_privilege = ru.id_privilege)                 \r\n" + 
-					"left outer join (select a.enabled, a.id_privilege, a.id_authority\r\n" + 
-					"				 from authority_privilege a, authority b, privilege c\r\n" + 
-					"				 where a.id_authority = b.id_authority\r\n" + 
-					"				 and a.id_privilege = c.id_privilege\r\n" + 
+					"				 order by c.NAME desc) ru\r\n" + 
+					"ON(p.ID_PRIVILEGE = ru.ID_PRIVILEGE)                 \r\n" + 
+					"left outer join (select a.ENABLED, a.ID_PRIVILEGE, a.ID_AUTHORITY\r\n" + 
+					"				 from demoacceleo.authority_privilege a, demoacceleo.authority b, demoacceleo.privilege c\r\n" + 
+					"				 where a.ID_AUTHORITY = b.ID_AUTHORITY\r\n" + 
+					"				 and a.ID_PRIVILEGE = c.ID_PRIVILEGE\r\n" + 
 					"				 and b.name = 'ROLE_ANONYMOUS'\r\n" + 
-					"				 order by c.name desc) ran\r\n" + 
-					"ON (p.id_privilege = ran.id_privilege)                 \r\n" + 
-					"where g.id_grupo = p.id_grupo and p.enabled = 1");
+					"				 order by c.NAME desc) ran\r\n" + 
+					"ON (p.ID_PRIVILEGE = ran.ID_PRIVILEGE)                 \r\n" + 
+					"where g.ID_GRUPO = p.ID_GRUPO and p.ENABLED = 1");
 			
 			List<Object[]> lstAdminPerm =  query.list();
 			
@@ -113,29 +113,29 @@ public class AdminPermisosRepositoryImpl implements AdminPermisosRepository {
 		Transaction transaction = session.beginTransaction();
 		
 		
-		SQLQuery query = session.createSQLQuery("select a.id_authority, a.name as authority_name, a.enabled\r\n" + 
-		"from authority a\r\n" + 
-		"where a.enabled = 1\r\n" +
-		"order by a.name asc\r\n");
+		SQLQuery query = session.createSQLQuery("select a.ID_AUTHORITY, a.NAME as AUTHORITY_NAME, a.ENABLED\r\n" + 
+		"from demoacceleo.authority a\r\n" + 
+		"where a.ENABLED = 1\r\n" +
+		"order by a.NAME asc\r\n");
 		List<Object[]> lstAuthority = query.list();
 		session.clear();
 		session.flush();
 		
 		
-		query = session.createSQLQuery("select g.id_grupo, g.name as group_name, p.id_privilege, p.name as privilege_name, p.enabled\r\n" + 
-				"from grupo g, privilege p\r\n" + 
-				"where g.id_grupo = p.id_grupo\r\n" + 
-				"and p.enabled = 1\r\n" + 
-				"order by g.id_grupo, p.id_privilege");
+		query = session.createSQLQuery("select g.ID_GRUPO, g.NAME as GROUP_NAME, p.ID_PRIVILEGE, p.NAME as PRIVILEGE_NAME, p.ENABLED\r\n" + 
+				"from demoacceleo.grupo g, demoacceleo.privilege p\r\n" + 
+				"where g.ID_GRUPO = p.ID_GRUPO\r\n" + 
+				"and p.ENABLED = 1\r\n" + 
+				"order by g.ID_GRUPO, p.ID_PRIVILEGE");
 		
 		List<Object[]> lstGrupoPrivileges = query.list();
 		session.clear();
 		session.flush();
 		
-		query = session.createSQLQuery("select distinct ap.id_authority, ap.id_privilege, ap.enabled\r\n" + 
-				"from authority_privilege ap\r\n" + 
-				"group by ap.id_authority, ap.id_privilege\r\n" + 
-				"order by ap.id_authority, ap.id_privilege");
+		query = session.createSQLQuery("select distinct ap.ID_AUTHORITY, ap.ID_PRIVILEGE, ap.ENABLED\r\n" + 
+				"from demoacceleo.authority_privilege ap\r\n" + 
+				"group by ap.ID_AUTHORITY, ap.ID_PRIVILEGE\r\n" + 
+				"order by ap.ID_AUTHORITY, ap.ID_PRIVILEGE");
 		List<Object[]> lstAuthorityPrivilege = query.list();
 		session.clear();
 		session.flush();

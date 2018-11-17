@@ -2,8 +2,18 @@ package com.softtek.acceleo.demo.domain;
 
 import java.io.Serializable;
 import java.util.Date;
+import java.util.List;
+import java.util.UUID;
+
 import javax.persistence.*;
 import javax.validation.constraints.NotNull;
+import javax.validation.constraints.Size;
+
+import com.fasterxml.jackson.annotation.JsonIgnore;
+
+import org.hibernate.annotations.GenericGenerator;
+import org.hibernate.annotations.Parameter;
+
 
 @Entity
 @Table(name = "trayectoria")
@@ -11,76 +21,65 @@ public class Trayectoria implements Serializable {
 
 	private static final long serialVersionUID = 1L;
 
+
 	@Id
-	@GeneratedValue(strategy = GenerationType.AUTO)
-	@Column(name = "trayectoriaId")
-	private Integer  trayectoriaId;
-
+	@NotNull
+	@GeneratedValue(generator = "UUID")
+	@GenericGenerator(
+			          name = "UUID", 
+	                  strategy = "org.hibernate.id.UUIDGenerator", 
+	                  parameters = {
+	                		@Parameter( 
+	                				name = "uuid_gen_strategy_class", 
+	                				value = "org.hibernate.id.uuid.CustomVersionOneStrategy" 
+	                		) 
+					  } 
+					 )
+	@Column(name = "trayectoriaId", columnDefinition = "VARBINARY(50)")
+	private UUID trayectoriaId;
 
 	@NotNull
-	@Column(name = "clave") 
-	private String clave;
+	private String trayectoria;
 	@NotNull
-	@Column(name = "descripcion") 
+	@Column(name = "descripcion")
 	private String descripcion;
 	
-	@OneToOne
-	@JoinColumn(name="candidatoId")
-	private Candidato candidato;
-	
-	@OneToOne
-	@JoinColumn(name="documentoId")
-	private Documento documento;
-	
 	@NotNull
-	@Column(name = "tipotrayectoriaId", nullable = false)
-	@Enumerated(EnumType.STRING)
-	private Tipotrayectoria tipotrayectoriaId;
+	@Column(name = "clave")
+	private String clave;
+	
+	private UUID documentoId;
 
-	public Integer getTrayectoriaId() {
+	public UUID getTrayectoriaId() {
 		return trayectoriaId;
 	}
 
-	public void setTrayectoriaId(Integer trayectoriaId) {
+	public void setTrayectoriaId(UUID trayectoriaId) {
 		this.trayectoriaId = trayectoriaId;
 	}
-
 	
-	public String getClave () {
-	    return clave;  		
-    }
-	public void setClave(String clave) {
-		this.clave = clave;
+	public String getTrayectoria () {
+	    return trayectoria;
+	    }
+	public void setTrayectoria(String trayectoria) {
+		this.trayectoria = trayectoria;
 	}
-	
 	public String getDescripcion () {
-	    return descripcion;  		
-    }
+	    return descripcion;
+	    }
 	public void setDescripcion(String descripcion) {
 		this.descripcion = descripcion;
 	}
-	
-	public Tipotrayectoria getTipotrayectoriaId () {
-	    return tipotrayectoriaId;  		
-    }
-	public void setTipotrayectoriaId (Tipotrayectoria tipotrayectoriaId) {
-		this.tipotrayectoriaId = tipotrayectoriaId;
+	public String getClave () {
+	    return clave;
+	    }
+	public void setClave(String clave) {
+		this.clave = clave;
 	}
-	
-	public Candidato getCandidato() {
-		return candidato;
+	public UUID getDocumentoId () {
+	    return documentoId;
+	    }
+	public void setDocumentoId(UUID documentoId) {
+		this.documentoId = documentoId;
 	}
-
-	public void setCandidato(Candidato candidato) {
-		this.candidato = candidato;
-	}
-
-	public Documento getDocumento() {
-		return documento;
-	}
-
-	public void setDocumento(Documento documento) {
-		this.documento = documento;
-	}
-
-}			
+}		

@@ -1,4 +1,3 @@
-
 /**
  * Autor: PSG.
  * Proyecto:
@@ -8,6 +7,7 @@
 package com.softtek.acceleo.demo.service.impl;
 
 import java.util.List;
+import java.util.UUID;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -34,7 +34,6 @@ public class DocumentoServiceImpl implements DocumentoService {
 	 */
 	@Transactional(propagation = Propagation.REQUIRED, readOnly = false)
 	public void addDocumento(Documento documento) {
-		
 		documentoRepository.addDocumento(documento);
 	}
 
@@ -43,7 +42,6 @@ public class DocumentoServiceImpl implements DocumentoService {
 	 */
 	@Transactional(propagation = Propagation.REQUIRED, readOnly = false)
 	public void editDocumento(Documento documento) {
-		
 		documentoRepository.editDocumento(documento);
 	}
 	
@@ -51,15 +49,13 @@ public class DocumentoServiceImpl implements DocumentoService {
 	 * Consulta informacion de documentos.
 	 */
 	public List<Documento> listDocumentos(Documento documento) {
-
 		return documentoRepository.listDocumentos(documento);
 	}
 
 	/**
 	 * Obtiene informacion de un documento.
 	 */
-	public Documento getDocumento(int empid) {
-
+	public Documento getDocumento(UUID empid) {
 		return documentoRepository.getDocumento(empid);
 	}
 
@@ -68,8 +64,6 @@ public class DocumentoServiceImpl implements DocumentoService {
 	 */
 	@Transactional(propagation = Propagation.REQUIRED, readOnly = false)
 	public void deleteDocumento(Documento documento) {
-		System.out.println("Entrando al deleteDocumento");
-
 		 documentoRepository.deleteDocumento(documento);
 	}
 
@@ -78,7 +72,6 @@ public class DocumentoServiceImpl implements DocumentoService {
 	 */
 	@Transactional(propagation = Propagation.REQUIRED, readOnly = false)
 	public List<Documento> listDocumentosPagination(Documento documento, int page, int size) {
-
 		return documentoRepository.listDocumentosPagination(documento, page, size);
 	}
 
@@ -105,7 +98,6 @@ public class DocumentoServiceImpl implements DocumentoService {
 	 */
 	@Transactional(propagation = Propagation.REQUIRED, readOnly = false)
 	public long getTotalRows() {
-
 		return documentoRepository.getTotalRows();
 	}
 
@@ -116,6 +108,4 @@ public class DocumentoServiceImpl implements DocumentoService {
 		// TODO Auto-generated method stub
 		return documentoRepository.listDocumentosQuery(documento, query, page, size);
 	}
-
-}
-
+}	

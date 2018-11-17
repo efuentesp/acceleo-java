@@ -1,6 +1,7 @@
 package com.softtek.acceleo.demo.security.controller;
 
 import java.util.Date;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
@@ -46,18 +47,17 @@ public class AuthorityController {
 	
 	Authority authority = new Authority();
 	
-	@PreAuthorize("hasRole('AUTHORITYSEARCH')")
-	@RequestMapping(value = "/authority", method = RequestMethod.GET, produces = "application/json")
+	@RequestMapping(value = "/auth/roles", method = RequestMethod.GET, produces = "application/json")
+	@PreAuthorize("hasRole('ROLE_PERMISSION:READ')")
 	public @ResponseBody  List<Authority> getAuthoritys(@RequestParam Map<String,String> requestParams, HttpServletRequest request, HttpServletResponse response) {
 
-       	String query=requestParams.get("q");
+		String query=requestParams.get("q");
 		int _page= requestParams.get("_page")==null?0:new Integer(requestParams.get("_page")).intValue();
 		long rows = 0;
 
 		List<Authority> listAuthority = null;
 
 		if (query==null && _page == 0 ) {
-       		//listAuthority = authorityService.listAuthorityss(authority);
 			listAuthority = authorityService.listAuthoritys();
 			rows = authorityService.getTotalRows();
 		} else if (query!= null){
@@ -69,8 +69,15 @@ public class AuthorityController {
 			rows = authorityService.getTotalRows();
 		} 	
 
+		/*List<> lstAuth = 
+		for( Authority authority : listAuthority ) {
+			Map<String, String> authorityMAP = new HashMap<String, String>();
+			
+			authorityMAP.put(key, value)
+		}*/
+		
 		response.setHeader("Access-Control-Expose-Headers", "x-total-count");
-		response.setHeader("x-total-count", String.valueOf(rows).toString());	
+		response.setHeader("x-total-count", String.valueOf(rows).toString());
 
 		return listAuthority;
 	}

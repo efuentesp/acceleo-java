@@ -7,16 +7,19 @@
 package com.softtek.acceleo.demo.repository.impl;
 
 import java.util.List;
+import java.util.UUID;
 
+import org.hibernate.Hibernate;
+import org.hibernate.Session;
 import org.hibernate.SessionFactory;
 import org.hibernate.criterion.Example;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
 import org.hibernate.criterion.Projections;
 import org.hibernate.criterion.Restrictions;
-
 import com.softtek.acceleo.demo.domain.Usuario;
 import com.softtek.acceleo.demo.repository.UsuarioRepository;
+
 /**
  * Clase usuarioRepositoryImpl.
  * @author PSG.
@@ -38,18 +41,37 @@ public class UsuarioRepositoryImpl implements UsuarioRepository {
 	 */
 	public void editUsuario(Usuario usuario) {
 		sessionFactory.getCurrentSession().update(usuario);
-
+		
 	}
 	/**
 	 * Consulta informacion de usuario.
 	 */
 	@SuppressWarnings({ "unchecked" })
 	public List<Usuario> listUsuarios(Usuario usuario) {
-
-		return (List<Usuario>) sessionFactory.getCurrentSession()
-				.createCriteria(Usuario.class).list();
+		List<Usuario> usuarios = sessionFactory.getCurrentSession().createCriteria(Usuario.class).list();
+		return usuarios;
 	}
-
+	
+	/**
+	 * Consulta informacion de usuario.
+	 */
+	@SuppressWarnings({ "unchecked" })
+	public List<Usuario> listUsuariosByUsuario(Usuario usuario, int id) {
+		List<Usuario> usuarios = 
+		sessionFactory.getCurrentSession().createCriteria(Usuario.class)
+		.add(Restrictions.like("usuarioId",id)).list();
+		return usuarios;
+	}
+ 
+	/**
+	 * Consulta informacion de usuario.
+	 */
+	@SuppressWarnings({ "unchecked" })
+	public List<Usuario> listUsuariosByUsername(Usuario usuario, String id) {
+		List<Usuario> usuarios = sessionFactory.getCurrentSession().createCriteria(Usuario.class).add(Restrictions.like("username",id)).list();
+		return usuarios;
+	}
+	
 	/**
 	 * Consulta informacion de usuario y la pagina.
 	 */
@@ -58,26 +80,17 @@ public class UsuarioRepositoryImpl implements UsuarioRepository {
 		
 		return (List<Usuario>) sessionFactory.getCurrentSession()
 			.createCriteria(Usuario.class).setFirstResult((page - 1) * size)
-			.add(					
-					Restrictions.or(Restrictions.or(Restrictions.or(Restrictions.or(Restrictions.or(Restrictions.or(Restrictions.or(Restrictions.or(	
-Restrictions.like("usuario", "%" + query +"%"),
-Restrictions.like("activo", "%" + query +"%")),
-Restrictions.like("usuario", "%" + query +"%")),
-Restrictions.like("usuario", "%" + query +"%")),
-Restrictions.like("usuario", "%" + query +"%")),
-Restrictions.like("nombreclave", "%" + query +"%")),
-Restrictions.like("usuario", "%" + query +"%")),
-Restrictions.like("rol", "%" + query +"%")),
-Restrictions.like("password", "%" + query +"%"))
-					
-					
-					
-					
-					
-					
-					
-					
-).list();
+			.add(
+			Restrictions.or(	
+			Restrictions.or(	
+			Restrictions.or(
+			Restrictions.or(
+			Restrictions.like("usuario", "%" + query +"%"), 
+			Restrictions.like("nombreclave", "%" + query +"%")),
+			Restrictions.like("password", "%" + query +"%")),
+			Restrictions.like("activo", "%" + query +"%")),
+			Restrictions.like("rolId", "%" + query +"%"))
+			).list();
 	}
 
 	/**
@@ -112,18 +125,17 @@ Restrictions.like("password", "%" + query +"%"))
 		long totalRows = 0;
 		totalRows = (Long) sessionFactory.getCurrentSession()
 		.createCriteria(Usuario.class).setProjection(Projections.rowCount())
-					.add(	
-							Restrictions.or(Restrictions.or(Restrictions.or(Restrictions.or(Restrictions.or(Restrictions.or(Restrictions.or(Restrictions.or(	
-						Restrictions.like("usuario", "%" + query +"%"),Restrictions.like("activo", "%" + query +"%")),Restrictions.like("usuario", "%" + query +"%")),Restrictions.like("usuario", "%" + query +"%")),Restrictions.like("usuario", "%" + query +"%")),Restrictions.like("nombreclave", "%" + query +"%")),Restrictions.like("usuario", "%" + query +"%")),Restrictions.like("rol", "%" + query +"%")),Restrictions.like("password", "%" + query +"%"))	
-	
-	
-	
-	
-	
-	
-	
-	
-).uniqueResult();
+			.add(
+			Restrictions.or(	
+			Restrictions.or(	
+			Restrictions.or(
+			Restrictions.or(
+			Restrictions.like("usuario", "%" + query +"%"), 
+			Restrictions.like("nombreclave", "%" + query +"%")),
+			Restrictions.like("password", "%" + query +"%")),
+			Restrictions.like("activo", "%" + query +"%")),
+			Restrictions.like("rolId", "%" + query +"%"))
+			).uniqueResult();
 		return totalRows;  
 	}
 
@@ -145,7 +157,7 @@ Restrictions.like("password", "%" + query +"%"))
 	/**
 	 * Consulta informacion de un usuario.
 	 */
-	public Usuario getUsuario(int empid) {
+	public Usuario getUsuario(UUID empid) {
 		return (Usuario) sessionFactory.getCurrentSession().get(
 				Usuario.class, empid);
 	}
@@ -158,3 +170,4 @@ Restrictions.like("password", "%" + query +"%"))
 	}
 
 }
+

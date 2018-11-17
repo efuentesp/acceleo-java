@@ -1,57 +1,51 @@
-/**
- * Autor: PSG.
- * Proyecto:
- * Version: 0.1 
- * Clase para encapsular informacion de un Permiso.
- */
 package com.softtek.acceleo.demo.catalogo.bean;
 
 import java.util.Date;
+import java.util.UUID;
 
 public class PermisoBean {
+
 /**
  * Clase PermisoBean.
  * @author PSG.
  *
  */
-	private Integer permisoId;
+ 
+private UUID permisoId; 
+private UUID rolId;
+private String funcion;
+private String ruta;
+private String nivelpermiso;
 
-	private String ruta;
-	private String funcion;
-	private String nivelpermiso;
-	private Integer rolId;
-
-	public Integer getPermisoId() {
-		return permisoId;
-	}
-	public void setPermisoId(Integer permisoId) {
+	public UUID getPermisoId () {
+	    return permisoId;  		
+    }
+	public void setPermisoId (UUID permisoId) {
 		this.permisoId = permisoId;
 	}
-	public String getRuta () {
-	    return ruta;  		
-    }
-	public void setRuta(String ruta) {
-		this.ruta = ruta;
-	}
-	public String getFuncion () {
-	    return funcion;  		
-    }
-	public void setFuncion(String funcion) {
-		this.funcion = funcion;
-	}
-	public String getNivelpermiso () {
-	    return nivelpermiso;  		
-    }
-	public void setNivelpermiso(String nivelpermiso) {
-		this.nivelpermiso = nivelpermiso;
-	}
 
-	public Integer getRolId () {
-	    return rolId;  		
+public UUID getRolId () {
+    return rolId;
     }
-	public void setRolId (Integer rolId) {
-		this.rolId = rolId;
-	}
-
-
+public void setRol(UUID rolId) {
+	this.rolId = rolId;
+}
+public String getFuncion () {
+    return funcion;
+    }
+public void setFuncion(String funcion) {
+	this.funcion = funcion;
+}
+public String getRuta () {
+    return ruta;
+    }
+public void setRuta(String ruta) {
+	this.ruta = ruta;
+}
+public String getNivelpermiso () {
+    return nivelpermiso;
+    }
+public void setNivelpermiso(String nivelpermiso) {
+	this.nivelpermiso = nivelpermiso;
+}
 }

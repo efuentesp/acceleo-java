@@ -12,11 +12,14 @@ import org.hibernate.criterion.Projections;
 import org.hibernate.criterion.Restrictions;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
+import org.springframework.transaction.annotation.Propagation;
+import org.springframework.transaction.annotation.Transactional;
 
 import com.softtek.acceleo.demo.domain.Authority;
 import com.softtek.acceleo.demo.domain.User;
 
 @Repository("authorityRepository")
+@Transactional(propagation = Propagation.SUPPORTS, readOnly = true)
 public class AuthorityRepositoryImpl implements AuthorityRepository{
 	private static final Logger logger = Logger.getLogger(AuthorityRepositoryImpl.class);
 	
@@ -24,6 +27,7 @@ public class AuthorityRepositoryImpl implements AuthorityRepository{
 	private SessionFactory sessionFactory;
 	
 	@Override
+	@Transactional(propagation = Propagation.REQUIRED, readOnly = true)
 	public Authority getAuthority(long authoritoryId) {
 		Authority authority = null;
 		
@@ -39,6 +43,7 @@ public class AuthorityRepositoryImpl implements AuthorityRepository{
 	}
 
 	@Override
+	@Transactional(propagation = Propagation.REQUIRED, readOnly = true)
 	public List<Authority> getAuthority() {
 		List<Authority> lstAuthority = null;
 
@@ -56,17 +61,12 @@ public class AuthorityRepositoryImpl implements AuthorityRepository{
 	}
 	
 	@SuppressWarnings({ "unchecked" })
+	@Transactional(propagation = Propagation.REQUIRED, readOnly = true)
 	public List<Authority> listAuthorityss(Authority authority) {
 
 		if (authority != null) {
 
 			Authority authorityProxy = new Authority();
-
-
-
-
-
-
 
 			return (List<Authority>) sessionFactory.getCurrentSession()
 					.createCriteria(Authority.class)

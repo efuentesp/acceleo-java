@@ -11,11 +11,17 @@ import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
+import javax.persistence.JoinTable;
 import javax.persistence.ManyToMany;
+import javax.persistence.OneToMany;
 import javax.persistence.OneToOne;
 import javax.persistence.Table;
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Size;
+
+import org.hibernate.annotations.WhereJoinTable;
+
+import com.fasterxml.jackson.annotation.JsonIgnore;
 
 @Entity
 @Table(name = "privilege")
@@ -23,38 +29,54 @@ public class Privilege {
 
 	@Id
 	@GeneratedValue(strategy = GenerationType.AUTO)
-    @Column(name = "id_privilege")
+    @Column(name = "ID_PRIVILEGE")
     private Long idPrivilege;
 
-    @Column(name = "name", length = 50, unique = true)
+    @Column(name = "NAME", length = 50, unique = true)
     @NotNull
     @Size(min = 4, max = 50)
     private String name;
 
-    @Column(name = "enabled", length = 100)
+    @Column(name = "ENABLED", length = 100)
     @NotNull
     @Size(min = 4, max = 100)
     private Boolean enabled;
 
-    @Column(name = "creationdate", length = 50)
+    @Column(name = "CREATIONDATE", length = 50)
     @NotNull
     @Size(min = 4, max = 50)
     private Date creationdate;
 
-    @Column(name = "modifieddate", length = 50)
+    @Column(name = "MODIFIEDDATE", length = 50)
     @NotNull
     @Size(min = 4, max = 50)
     private Date modifieddate;
 
     @OneToOne(cascade = CascadeType.ALL)
-    @JoinColumn(name = "id_grupo")
+    @JoinColumn(name = "ID_GRUPO")
     private Grupo grupo;
     
-    @ManyToMany(fetch = FetchType.LAZY, mappedBy = "privilege")
+    @ManyToMany(fetch = FetchType.LAZY, mappedBy = "privileges")
+//    @ManyToMany(mappedBy = "privilege")
     private List<Authority> authority;
     
+	@ManyToMany(fetch = FetchType.LAZY, cascade = CascadeType.ALL)
+	@JoinTable(name = "authority_privilege", joinColumns = { 
+			@JoinColumn(name = "ID_PRIVILEGE", nullable = false, updatable = false) }, 
+			inverseJoinColumns = { @JoinColumn(name = "ID_AUTHORITY", nullable = false, updatable = false) })
+	@WhereJoinTable(clause = "ENABLED = '1'") 
+	//@JsonIgnore
+	private List<Authority> authorities;
     
    
+	public List<Authority> getAuthorities() {
+		return authorities;
+	}
+
+	public void setAuthorities(List<Authority> authorities) {
+		this.authorities = authorities;
+	}
+
 	public Long getIdPrivilege() {
 		return idPrivilege;
 	}

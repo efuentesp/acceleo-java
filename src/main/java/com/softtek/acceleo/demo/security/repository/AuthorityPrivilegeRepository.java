@@ -4,6 +4,7 @@ import java.util.List;
 
 import com.softtek.acceleo.demo.domain.Authority;
 import com.softtek.acceleo.demo.domain.AuthorityPrivilege;
+import com.softtek.acceleo.demo.domain.Privilege;
 
 public interface AuthorityPrivilegeRepository {
 
@@ -13,6 +14,8 @@ public interface AuthorityPrivilegeRepository {
 	
 	List<AuthorityPrivilege> getAuthorityPrivilegePorIdAuthority(Authority authority);
 	
+	List<AuthorityPrivilege> getAuthorityPrivilegePorIdPrivilege(Privilege privilege);
+	
 	void updateAuthorityPrivilege(AuthorityPrivilege authorityPrivilege);
 	
 	void insertAuthorityPrivilege(AuthorityPrivilege authorityPrivilege);
@@ -20,5 +23,7 @@ public interface AuthorityPrivilegeRepository {
 	void deleteAuthority(AuthorityPrivilege authorityPrivilege);
 	
 	void deleteAuthorities(Authority authority);
+	
+	AuthorityPrivilege getAuthorityPrivilege(Long idAuthority, Long idPrivilege );
 	
 }

@@ -1,4 +1,3 @@
-
 /**
  * Autor: PSG.
  * Proyecto:
@@ -8,6 +7,7 @@
 package com.softtek.acceleo.demo.service.impl;
 
 import java.util.List;
+import java.util.UUID;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -16,7 +16,6 @@ import org.springframework.transaction.annotation.Transactional;
 
 import com.softtek.acceleo.demo.repository.EventoRepository;
 import com.softtek.acceleo.demo.domain.Evento;
-import com.softtek.acceleo.demo.domain.Solicitud;
 import com.softtek.acceleo.demo.service.EventoService;
 /**
  * Clase EventoServiceImpl.
@@ -35,7 +34,6 @@ public class EventoServiceImpl implements EventoService {
 	 */
 	@Transactional(propagation = Propagation.REQUIRED, readOnly = false)
 	public void addEvento(Evento evento) {
-		
 		eventoRepository.addEvento(evento);
 	}
 
@@ -44,7 +42,6 @@ public class EventoServiceImpl implements EventoService {
 	 */
 	@Transactional(propagation = Propagation.REQUIRED, readOnly = false)
 	public void editEvento(Evento evento) {
-		
 		eventoRepository.editEvento(evento);
 	}
 	
@@ -52,15 +49,13 @@ public class EventoServiceImpl implements EventoService {
 	 * Consulta informacion de eventos.
 	 */
 	public List<Evento> listEventos(Evento evento) {
-
 		return eventoRepository.listEventos(evento);
 	}
-	
+
 	/**
 	 * Obtiene informacion de un evento.
 	 */
-	public Evento getEvento(int empid) {
-
+	public Evento getEvento(UUID empid) {
 		return eventoRepository.getEvento(empid);
 	}
 
@@ -69,8 +64,6 @@ public class EventoServiceImpl implements EventoService {
 	 */
 	@Transactional(propagation = Propagation.REQUIRED, readOnly = false)
 	public void deleteEvento(Evento evento) {
-		System.out.println("Entrando al deleteEvento");
-
 		 eventoRepository.deleteEvento(evento);
 	}
 
@@ -79,7 +72,6 @@ public class EventoServiceImpl implements EventoService {
 	 */
 	@Transactional(propagation = Propagation.REQUIRED, readOnly = false)
 	public List<Evento> listEventosPagination(Evento evento, int page, int size) {
-
 		return eventoRepository.listEventosPagination(evento, page, size);
 	}
 
@@ -106,7 +98,6 @@ public class EventoServiceImpl implements EventoService {
 	 */
 	@Transactional(propagation = Propagation.REQUIRED, readOnly = false)
 	public long getTotalRows() {
-
 		return eventoRepository.getTotalRows();
 	}
 
@@ -117,11 +108,4 @@ public class EventoServiceImpl implements EventoService {
 		// TODO Auto-generated method stub
 		return eventoRepository.listEventosQuery(evento, query, page, size);
 	}
-
-	@Override
-	public List<Evento> listEventosByCandidato(Evento evento, int candidatoId) {
-		return eventoRepository.listEventosByCandidato(evento, candidatoId);
-	}
-
-}
-
+}	

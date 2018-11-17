@@ -7,6 +7,7 @@
 package com.softtek.acceleo.demo.repository.impl;
 
 import java.util.List;
+import java.util.UUID;
 
 import org.hibernate.Hibernate;
 import org.hibernate.Session;
@@ -16,11 +17,9 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
 import org.hibernate.criterion.Projections;
 import org.hibernate.criterion.Restrictions;
-
-import com.softtek.acceleo.demo.domain.Candidato;
 import com.softtek.acceleo.demo.domain.Direccion;
-import com.softtek.acceleo.demo.domain.Solicitud;
 import com.softtek.acceleo.demo.repository.DireccionRepository;
+
 /**
  * Clase direccionRepositoryImpl.
  * @author PSG.
@@ -42,29 +41,37 @@ public class DireccionRepositoryImpl implements DireccionRepository {
 	 */
 	public void editDireccion(Direccion direccion) {
 		sessionFactory.getCurrentSession().update(direccion);
-
+		
 	}
 	/**
 	 * Consulta informacion de direccion.
 	 */
 	@SuppressWarnings({ "unchecked" })
 	public List<Direccion> listDireccions(Direccion direccion) {
-		Session session = sessionFactory.getCurrentSession();
-		List<Direccion> direcciones = session.createCriteria(Direccion.class).list();
-		for (Direccion c: direcciones) {
-			if (c != null) {
-				Hibernate.initialize(c.getCandidato());
-			}
-			
-			System.out.println("candidato****************:"+ c.getCandidato());
-		}
-		//session.close();
-		return direcciones;
-		
-//		return (List<Direccion>) sessionFactory.getCurrentSession()
-//				.createCriteria(Direccion.class).list();
+		List<Direccion> direccions = sessionFactory.getCurrentSession().createCriteria(Direccion.class).list();
+		return direccions;
 	}
-
+	
+	/**
+	 * Consulta informacion de direccion.
+	 */
+	@SuppressWarnings({ "unchecked" })
+	public List<Direccion> listDireccionsByDireccion(Direccion direccion, int id) {
+		List<Direccion> direccions = 
+		sessionFactory.getCurrentSession().createCriteria(Direccion.class)
+		.add(Restrictions.like("direccionId",id)).list();
+		return direccions;
+	}
+ 
+	/**
+	 * Consulta informacion de direccion.
+	 */
+	@SuppressWarnings({ "unchecked" })
+	public List<Direccion> listDireccionsByUsername(Direccion direccion, String id) {
+		List<Direccion> direccions = sessionFactory.getCurrentSession().createCriteria(Direccion.class).add(Restrictions.like("username",id)).list();
+		return direccions;
+	}
+	
 	/**
 	 * Consulta informacion de direccion y la pagina.
 	 */
@@ -73,28 +80,17 @@ public class DireccionRepositoryImpl implements DireccionRepository {
 		
 		return (List<Direccion>) sessionFactory.getCurrentSession()
 			.createCriteria(Direccion.class).setFirstResult((page - 1) * size)
-			.add(					
-					Restrictions.or(Restrictions.or(Restrictions.or(Restrictions.or(Restrictions.or(Restrictions.or(Restrictions.or(Restrictions.or(Restrictions.or(	
-Restrictions.like("direccion", "%" + query +"%"),
-Restrictions.like("direccion", "%" + query +"%")),
-Restrictions.like("estado", "%" + query +"%")),
-Restrictions.like("direccion", "%" + query +"%")),
-Restrictions.like("direccion", "%" + query +"%")),
-Restrictions.like("direccion", "%" + query +"%")),
-Restrictions.like("cp", "%" + query +"%")),
-Restrictions.like("candidato", "%" + query +"%")),
-Restrictions.like("ciudad", "%" + query +"%")),
-Restrictions.like("calle", "%" + query +"%"))
-					
-					
-					
-					
-					
-					
-					
-					
-					
-).list();
+			.add(
+			Restrictions.or(	
+			Restrictions.or(	
+			Restrictions.or(	
+			Restrictions.or(	
+			Restrictions.like("direccion", "%" + query +"%"), 
+			Restrictions.like("calle", "%" + query +"%")),
+			Restrictions.like("cp", "%" + query +"%")),
+			Restrictions.like("ciudad", "%" + query +"%")),
+			Restrictions.like("estado", "%" + query +"%"))
+			).list();
 	}
 
 	/**
@@ -129,19 +125,17 @@ Restrictions.like("calle", "%" + query +"%"))
 		long totalRows = 0;
 		totalRows = (Long) sessionFactory.getCurrentSession()
 		.createCriteria(Direccion.class).setProjection(Projections.rowCount())
-					.add(	
-							Restrictions.or(Restrictions.or(Restrictions.or(Restrictions.or(Restrictions.or(Restrictions.or(Restrictions.or(Restrictions.or(Restrictions.or(	
-						Restrictions.like("direccion", "%" + query +"%"),Restrictions.like("direccion", "%" + query +"%")),Restrictions.like("estado", "%" + query +"%")),Restrictions.like("direccion", "%" + query +"%")),Restrictions.like("direccion", "%" + query +"%")),Restrictions.like("direccion", "%" + query +"%")),Restrictions.like("cp", "%" + query +"%")),Restrictions.like("candidato", "%" + query +"%")),Restrictions.like("ciudad", "%" + query +"%")),Restrictions.like("calle", "%" + query +"%"))	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-).uniqueResult();
+			.add(
+			Restrictions.or(	
+			Restrictions.or(	
+			Restrictions.or(	
+			Restrictions.or(	
+			Restrictions.like("direccion", "%" + query +"%"), 
+			Restrictions.like("calle", "%" + query +"%")),
+			Restrictions.like("cp", "%" + query +"%")),
+			Restrictions.like("ciudad", "%" + query +"%")),
+			Restrictions.like("estado", "%" + query +"%"))
+			).uniqueResult();
 		return totalRows;  
 	}
 
@@ -163,7 +157,7 @@ Restrictions.like("calle", "%" + query +"%"))
 	/**
 	 * Consulta informacion de un direccion.
 	 */
-	public Direccion getDireccion(int empid) {
+	public Direccion getDireccion(UUID empid) {
 		return (Direccion) sessionFactory.getCurrentSession().get(
 				Direccion.class, empid);
 	}
@@ -176,3 +170,4 @@ Restrictions.like("calle", "%" + query +"%"))
 	}
 
 }
+

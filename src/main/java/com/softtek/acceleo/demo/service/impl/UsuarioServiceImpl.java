@@ -1,4 +1,3 @@
-
 /**
  * Autor: PSG.
  * Proyecto:
@@ -8,6 +7,7 @@
 package com.softtek.acceleo.demo.service.impl;
 
 import java.util.List;
+import java.util.UUID;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -34,7 +34,6 @@ public class UsuarioServiceImpl implements UsuarioService {
 	 */
 	@Transactional(propagation = Propagation.REQUIRED, readOnly = false)
 	public void addUsuario(Usuario usuario) {
-		
 		usuarioRepository.addUsuario(usuario);
 	}
 
@@ -43,7 +42,6 @@ public class UsuarioServiceImpl implements UsuarioService {
 	 */
 	@Transactional(propagation = Propagation.REQUIRED, readOnly = false)
 	public void editUsuario(Usuario usuario) {
-		
 		usuarioRepository.editUsuario(usuario);
 	}
 	
@@ -51,15 +49,13 @@ public class UsuarioServiceImpl implements UsuarioService {
 	 * Consulta informacion de usuarios.
 	 */
 	public List<Usuario> listUsuarios(Usuario usuario) {
-
 		return usuarioRepository.listUsuarios(usuario);
 	}
 
 	/**
 	 * Obtiene informacion de un usuario.
 	 */
-	public Usuario getUsuario(int empid) {
-
+	public Usuario getUsuario(UUID empid) {
 		return usuarioRepository.getUsuario(empid);
 	}
 
@@ -68,8 +64,6 @@ public class UsuarioServiceImpl implements UsuarioService {
 	 */
 	@Transactional(propagation = Propagation.REQUIRED, readOnly = false)
 	public void deleteUsuario(Usuario usuario) {
-		System.out.println("Entrando al deleteUsuario");
-
 		 usuarioRepository.deleteUsuario(usuario);
 	}
 
@@ -78,7 +72,6 @@ public class UsuarioServiceImpl implements UsuarioService {
 	 */
 	@Transactional(propagation = Propagation.REQUIRED, readOnly = false)
 	public List<Usuario> listUsuariosPagination(Usuario usuario, int page, int size) {
-
 		return usuarioRepository.listUsuariosPagination(usuario, page, size);
 	}
 
@@ -105,7 +98,6 @@ public class UsuarioServiceImpl implements UsuarioService {
 	 */
 	@Transactional(propagation = Propagation.REQUIRED, readOnly = false)
 	public long getTotalRows() {
-
 		return usuarioRepository.getTotalRows();
 	}
 
@@ -116,6 +108,4 @@ public class UsuarioServiceImpl implements UsuarioService {
 		// TODO Auto-generated method stub
 		return usuarioRepository.listUsuariosQuery(usuario, query, page, size);
 	}
-
-}
-
+}	

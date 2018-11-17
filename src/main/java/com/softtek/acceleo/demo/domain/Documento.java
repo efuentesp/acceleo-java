@@ -1,17 +1,19 @@
 package com.softtek.acceleo.demo.domain;
 
 import java.io.Serializable;
-import javax.persistence.EnumType;
-import javax.persistence.Enumerated;
-import javax.persistence.Column;
-import javax.persistence.Entity;
-import javax.persistence.GeneratedValue;
-import javax.persistence.GenerationType;
-import javax.persistence.Id;
-import javax.persistence.Table;
 import java.util.Date;
+import java.util.List;
+import java.util.UUID;
+
 import javax.persistence.*;
 import javax.validation.constraints.NotNull;
+import javax.validation.constraints.Size;
+
+import com.fasterxml.jackson.annotation.JsonIgnore;
+
+import org.hibernate.annotations.GenericGenerator;
+import org.hibernate.annotations.Parameter;
+
 
 @Entity
 @Table(name = "documento")
@@ -19,50 +21,59 @@ public class Documento implements Serializable {
 
 	private static final long serialVersionUID = 1L;
 
+
 	@Id
-	@GeneratedValue(strategy = GenerationType.AUTO)
-	@Column(name = "documentoId")
-	private Integer  documentoId;
-
+	@NotNull
+	@GeneratedValue(generator = "UUID")
+	@GenericGenerator(
+			          name = "UUID", 
+	                  strategy = "org.hibernate.id.UUIDGenerator", 
+	                  parameters = {
+	                		@Parameter( 
+	                				name = "uuid_gen_strategy_class", 
+	                				value = "org.hibernate.id.uuid.CustomVersionOneStrategy" 
+	                		) 
+					  } 
+					 )
+	@Column(name = "documentoId", columnDefinition = "VARBINARY(50)")
+	private UUID documentoId;
 
 	@NotNull
-	@Column(name = "nombre") 
+	@Column(name = "nombre")
 	private String nombre;
+	
 	@NotNull
-	@Column(name = "descripcion") 
+	@Column(name = "descripcion")
 	private String descripcion;
-
-
-	@Column(name = "size") 
+	
+	@Column(name = "size")
 	private Integer size;
+	
 
-	public Integer getDocumentoId() {
+	public UUID getDocumentoId() {
 		return documentoId;
 	}
 
-	public void setDocumentoId(Integer documentoId) {
+	public void setDocumentoId(UUID documentoId) {
 		this.documentoId = documentoId;
 	}
-
 	
 	public String getNombre () {
-	    return nombre;  		
-    }
+	    return nombre;
+	    }
 	public void setNombre(String nombre) {
 		this.nombre = nombre;
 	}
-	
 	public String getDescripcion () {
-	    return descripcion;  		
-    }
+	    return descripcion;
+	    }
 	public void setDescripcion(String descripcion) {
 		this.descripcion = descripcion;
 	}
-	public Integer  getSize () {
-	    return size;  		
-    }
-	public void setSize (Integer size) {
+	public Integer getSize () {
+	    return size;
+	    }
+	public void setSize(Integer size) {
 		this.size = size;
-	}
-
-}			
+	}	
+}		

@@ -93,8 +93,10 @@ public class UserServiceImpl implements UserService {
 		return userRepository.consultarInformacionPorUsuario(userName);
 	}
 	
-
-	
+	@Override
+	public List<User> consultarUserPorEmail(String email) {
+		return userRepository.consultarInformacionPorEmail(email);
+	}	
 
 }
 

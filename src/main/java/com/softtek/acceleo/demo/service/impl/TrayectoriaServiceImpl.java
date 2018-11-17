@@ -1,4 +1,3 @@
-
 /**
  * Autor: PSG.
  * Proyecto:
@@ -8,6 +7,7 @@
 package com.softtek.acceleo.demo.service.impl;
 
 import java.util.List;
+import java.util.UUID;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -34,7 +34,6 @@ public class TrayectoriaServiceImpl implements TrayectoriaService {
 	 */
 	@Transactional(propagation = Propagation.REQUIRED, readOnly = false)
 	public void addTrayectoria(Trayectoria trayectoria) {
-		
 		trayectoriaRepository.addTrayectoria(trayectoria);
 	}
 
@@ -43,7 +42,6 @@ public class TrayectoriaServiceImpl implements TrayectoriaService {
 	 */
 	@Transactional(propagation = Propagation.REQUIRED, readOnly = false)
 	public void editTrayectoria(Trayectoria trayectoria) {
-		
 		trayectoriaRepository.editTrayectoria(trayectoria);
 	}
 	
@@ -51,15 +49,13 @@ public class TrayectoriaServiceImpl implements TrayectoriaService {
 	 * Consulta informacion de trayectorias.
 	 */
 	public List<Trayectoria> listTrayectorias(Trayectoria trayectoria) {
-
 		return trayectoriaRepository.listTrayectorias(trayectoria);
 	}
 
 	/**
 	 * Obtiene informacion de un trayectoria.
 	 */
-	public Trayectoria getTrayectoria(int empid) {
-
+	public Trayectoria getTrayectoria(UUID empid) {
 		return trayectoriaRepository.getTrayectoria(empid);
 	}
 
@@ -68,8 +64,6 @@ public class TrayectoriaServiceImpl implements TrayectoriaService {
 	 */
 	@Transactional(propagation = Propagation.REQUIRED, readOnly = false)
 	public void deleteTrayectoria(Trayectoria trayectoria) {
-		System.out.println("Entrando al deleteTrayectoria");
-
 		 trayectoriaRepository.deleteTrayectoria(trayectoria);
 	}
 
@@ -78,7 +72,6 @@ public class TrayectoriaServiceImpl implements TrayectoriaService {
 	 */
 	@Transactional(propagation = Propagation.REQUIRED, readOnly = false)
 	public List<Trayectoria> listTrayectoriasPagination(Trayectoria trayectoria, int page, int size) {
-
 		return trayectoriaRepository.listTrayectoriasPagination(trayectoria, page, size);
 	}
 
@@ -105,7 +98,6 @@ public class TrayectoriaServiceImpl implements TrayectoriaService {
 	 */
 	@Transactional(propagation = Propagation.REQUIRED, readOnly = false)
 	public long getTotalRows() {
-
 		return trayectoriaRepository.getTotalRows();
 	}
 
@@ -116,6 +108,4 @@ public class TrayectoriaServiceImpl implements TrayectoriaService {
 		// TODO Auto-generated method stub
 		return trayectoriaRepository.listTrayectoriasQuery(trayectoria, query, page, size);
 	}
-
-}
-
+}	
