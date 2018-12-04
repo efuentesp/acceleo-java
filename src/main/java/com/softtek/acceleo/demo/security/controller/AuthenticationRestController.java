@@ -18,6 +18,7 @@ import org.springframework.security.authentication.DisabledException;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
+import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -57,24 +58,10 @@ public class AuthenticationRestController {
     @Qualifier("jwtUserDetailsService")
     private UserDetailsService userDetailsService;
 
-    //@RequestMapping(value = "${jwt.route.authentication.path}", method = RequestMethod.POST)
-    //@RequestMapping(value = "/SADFB/auth", method = RequestMethod.POST)
     @RequestMapping(value = "${jwt.route.authentication.path}", method = RequestMethod.POST)    
     public ResponseEntity<?> createAuthenticationToken(@RequestBody JwtAuthenticationRequest authenticationRequest) throws AuthenticationException {
 
     	logger.info("Enter createAuthenticationToken");
-/**
-        authenticate(authenticationRequest.getUsername(), authenticationRequest.getPassword());
-
-    	logger.info("Out authenticate");
-
-        // Reload password post-security so we can generate the token
-        final UserDetails userDetails = userDetailsService.loadUserByUsername(authenticationRequest.getUsername());
-        final String token = jwtTokenUtil.generateToken(userDetails);
-
-        // Return the token
-        return ResponseEntity.ok(new JwtAuthenticationResponse(token));
-**/
         try {
 	    	List<User> lstUser = userService.consultarUserPorEmail(authenticationRequest.getEmail());
 	    	
@@ -89,15 +76,17 @@ public class AuthenticationRestController {
 		    	logger.info("Out authenticate");
 		
 		        // Reload password post-security so we can generate the token
-		        //final UserDetails userDetails = userDetailsService.loadUserByUsername(authenticationRequest.getUsername());
 		    	final UserDetails userDetails = userDetailsService.loadUserByUsername(lstUser.get(CERO).getUserName());
-		        //final String token = jwtTokenUtil.generateToken(userDetails);
 		    	final String token = jwtTokenUtil.generateToken(lstUser.get(CERO));
 		
 		        // Return the token
 		        return ResponseEntity.ok(new JwtAuthenticationResponse(token));
 	    	}
         }catch(AuthenticationException e) {
+        	logger.error("error", e);
+    		return new ResponseEntity(new JwtAuthenticationError("Incorrect email or password", HTTP_STATUS_UNAUTHORIZED), HttpStatus.UNAUTHORIZED);
+    	}catch(UsernameNotFoundException e) {
+    		logger.error("error", e);
     		return new ResponseEntity(new JwtAuthenticationError("Incorrect email or password", HTTP_STATUS_UNAUTHORIZED), HttpStatus.UNAUTHORIZED);
     	}
     }

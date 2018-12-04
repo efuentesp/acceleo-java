@@ -16,7 +16,4 @@ public class JwtAuthenticationResponse implements Serializable {
 		return access_token;
 	}
 
-//	public String getToken() {
-//        return this.token;
-//    }
 }

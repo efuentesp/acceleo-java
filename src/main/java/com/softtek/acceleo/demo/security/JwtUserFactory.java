@@ -85,27 +85,6 @@ public final class JwtUserFactory {
 				"/_/_/_/_/_/_/_/_/_/_/_/_/_/_/_/_/_/_/_/_/_/_/_/_/_/_/_/_/_/_/_/_/_/_/_/_/_/_/_/_/_/_/_/_/_/_/_/_/_/_/_/_/_/_/_/_/_/_/_/_/_/_/_/_/_/_/_/_/_/_/_/_");
 
 		return listGrantedAuthority;
-
-		// return authorities.stream()
-		// .map(authority -> new SimpleGrantedAuthority(authority.getName))
-		// .collect(Collectors.toList());
 	}
-
-	// private static List<GrantedAuthority> mapToGrantedPrivileges(List<Authority>
-	// authorities) {
-	//
-	// List<Privilege> privileges = new ArrayList<Privilege>();
-	//
-	// for(Authority a: authorities){
-	// for (Privilege p: a.getPrivilege()){
-	// privileges.add(p);
-	// }
-	// }
-	//
-	//
-	// return privileges.stream()
-	// .map(privilege -> new SimpleGrantedAuthority(privilege.getName()))
-	// .collect(Collectors.toList());
-	// }
 
 }

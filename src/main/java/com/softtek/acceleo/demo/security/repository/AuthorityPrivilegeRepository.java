@@ -1,6 +1,7 @@
 package com.softtek.acceleo.demo.security.repository;
 
 import java.util.List;
+import java.util.UUID;
 
 import com.softtek.acceleo.demo.domain.Authority;
 import com.softtek.acceleo.demo.domain.AuthorityPrivilege;
@@ -18,12 +19,14 @@ public interface AuthorityPrivilegeRepository {
 	
 	void updateAuthorityPrivilege(AuthorityPrivilege authorityPrivilege);
 	
+	void updateRolePermission(AuthorityPrivilege authorityPrivilege);
+	
 	void insertAuthorityPrivilege(AuthorityPrivilege authorityPrivilege);
 	
 	void deleteAuthority(AuthorityPrivilege authorityPrivilege);
 	
 	void deleteAuthorities(Authority authority);
 	
-	AuthorityPrivilege getAuthorityPrivilege(Long idAuthority, Long idPrivilege );
+	AuthorityPrivilege getAuthorityPrivilege(UUID idAuthority, UUID idPrivilege );
 	
 }

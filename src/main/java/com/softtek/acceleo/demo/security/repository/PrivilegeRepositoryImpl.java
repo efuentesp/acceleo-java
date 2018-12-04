@@ -1,6 +1,7 @@
 package com.softtek.acceleo.demo.security.repository;
 
 import java.util.List;
+import java.util.UUID;
 
 import org.hibernate.Criteria;
 import org.hibernate.Session;
@@ -41,7 +42,7 @@ public class PrivilegeRepositoryImpl implements PrivilegeRepository{
 
 	@Override
 	@Transactional(propagation = Propagation.REQUIRED, readOnly = true)
-	public Privilege getPrivilege(long idPrivilege) {
+	public Privilege getPrivilege(UUID idPrivilege) {
 		Privilege privilege = null;
 		
 		try {

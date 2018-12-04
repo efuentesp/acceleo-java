@@ -9,4 +9,6 @@ import com.softtek.acceleo.demo.domain.UserAuthority;
 public interface UserAuthorityRepository {
 	List<UserAuthority> findByUsername(User user);
 	List<UserAuthority> findUserAuthorityByIdAuthority(Authority authority);
+	void addUserAuthority(UserAuthority userAuthority); 
+	
 }

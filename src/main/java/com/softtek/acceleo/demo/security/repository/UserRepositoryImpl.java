@@ -3,6 +3,7 @@ package com.softtek.acceleo.demo.security.repository;
 import java.util.Calendar;
 import java.util.Date;
 import java.util.List;
+import java.util.UUID;
 
 import org.hibernate.Criteria;
 import org.hibernate.HibernateException;
@@ -38,14 +39,16 @@ public class UserRepositoryImpl implements UserRepository {
 		try {
 			Session session = sessionFactory.getCurrentSession();
 			Criteria criteria = session.createCriteria(User.class);
-			criteria.add(Restrictions.eq("userName", username)).list();
+			//criteria.add(Restrictions.eq("userName", username)).list();
+			criteria.add(Restrictions.eq("userName", username));
+			
 			List<User> users = (List<User>) criteria.list();
 
-			user = users.get(0);
+			user = users.get(0);		
 
 			List<Authority> lstAuthority = user.getAuthorities();
 			for (Authority authority : lstAuthority) {
-				logger.info("IdAuthority: " + authority.getIdAuthority() + "\tName: " + authority.getName()
+				logger.info("IdAuthority: " + authority.getIdAuthority().toString() + "\tName: " + authority.getName()
 						+ "\tPrivilege" + authority.getPrivileges());
 				for (Privilege privilege : authority.getPrivileges()) {
 					logger.info("  --> IdPrivilege: " + privilege.getIdPrivilege() + "\tName: " + privilege.getName());
@@ -160,12 +163,11 @@ public class UserRepositoryImpl implements UserRepository {
 		Session session = null;
 		
 		try {
+			logger.info("IdUser: " + user.getIdUser() + "\t UserName: " + user.getUserName() + "\t Password: " + user.getPassword());
+			
 			session = sessionFactory.getCurrentSession();
-			// sessionFactory.getCurrentSession().persist(user);
 			session.clear();
 			session.flush();
-			logger.info("IdUser: " + user.getIdUser() + "\t UserName: " + user.getUserName() + "\t Password: "
-					+ user.getPassword());
 			session.persist(user);
 		} catch (HibernateException e) {
 			e.printStackTrace();
@@ -279,7 +281,7 @@ public class UserRepositoryImpl implements UserRepository {
 		return totalRows;
 	}
 
-	public User getUser(Long empid) {
+	public User getUser(UUID empid) {
 		return (User) sessionFactory.getCurrentSession().get(User.class, empid);
 	}
 

@@ -2,6 +2,7 @@ package com.softtek.acceleo.demo.service;
 
 import com.softtek.acceleo.demo.domain.User;
 import java.util.List;
+import java.util.UUID;
 
 import org.hibernate.HibernateException;
 
@@ -13,7 +14,7 @@ public interface UserService {
 	
 	public List<User> listUserss();
 
-	public User getUser(Long empid);
+	public User getUser(UUID empid);
 
 	public void deleteUser(User user);
 	

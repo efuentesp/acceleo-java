@@ -1,14 +1,17 @@
 package com.softtek.acceleo.demo.security.repository;
 
 import java.util.List;
+import java.util.UUID;
 
-import org.apache.log4j.Logger;
+//import org.apache.log4j.Logger;
 import org.hibernate.Criteria;
 import org.hibernate.HibernateException;
 import org.hibernate.Query;
 import org.hibernate.Session;
 import org.hibernate.SessionFactory;
 import org.hibernate.criterion.Restrictions;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
 import org.springframework.transaction.annotation.Propagation;
@@ -22,7 +25,7 @@ import com.softtek.acceleo.demo.domain.Privilege;
 @Repository("authorityPrivilegeRepository")
 @Transactional(propagation = Propagation.SUPPORTS, readOnly = true)
 public class AuthorityPrivilegeRepositoryImpl implements AuthorityPrivilegeRepository{
-	private static final Logger logger = Logger.getLogger(AuthorityPrivilegeRepositoryImpl.class);
+	private final Logger logger = LoggerFactory.getLogger(this.getClass());
 	
 	@Autowired
 	private SessionFactory sessionFactory;
@@ -48,7 +51,7 @@ public class AuthorityPrivilegeRepositoryImpl implements AuthorityPrivilegeRepos
 	public void updateAuthorityPrivilege(AuthorityPrivilege authorityPrivilege) {
 		try {
 			Session session = sessionFactory.getCurrentSession();
-			session.flush();
+			//session.flush();
 			session.update(authorityPrivilege);
 		}catch(HibernateException e) {
 			logger.info("Error ---->> ", e);
@@ -56,13 +59,27 @@ public class AuthorityPrivilegeRepositoryImpl implements AuthorityPrivilegeRepos
 			logger.info("Error ---->> ", e);
 		}
 	}
+	
+	@Override
+	@Transactional(propagation = Propagation.REQUIRED, readOnly = false)
+	public void updateRolePermission(AuthorityPrivilege authorityPrivilege){
+		Session session = sessionFactory.getCurrentSession();
+		String hql = "update AuthorityPrivilege set enabled = :enabled where idAuthority.idAuthority = :idAuthority and idPrivilege.idPrivilege = :idPrivilege";
+		Query query = null;
+		
+	    query = session.createQuery(hql);
+	    query.setBoolean("enabled", authorityPrivilege.getEnabled());
+	    query.setString("idAuthority", authorityPrivilege.getIdAuthority().getIdAuthority().toString());
+	    query.setString("idPrivilege", authorityPrivilege.getIdPrivilege().getIdPrivilege().toString());
+	    query.executeUpdate(); 			
+	}
 
 	@Override
 	@Transactional(propagation = Propagation.REQUIRED, readOnly = false)
 	public void insertAuthorityPrivilege(AuthorityPrivilege authorityPrivilege) {
 		try {
 			Session session = sessionFactory.getCurrentSession();
-			session.flush();
+			//session.flush();
 			session.persist(authorityPrivilege);
 		}catch(Exception e) {
 			logger.error("Error ---->> ", e);
@@ -103,7 +120,7 @@ public class AuthorityPrivilegeRepositoryImpl implements AuthorityPrivilegeRepos
 		Query query = null;
 		
 	    query = session.createQuery(hql);
-	    query.setLong("idAuthority", authority.getIdAuthority());
+	    query.setString("idAuthority", authority.getIdAuthority().toString());
 	    query.executeUpdate(); 			
 	}
 
@@ -142,7 +159,7 @@ public class AuthorityPrivilegeRepositoryImpl implements AuthorityPrivilegeRepos
 	}
 	
 	@Override
-	public AuthorityPrivilege getAuthorityPrivilege(Long idAuthority, Long idPrivilege ) {
+	public AuthorityPrivilege getAuthorityPrivilege(UUID idAuthority, UUID idPrivilege ) {
 		AuthorityPrivilege authorityPrivilege = null;
 		
 		try {

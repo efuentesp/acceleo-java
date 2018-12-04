@@ -2,6 +2,7 @@ package com.softtek.acceleo.demo.domain;
 
 import java.util.Date;
 import java.util.List;
+import java.util.UUID;
 
 import javax.persistence.CascadeType;
 import javax.persistence.Column;
@@ -16,9 +17,14 @@ import javax.persistence.ManyToMany;
 import javax.persistence.OneToMany;
 import javax.persistence.OneToOne;
 import javax.persistence.Table;
+import javax.persistence.Temporal;
+import javax.persistence.TemporalType;
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Size;
 
+import org.hibernate.annotations.GenericGenerator;
+import org.hibernate.annotations.Parameter;
+import org.hibernate.annotations.Type;
 import org.hibernate.annotations.WhereJoinTable;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
@@ -27,10 +33,26 @@ import com.fasterxml.jackson.annotation.JsonIgnore;
 @Table(name = "privilege")
 public class Privilege {
 
+//	@Id
+//	@GeneratedValue(strategy = GenerationType.AUTO)
+//    @Column(name = "ID_PRIVILEGE")
+//    private Long idPrivilege;
 	@Id
-	@GeneratedValue(strategy = GenerationType.AUTO)
-    @Column(name = "ID_PRIVILEGE")
-    private Long idPrivilege;
+	@NotNull
+	@GeneratedValue(generator = "UUID")
+	@GenericGenerator(
+			          name = "UUID", 
+	                  strategy = "org.hibernate.id.UUIDGenerator", 
+	                  parameters = {
+	                		@Parameter( 
+	                				name = "uuid_gen_strategy_class", 
+	                				value = "org.hibernate.id.uuid.CustomVersionOneStrategy" 
+	                		) 
+					  } 
+					 )
+	@Column(name = "id_privilege", columnDefinition = "VARBINARY(50)")
+	@Type(type="uuid-char")
+	private UUID idPrivilege;	
 
     @Column(name = "NAME", length = 50, unique = true)
     @NotNull
@@ -42,14 +64,16 @@ public class Privilege {
     @Size(min = 4, max = 100)
     private Boolean enabled;
 
-    @Column(name = "CREATIONDATE", length = 50)
-    @NotNull
-    @Size(min = 4, max = 50)
+    @Column(name = "CREATIONDATE", nullable=false)
+    @Temporal(TemporalType.TIMESTAMP)
+    //@NotNull
+    //@Size(min = 4, max = 50)
     private Date creationdate;
 
-    @Column(name = "MODIFIEDDATE", length = 50)
-    @NotNull
-    @Size(min = 4, max = 50)
+    @Column(name = "MODIFIEDDATE", nullable=true)
+    @Temporal(TemporalType.TIMESTAMP)
+    //@NotNull
+    //@Size(min = 4, max = 50)
     private Date modifieddate;
 
     @OneToOne(cascade = CascadeType.ALL)
@@ -77,11 +101,11 @@ public class Privilege {
 		this.authorities = authorities;
 	}
 
-	public Long getIdPrivilege() {
+	public UUID getIdPrivilege() {
 		return idPrivilege;
 	}
 
-	public void setIdPrivilege(Long idPrivilege) {
+	public void setIdPrivilege(UUID idPrivilege) {
 		this.idPrivilege = idPrivilege;
 	}
 

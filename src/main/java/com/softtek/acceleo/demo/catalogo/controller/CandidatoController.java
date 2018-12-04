@@ -84,6 +84,8 @@ public class CandidatoController {
 			
 		        	return new ResponseEntity<Map<String, Object>>(candidatoMAP, headers, HttpStatus.CREATED);
 	   }catch(Exception e){
+		   e.printStackTrace();
+		   
 		        	 HttpHeaders responseHeaders = new HttpHeaders();
 		        	 responseHeaders.set("Exception", "Exception: " + e);
 		        	 responseHeaders.set("Message", "Candidato no se puede agregar la informacion. " + e.getMessage());	  

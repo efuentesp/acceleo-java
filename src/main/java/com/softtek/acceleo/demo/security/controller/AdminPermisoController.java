@@ -4,6 +4,7 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.UUID;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
@@ -11,6 +12,8 @@ import javax.servlet.http.HttpServletResponse;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -19,18 +22,19 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.util.UriComponentsBuilder;
 
 import com.softtek.acceleo.demo.domain.AdminPermiso;
 import com.softtek.acceleo.demo.domain.Authority;
 import com.softtek.acceleo.demo.domain.AuthorityPrivilege;
 import com.softtek.acceleo.demo.domain.ConfigPermisos;
 import com.softtek.acceleo.demo.domain.Privilege;
-import com.softtek.acceleo.demo.domain.User;
 import com.softtek.acceleo.demo.security.JwtTokenUtil;
 import com.softtek.acceleo.demo.security.repository.AuthorityPrivilegeRepository;
 import com.softtek.acceleo.demo.security.repository.AuthorityRepository;
 import com.softtek.acceleo.demo.security.repository.PrivilegeRepository;
 import com.softtek.acceleo.demo.security.repository.UserAuthorityRepository;
+import com.softtek.acceleo.demo.security.service.JwtAuthenticationError;
 import com.softtek.acceleo.demo.service.AdminPermisoService;
 import com.softtek.acceleo.demo.service.UserService;
 
@@ -57,8 +61,7 @@ public class AdminPermisoController {
 	
 	@Autowired
 	public AuthorityRepository authorityRepository;
-	
-	
+		
 	@Autowired
 	private JwtTokenUtil jwtTokenUtil;
 	
@@ -102,6 +105,39 @@ public class AdminPermisoController {
 	
 /*/_/_/_/_/_/_/_/_/_/_/_/_/_/_/_/_/_/_/_/_/_/_/_/_/_/_/_/_/_/_/_/_/_/_/_/_/_/_/_/_/_/_/_/_/_/_/_/_/_/_/_/_/_/_/_/_/_/_/_/_/_/_/_/_/_/_/_/_/_/_/_/_/_/_/_*/
 	
+	@RequestMapping(value = "/auth/permissions", method = RequestMethod.GET, produces = "application/json")
+	@PreAuthorize("hasRole('ROLE_ROLE:READ')")
+	public @ResponseBody List<Map<String, String>> getPermissions(HttpServletRequest request, HttpServletResponse response) {
+		List<Map<String, String>> lstPrivileges = new ArrayList<>();
+		
+		List<Privilege> lstPrivilege = privilegeRepository.getPrivilege();
+		for( Privilege privilege : lstPrivilege ) {
+			Map<String, String> privilegeMAP = new HashMap<>();
+			
+			privilegeMAP.put("code", privilege.getName());
+			privilegeMAP.put("description", privilege.getName());
+			
+			lstPrivileges.add(privilegeMAP);
+		}
+		
+		return lstPrivileges;
+	}
+	
+	@RequestMapping(value = "/auth/permissions/{id}", method = RequestMethod.GET, produces = "application/json")
+	@PreAuthorize("hasRole('ROLE_ROLE:READ')")
+	public @ResponseBody Map<String, String> getPermission(HttpServletRequest request, HttpServletResponse response, @PathVariable("id") String id) {
+		
+		UUID uuid = UUID.fromString(id);
+		Privilege privilege = privilegeRepository.getPrivilege(uuid);
+		
+		Map<String, String> privilegeMAP = new HashMap<>();
+		
+		privilegeMAP.put("code", privilege.getName());
+		privilegeMAP.put("description", privilege.getName());
+			
+		return privilegeMAP;
+	}	
+	
 	@RequestMapping(value = "/auth/roles/{id}/permissions", method = RequestMethod.GET, produces = "application/json")
 	@PreAuthorize("hasRole('ROLE_ROLE:READ')")
 	public @ResponseBody List<Map<String, String>> getRolePermission(HttpServletRequest request, HttpServletResponse response, @PathVariable("id") String idRole) {
@@ -113,7 +149,8 @@ public class AdminPermisoController {
 		
 		
 		Authority authority = new Authority();
-		authority.setIdAuthority(Long.valueOf(idRole));
+		UUID uuid = UUID.fromString(idRole);
+		authority.setIdAuthority(uuid);
 		
 		List<AuthorityPrivilege> lstAutPriv = authorityPrivilegeRepository.getAuthorityPrivilegePorIdAuthority(authority);
 		for( AuthorityPrivilege autPriv : lstAutPriv ) {
@@ -141,7 +178,7 @@ public class AdminPermisoController {
 			Map<String, Object> privilegeMAP = new HashMap<>();
 			
 			Map<String, String> permissionMAP = new HashMap<>();
-			permissionMAP.put("id", Long.toString(privil.getIdPrivilege()));
+			permissionMAP.put("id", privil.getIdPrivilege().toString());
 			permissionMAP.put("resource", privil.getGrupo().getName());
 			permissionMAP.put("action", privil.getName());
 			permissionMAP.put("scope", "own");
@@ -152,13 +189,13 @@ public class AdminPermisoController {
 			for( Authority authority : lstAuthority ) {
 				Map<String, String> authorithyMAP = new HashMap<>();
 				
-				authorithyMAP.put("id", Long.toString(authority.getIdAuthority().longValue()));
+				authorithyMAP.put("id", authority.getIdAuthority().toString());
 				authorithyMAP.put("name", authority.getName());
 				authorithyMAP.put("description", authority.getName());
 				boolean authPrivilege = Boolean.FALSE;
 				
 				for( AuthorityPrivilege autPriv : lstAuth ) {
-					if( authority.getIdAuthority().longValue() == autPriv.getIdAuthority().getIdAuthority().longValue() ) {
+					if( authority.getIdAuthority().toString() == autPriv.getIdAuthority().getIdAuthority().toString() ) {
 						authPrivilege = Boolean.TRUE;
 						break;
 					}
@@ -180,7 +217,78 @@ public class AdminPermisoController {
 		}
 		
 		return lstPrivilegeRes;
-	}	
+	}
+	
+	@RequestMapping(value = "/auth/assign_role_permission", method = RequestMethod.POST)
+	@PreAuthorize("hasRole('ROLE_PERMISSION:CREATE') and hasRole('ROLE_PERMISSION:UPDATE')")
+	public ResponseEntity<?> assignRolePermission(@RequestBody HashMap<String, String> authorityPrivilegeBean, UriComponentsBuilder ucBuilder) {	
+		try {
+			UUID uuidRol = UUID.fromString(authorityPrivilegeBean.get("roleId"));
+			UUID uuidPermission = UUID.fromString(authorityPrivilegeBean.get("permissionId"));
+			
+			logger.info("roleId: " + authorityPrivilegeBean.get("roleId") + "\tpermissionId: " + authorityPrivilegeBean.get("permissionId"));
+			AuthorityPrivilege authorityPrivilegeFound = authorityPrivilegeRepository.getAuthorityPrivilege(uuidRol, uuidPermission);
+			
+			if( authorityPrivilegeFound != null ) {
+				
+				authorityPrivilegeFound.setEnabled(Boolean.TRUE);
+				authorityPrivilegeRepository.updateRolePermission(authorityPrivilegeFound);
+				
+				return new ResponseEntity(new JwtAuthenticationError("Permiso asignado al Rol", 201), HttpStatus.OK);				
+			}else {
+				/**
+				 * Se obtienen de base de datos para validar que son roles y permisos dados de alta en B.D.
+				 **/
+				Authority authority = authorityRepository.getAuthority(uuidRol);
+				Privilege privilege = privilegeRepository.getPrivilege(uuidPermission);
+				
+				if( authority != null && privilege != null ) {
+					authorityPrivilegeFound = new AuthorityPrivilege();
+					
+					authorityPrivilegeFound.setIdAuthority(authority);
+					authorityPrivilegeFound.setIdPrivilege(privilege);
+					authorityPrivilegeFound.setEnabled(Boolean.TRUE);
+					
+					authorityPrivilegeRepository.insertAuthorityPrivilege(authorityPrivilegeFound);
+					
+					return new ResponseEntity(new JwtAuthenticationError("Permiso asignado al Rol", 201), HttpStatus.OK);
+				}else {
+					return new ResponseEntity(new JwtAuthenticationError("Permiso NO asignado a un Rol (Verifique rol y/o permiso)", 412), HttpStatus.PRECONDITION_FAILED);
+				}
+			}
+		}catch(Exception e) {
+			logger.error("Error --> " + e.getMessage());
+			return new ResponseEntity(new JwtAuthenticationError("Permiso NO asignado a un Rol", 412), HttpStatus.PRECONDITION_FAILED);
+		}
+	}
+	
+	@RequestMapping(value = "/auth/remove_role_permission", method = RequestMethod.POST)
+	@PreAuthorize("hasRole('ROLE_PERMISSION:UPDATE')")
+	public ResponseEntity<?> removeRolePermission(@RequestBody HashMap<String, String> authorityPrivilegeBean, UriComponentsBuilder ucBuilder) {	
+		logger.info("Esto es una prueba...");
+		try {
+			UUID uuidRol = UUID.fromString(authorityPrivilegeBean.get("roleId"));
+			UUID uuidPermission = UUID.fromString(authorityPrivilegeBean.get("permissionId"));
+			
+			logger.info("roleId: " + authorityPrivilegeBean.get("roleId") + "\tpermissionId: " + authorityPrivilegeBean.get("permissionId"));
+			AuthorityPrivilege authorityPrivilegeFound = authorityPrivilegeRepository.getAuthorityPrivilege(uuidRol, uuidPermission);
+			
+			if( authorityPrivilegeFound != null ) {
+				
+				authorityPrivilegeFound.setEnabled(Boolean.FALSE);
+				authorityPrivilegeRepository.updateRolePermission(authorityPrivilegeFound);
+				
+				return new ResponseEntity(new JwtAuthenticationError("Permiso desasignado al Rol", 201), HttpStatus.OK);				
+			}else {
+				return new ResponseEntity(new JwtAuthenticationError("Permiso NO desasignado a Rol (Verifique rol y/o permiso)", 412), HttpStatus.PRECONDITION_FAILED);				
+			}
+		}catch(Exception e) {
+			e.printStackTrace();
+			logger.error("Error --> " + e.getMessage());
+			return new ResponseEntity(new JwtAuthenticationError("Permiso NO desasignado al Rol", 412), HttpStatus.PRECONDITION_FAILED);
+		}
+	}
+	
 /*/_/_/_/_/_/_/_/_/_/_/_/_/_/_/_/_/_/_/_/_/_/_/_/_/_/_/_/_/_/_/_/_/_/_/_/_/_/_/_/_/_/_/_/_/_/_/_/_/_/_/_/_/_/_/_/_/_/_/_/_/_/_/_/_/_/_/_/_/_/_/_/_/_/_/_*/
 	
 	

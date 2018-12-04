@@ -1,13 +1,16 @@
 package com.softtek.acceleo.demo.security.controller;
 
+import java.util.ArrayList;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.UUID;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
+import org.hibernate.HibernateException;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -25,12 +28,10 @@ import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.util.UriComponentsBuilder;
 
 import com.softtek.acceleo.demo.domain.Authority;
-import com.softtek.acceleo.demo.domain.AuthorityPrivilege;
 import com.softtek.acceleo.demo.domain.UserAuthority;
 import com.softtek.acceleo.demo.security.repository.AuthorityPrivilegeRepository;
 import com.softtek.acceleo.demo.security.repository.UserAuthorityRepository;
 import com.softtek.acceleo.demo.service.AuthorityService;
-import com.softtek.acceleo.demo.service.UserService;
 
 @RestController
 public class AuthorityController {
@@ -49,7 +50,7 @@ public class AuthorityController {
 	
 	@RequestMapping(value = "/auth/roles", method = RequestMethod.GET, produces = "application/json")
 	@PreAuthorize("hasRole('ROLE_PERMISSION:READ')")
-	public @ResponseBody  List<Authority> getAuthoritys(@RequestParam Map<String,String> requestParams, HttpServletRequest request, HttpServletResponse response) {
+	public @ResponseBody  List<Map<String, Object>> getAuthoritys(@RequestParam Map<String,String> requestParams, HttpServletRequest request, HttpServletResponse response) {
 
 		String query=requestParams.get("q");
 		int _page= requestParams.get("_page")==null?0:new Integer(requestParams.get("_page")).intValue();
@@ -68,19 +69,120 @@ public class AuthorityController {
 			listAuthority = authorityService.listAuthoritysPagination(authority, _page, 10);
 			rows = authorityService.getTotalRows();
 		} 	
-
-		/*List<> lstAuth = 
+		
+		List<Map<String, Object>> lstRoles = new ArrayList();
 		for( Authority authority : listAuthority ) {
-			Map<String, String> authorityMAP = new HashMap<String, String>();
+			Map<String, Object> authorityMAP = new HashMap<>();
+			authorityMAP.put("name", authority.getName());
+			authorityMAP.put("description", authority.getName());
+			authorityMAP.put("enabled", authority.getEnabled());
 			
-			authorityMAP.put(key, value)
-		}*/
+			lstRoles.add(authorityMAP);
+		}
 		
 		response.setHeader("Access-Control-Expose-Headers", "x-total-count");
 		response.setHeader("x-total-count", String.valueOf(rows).toString());
 
-		return listAuthority;
+		return lstRoles;
 	}
+	
+	@RequestMapping(value = "/auth/roles/{id}", method = RequestMethod.GET, produces = "application/json")
+    public @ResponseBody Map<String, Object> getAuthority(@PathVariable("id") String id) {
+        
+		UUID uuid = UUID.fromString(id);
+        Authority authority = authorityService.getAuthority(uuid);
+
+		Map<String, Object> authorityMAP = new HashMap<>();
+		authorityMAP.put("name", authority.getName());
+		authorityMAP.put("description", authority.getName());
+		authorityMAP.put("enabled", authority.getEnabled());
+        
+        
+		return authorityMAP;
+	}
+	
+	 @RequestMapping(value = "/auth/roles", method = RequestMethod.POST)
+	 @PreAuthorize("hasRole('ROLE_PERMISSION:CREATE')")
+	 public ResponseEntity<Authority> createAuthority(@RequestBody Authority authority,    UriComponentsBuilder ucBuilder) {
+		 HttpHeaders headers = new HttpHeaders();
+		 
+		 try {
+			 if( authority.getCreationDate() == null ) {
+				authority.setCreationDate(new Date());
+			 }
+	         authorityService.addAuthority(authority);
+	 
+	         headers.setLocation(ucBuilder.path("/authority/{id}").buildAndExpand(authority.getIdAuthority()).toUri());	         
+	         return new ResponseEntity<Authority>(authority, headers, HttpStatus.CREATED);			 
+		 }catch(HibernateException e) {
+	        	headers.set("Exception", "Exception: " + e);
+	        	headers.set("Message", "Authority no se puede agregar la informacion. " + e.getMessage());
+	        	 
+	            return new ResponseEntity<Authority>(headers,HttpStatus.NOT_ACCEPTABLE);		   	
+        }catch(Exception e) {
+        	headers.set("Exception", "Exception: " + e);
+        	headers.set("Message", "authority no se puede agregar la informacion. " + e.getMessage());
+        	 
+            return new ResponseEntity<Authority>(headers,HttpStatus.NOT_ACCEPTABLE);		   	
+        }
+		 
+	 }
+	 
+	 @RequestMapping(value = "/auth/roles/{id}", method = RequestMethod.PUT)
+	 @PreAuthorize("hasRole('ROLE_PERMISSION:UPDATE')")
+	 public ResponseEntity<Authority> actualizarAuthority(@PathVariable("id") String id, @RequestBody Authority authority) {
+		
+		UUID uuid = UUID.fromString(id); 
+        Authority authorityFound = authorityService.getAuthority(uuid);
+        if( authorityFound == null ) {
+            return new ResponseEntity<Authority>(HttpStatus.NOT_FOUND);
+        }
+        
+    	//authorityFound.setIdAuthority(authority.getIdAuthority());
+    	authorityFound.setName(authority.getName());
+    	authorityFound.setEnabled(authority.getEnabled());
+    	authorityFound.setCreationDate(new Date());
+    	authorityFound.setModifiedDate(new Date());
+        
+        authorityService.editAuthority(authorityFound);
+        
+        HttpHeaders headers = new HttpHeaders();
+        return new ResponseEntity<Authority>(authorityFound, headers, HttpStatus.OK);
+	 }
+	 
+	@RequestMapping(value = "/auth/roles/{id}", method = RequestMethod.DELETE)
+	@PreAuthorize("hasRole('ROLE_PERMISSION:DELETE')")
+	public ResponseEntity<Authority> deleteAuthority(@PathVariable("id") String id) {
+	 
+		UUID uuid = UUID.fromString(id);
+		Authority authority = authorityService.getAuthority(uuid);
+		
+		if (authority == null) {
+			return new ResponseEntity<Authority>(HttpStatus.NOT_FOUND);
+		}else {
+		    try {
+		    	/**Antes de borrar un authority, se debe validar que no este asociado a usuarios. **/
+		    	List<UserAuthority> lstUserAuthority = userAuthorityRepository.findUserAuthorityByIdAuthority(authority);
+		 
+		    	if( lstUserAuthority == null || lstUserAuthority.isEmpty() ) {
+		    		authorityPrivilegeRepository.deleteAuthorities(authority);
+			 
+		    		authorityService.deleteAuthority(authority);
+		    		
+		    		HttpHeaders headers = new HttpHeaders();
+		    		return new ResponseEntity<Authority>(authority, headers, HttpStatus.OK);		        		 
+		    	}else {
+		    		logger.error("Error: El Authority no se puede eliminar debido a que esta asociado con usuarios.");
+		    		throw new Exception("El Authority no se puede eliminar debido a que esta asociado con usuarios");
+		    	}
+		    } catch (Exception e) {
+		    	logger.error("Error: ", e);
+				return new ResponseEntity<Authority>(HttpStatus.PRECONDITION_FAILED);
+			}
+		}			
+	}
+	 
+//_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-
 	
 	@PreAuthorize("hasRole('AUTHORITYSEARCH')")
 	@RequestMapping(value = "/authority/catalog", method = RequestMethod.GET, produces = "application/json")
@@ -94,83 +196,6 @@ public class AuthorityController {
 		return listAuthority;
 	}
 	
-	
-	
-	@RequestMapping(value = "/authority/{id}", method = RequestMethod.GET, produces = "application/json")
-	    public @ResponseBody  Authority getAuthority(@PathVariable("id") Long id) {
-	        
-	        authority.setIdAuthority(id);
-	        
-	        Authority authority = null;
-	        authority = authorityService.getAuthority(id);
-			return authority;
-	 }
-
-
-
-	 @RequestMapping(value = "/authority", method = RequestMethod.POST)
-	 @PreAuthorize("hasRole('AUTHORITYSEARCH')")
-	    public ResponseEntity<Void> createAuthority(@RequestBody Authority authority,    UriComponentsBuilder ucBuilder) {
-	   
-		 	authority.setCreationDate(new Date());
-	        authorityService.addAuthority(authority);
-	 
-	        HttpHeaders headers = new HttpHeaders();
-	        headers.setLocation(ucBuilder.path("/authority/{id}").buildAndExpand(authority.getIdAuthority()).toUri());
-	        return new ResponseEntity<Void>(headers, HttpStatus.CREATED);
-	 }
-		
-	 @RequestMapping(value = "/authority/{id}", method = RequestMethod.PUT)
-	 @PreAuthorize("hasRole('AUTHORITYUPDATE')")
-	    public ResponseEntity<Authority> actualizarAuthority(@PathVariable("id") Long id, @RequestBody Authority authority) {
-	        
-	        
-	        Authority authorityFound = authorityService.getAuthority(id);
-	         
-	        if (authorityFound==null) {
-	            System.out.println("User with id " + id + " not found");
-	            return new ResponseEntity<Authority>(HttpStatus.NOT_FOUND);
-	        }
-
-	        
-        	authorityFound.setIdAuthority(authority.getIdAuthority());
-        	authorityFound.setName(authority.getName());
-        	authorityFound.setEnabled(authority.getEnabled());
-        	authorityFound.setCreationDate(new Date());
-        	authorityFound.setModifiedDate(new Date());
-	        
-	        authorityService.editAuthority(authorityFound);	        
-	        return new ResponseEntity<Authority>(authorityFound, HttpStatus.OK);
-	  } 	
-	
-		
-		@RequestMapping(value = "/authority/{id}", method = RequestMethod.DELETE)
-		@PreAuthorize("hasRole('AUTHORITYDELETE')")
-	    public ResponseEntity<Authority> deleteAuthority(@PathVariable("id") Long id) {
-			 
-	         Authority authority = authorityService.getAuthority(id);
-	         if (authority == null) {
-	             return new ResponseEntity<Authority>(HttpStatus.NOT_FOUND);
-	         }else {
-		         try {
-		        	 /**Antes de borrar un authority, se debe validar que no este asociado a usuarios. **/
-		        	 List<UserAuthority> lstUserAuthority = userAuthorityRepository.findUserAuthorityByIdAuthority(authority);
-		        	 
-		        	 if( lstUserAuthority == null || lstUserAuthority.isEmpty() ) {
-			        	 authorityPrivilegeRepository.deleteAuthorities(authority);
-			        	 
-			        	 authorityService.deleteAuthority(authority);
-		            	 return new ResponseEntity<Authority>(HttpStatus.OK);		        		 
-		        	 }else {
-						logger.error("Error: El Authority no se puede eliminar debido a que esta asociado con usuarios.");
-						throw new Exception("El Authority no se puede eliminar debido a que esta asociado con usuarios");
-		        	 }
-				} catch (Exception e) {
-					logger.error("Error: ", e);
-					return new ResponseEntity<Authority>(HttpStatus.PRECONDITION_FAILED);
-				}
-	         }			
-		}
 }
 
 

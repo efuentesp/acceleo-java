@@ -13,6 +13,7 @@ import com.fasterxml.jackson.annotation.JsonIgnore;
 
 import org.hibernate.annotations.GenericGenerator;
 import org.hibernate.annotations.Parameter;
+import org.hibernate.annotations.Type;
 
 
 @Entity
@@ -36,6 +37,7 @@ public class Candidato implements Serializable {
 					  } 
 					 )
 	@Column(name = "candidatoId", columnDefinition = "VARBINARY(50)")
+	@Type(type="uuid-char")
 	private UUID candidatoId;
 
 	@NotNull
@@ -59,8 +61,6 @@ public class Candidato implements Serializable {
 	private String genero;
 	@NotNull
 	private String estatuscandidato;
-	@NotNull
-	@NotNull
 
 	public UUID getCandidatoId() {
 		return candidatoId;

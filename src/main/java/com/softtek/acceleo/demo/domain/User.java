@@ -2,6 +2,7 @@ package com.softtek.acceleo.demo.domain;
 
 import java.util.Date;
 import java.util.List;
+import java.util.UUID;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
@@ -20,17 +21,39 @@ import javax.persistence.Transient;
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Size;
 
+import org.hibernate.annotations.GenericGenerator;
 import org.hibernate.annotations.Where;
 import org.hibernate.annotations.WhereJoinTable;
+
+import org.hibernate.annotations.Parameter;
+import org.hibernate.annotations.Type;
 
 @Entity
 @Table(name = "user")
 public class User {
 
-    @Id
-    @GeneratedValue(strategy = GenerationType.AUTO)
-    @Column(name = "ID_USER")
-    private Long idUser;
+//    @Id
+//    @GeneratedValue(strategy = GenerationType.AUTO)
+//    @Column(name = "ID_USER")
+//    private Long idUser;	
+	@Id
+	@NotNull
+	@GeneratedValue(generator = "UUID")
+	@GenericGenerator(
+			          name = "UUID", 
+	                  strategy = "org.hibernate.id.UUIDGenerator", 
+	                  parameters = {
+	                		@Parameter( 
+	                				name = "uuid_gen_strategy_class", 
+	                				value = "org.hibernate.id.uuid.CustomVersionOneStrategy" 
+	                		) 
+					  } 
+					 )
+//	@GeneratedValue(generator = "uuid2")
+//	@GenericGenerator(name = "uuid2", strategy = "uuid2")
+	@Column(name = "id_user", columnDefinition = "VARBINARY(50)")
+	@Type(type="uuid-char")
+    private UUID idUser;
 
     @Column(name = "USERNAME", length = 50, unique = true)
     @NotNull
@@ -63,16 +86,16 @@ public class User {
     @Column(name = "ATTEMPS")
     private Long attemps;
     
-	@Column(name = "LASTPASSWORDRESETDATE")
+	@Column(name = "LASTPASSWORDRESETDATE", nullable = true)
     @Temporal(TemporalType.TIMESTAMP)
     private Date lastPasswordResetDate;
 
-    @Column(name = "CREATIONDATE", length = 50)
+    @Column(name = "CREATIONDATE")
     @Temporal(TemporalType.TIMESTAMP)
     @NotNull
     private Date creationDate;
     
-    @Column(name = "MODIFIEDDATE", length = 50)
+    @Column(name = "MODIFIEDDATE", nullable = true)
     @Temporal(TemporalType.TIMESTAMP)
     private Date modifiedDate;
     
@@ -92,11 +115,11 @@ public class User {
 		this.userName = userName;
 	}
 
-	public Long getIdUser() {
+	public UUID getIdUser() {
         return idUser;
     }
 
-    public void setIdUser(Long idUser) {
+    public void setIdUser(UUID idUser) {
         this.idUser = idUser;
     }
 

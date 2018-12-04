@@ -29,6 +29,10 @@ import org.springframework.web.util.UriComponentsBuilder;
 
 import com.softtek.acceleo.demo.domain.Authority;
 import com.softtek.acceleo.demo.domain.User;
+import com.softtek.acceleo.demo.domain.UserAuthority;
+import com.softtek.acceleo.demo.security.repository.UserAuthorityRepository;
+import com.softtek.acceleo.demo.security.service.JwtAuthenticationError;
+import com.softtek.acceleo.demo.service.AuthorityService;
 import com.softtek.acceleo.demo.service.UserService;
 
 
@@ -40,6 +44,12 @@ public class UserController {
 	
 	@Autowired
 	private UserService userService;
+	
+	@Autowired
+	private AuthorityService authorityService; 
+	
+	@Autowired
+	private UserAuthorityRepository userAuthorityRepository;
 	
 	@Autowired
     public PasswordEncoder passwordEncoder;
@@ -65,7 +75,7 @@ public class UserController {
        		
        		List<Authority> lstAuthority = user.getAuthorities();       		
        		if( lstAuthority != null && !lstAuthority.isEmpty() ) {
-       			usrMAP.put("roleId", Long.toString(lstAuthority.get(0).getIdAuthority()));
+       			usrMAP.put("roleId", lstAuthority.get(0).getIdAuthority().toString());
        		}else {
        			usrMAP.put("roleId", "");
        		}
@@ -82,10 +92,11 @@ public class UserController {
 	
 	@RequestMapping(value = "/auth/users/{id}", method = RequestMethod.GET, produces = "application/json")
 	@PreAuthorize("hasRole('ROLE_USER:READ')")
-	public @ResponseBody  Map<String, String> getUser(HttpServletRequest request, HttpServletResponse response, @PathVariable("id") int id) {
+	public @ResponseBody  Map<String, String> getUser(HttpServletRequest request, HttpServletResponse response, @PathVariable("id") String id) {
 		Map<String, String> userMAP = new HashMap<>();
 		
-		User user = userService.getUser(new Long(id));
+		UUID uuid = UUID.fromString(id);
+		User user = userService.getUser(uuid);
 
 		userMAP.put("username", user.getUserName());
 		userMAP.put("display_name", user.getFirstname() + " " + user.getLastname());
@@ -95,7 +106,7 @@ public class UserController {
    		
    		List<Authority> lstAuthority = user.getAuthorities();       		
    		if( lstAuthority != null && !lstAuthority.isEmpty() ) {
-   			userMAP.put("roleId", Long.toString(lstAuthority.get(0).getIdAuthority()));
+   			userMAP.put("roleId", lstAuthority.get(0).getIdAuthority().toString());
    		}else {
    			userMAP.put("roleId", "");
    		}
@@ -105,60 +116,108 @@ public class UserController {
 	
     @RequestMapping(value = "/auth/users", method = RequestMethod.POST)
     @PreAuthorize("hasRole('ROLE_USER:CREATE')")
-    public ResponseEntity<User> createUser(@RequestBody User user, UriComponentsBuilder ucBuilder) {
+    //public ResponseEntity<User> createUser(@RequestBody User user, UriComponentsBuilder ucBuilder) {
+    public ResponseEntity<?> createUser(@RequestBody Map<String, Object> userMAP, UriComponentsBuilder ucBuilder) {
     	HttpHeaders headers = new HttpHeaders();
     	
         try {
-        	user.setPassword(passwordEncoder.encode(user.getPassword()));
+        	User user = new User();
+        	user.setUserName((String) userMAP.get("username"));
+        	user.setPassword(passwordEncoder.encode((String) userMAP.get("password")));
+        	user.setEmail((String) userMAP.get("email"));
+        	user.setEnabled((Boolean) userMAP.get("enabled"));
+        	user.setCreationDate(new Date());
+        	
+        	String[] name = ((String) userMAP.get("display_name")).split(" ");
+        	if( name.length == 1 ) {
+        		user.setFirstname(name[0]);
+        		user.setLastname("");
+        	}else if( name.length > 1 ) {
+        		user.setFirstname(name[0]);
+        		user.setLastname(name[1]);
+        	}
+        	
         	userService.addUser(user);
+        	if( user != null && user.getIdUser() != null ) {
+        		UUID uuid = UUID.fromString((String) userMAP.get("roleId"));        		
+        		Authority authority = authorityService.getAuthority(uuid);
+        		
+        		UserAuthority userAuthority = new UserAuthority();
+        		//userAuthority.setIdUserAuthority(UUID.randomUUID());
+        		userAuthority.setIdUser(user);
+        		userAuthority.setIdAuthority(authority);
+        		userAuthority.setEnabled(Boolean.TRUE);
+        		
+        		userAuthorityRepository.addUserAuthority(userAuthority);
+        		if( userAuthority.getIdUserAuthority() != null ) {
+        			logger.info("IdUserAuthority: " + userAuthority.getIdUserAuthority());
+        		}
+        		
+        	}
+        	
 
         	headers.setLocation(ucBuilder.path("/users/{id}").buildAndExpand(user.getIdUser()).toUri());
             return new ResponseEntity<User>(user, headers, HttpStatus.CREATED);            	
         }catch(HibernateException e) {
-        	headers.set("Exception", "Exception: " + e);
-        	headers.set("Message", "User no se puede agregar la informacion. " + e.getMessage());
-        	 
-            return new ResponseEntity<User>(headers,HttpStatus.NOT_ACCEPTABLE);		   	
+        	//headers.set("Exception", "Exception: " + e);
+        	//headers.set("Message", "User no se puede agregar la informacion. " + e.getMessage());
+        	//return new ResponseEntity<User>(headers,HttpStatus.NOT_ACCEPTABLE);
+        	
+        	return new ResponseEntity(new JwtAuthenticationError("No se genero la informacion del User. ", 409), HttpStatus.CONFLICT);
         }catch(Exception e) {
-        	headers.set("Exception", "Exception: " + e);
-        	headers.set("Message", "User no se puede agregar la informacion. " + e.getMessage());
-        	 
-            return new ResponseEntity<User>(headers,HttpStatus.NOT_ACCEPTABLE);		   	
+        	//headers.set("Exception", "Exception: " + e);
+        	//headers.set("Message", "User no se puede agregar la informacion. " + e.getMessage());
+            //return new ResponseEntity<User>(headers,HttpStatus.NOT_ACCEPTABLE);		   	
+        	
+        	return new ResponseEntity(new JwtAuthenticationError("No se genero la informacion del User. ", 409), HttpStatus.CONFLICT);
         }	            
     }
     
     @RequestMapping(value = "/auth/users/{id}", method = RequestMethod.PUT)
 	@PreAuthorize("hasRole('ROLE_USER:UPDATE')") 
-	public ResponseEntity<User> actualizarUser(@PathVariable("id") int id, @RequestBody User user) {
-    	
-    	User userFound = userService.getUser(new Long(id));
-		    
-	   if( userFound == null ){
-	       return new ResponseEntity<User>(HttpStatus.NOT_FOUND);
-	   }
-		
-	   userFound.setUserName(user.getUserName());
-	   //userFound.setPassword(user.getPassword());
-	   userFound.setFirstname(user.getFirstname());
-	   userFound.setLastname(user.getLastname());
-	   userFound.setEmail(user.getEmail());
-	   userFound.setEnabled(user.getEnabled());
-	   userFound.setAttemps(user.getAttemps());
-	   //userFound.setLastPasswordResetDate(user.getLastPasswordResetDate());
-	   userFound.setCreationDate(user.getCreationDate());
-	   userFound.setModifiedDate(user.getModifiedDate());
-	   		
-	   userService.editUser(userFound);
-		
-	   HttpHeaders headers = new HttpHeaders();
-	   return new ResponseEntity<User>(userFound, headers, HttpStatus.OK);
+    public ResponseEntity<?> actualizarUser(@PathVariable("id") String id, @RequestBody Map<String, Object> userMAP) {
+    
+    	try {
+	    	UUID uuid = UUID.fromString(id);
+	    	User userFound = userService.getUser(uuid);
+			    
+		   if( userFound == null ){
+		       //return new ResponseEntity<User>(HttpStatus.NOT_FOUND);
+			   return new ResponseEntity(new JwtAuthenticationError("No se actualizo la informacion del User. ", 404), HttpStatus.NOT_FOUND);
+		   }
+			
+		   userFound.setUserName((String) userMAP.get("username"));
+		   userFound.setEmail((String) userMAP.get("email"));
+		   userFound.setEnabled((Boolean) userMAP.get("enabled"));
+		   userFound.setModifiedDate(new Date());
+		   
+		   	String[] name = ((String) userMAP.get("display_name")).split(" ");
+		   	if( name.length == 1 ) {
+		   		userFound.setFirstname(name[0]);
+		   		userFound.setLastname("");
+		   	}else if( name.length > 1 ) {
+		   		userFound.setFirstname(name[0]);
+		   		userFound.setLastname(name[1]);
+		   	}	   
+		   
+		   		
+		   userService.editUser(userFound);
+			
+		   HttpHeaders headers = new HttpHeaders();
+		   return new ResponseEntity<User>(userFound, headers, HttpStatus.OK);
+    	}catch(HibernateException e) {
+        	return new ResponseEntity(new JwtAuthenticationError("No se actualizo la informacion del User. ", 409), HttpStatus.CONFLICT);
+        }catch(Exception e) {
+        	return new ResponseEntity(new JwtAuthenticationError("No se actualizo la informacion del User. ", 409), HttpStatus.CONFLICT);
+        }		   
 	} 
 
 	@RequestMapping(value = "/auth/users/{id}", method = RequestMethod.DELETE)
 	@PreAuthorize("hasRole('ROLE_USER:DELETE')")
-    public ResponseEntity<User> eliminarUser(@PathVariable("id") int id) {
-		 
-		User user = userService.getUser(new Long(id));
+    public ResponseEntity<User> eliminarUser(@PathVariable("id") String id) {
+		
+		UUID uuid = UUID.fromString(id);
+		User user = userService.getUser(uuid);
 		if (user == null) {
 			return new ResponseEntity<User>(HttpStatus.NOT_FOUND);
 		}
@@ -193,7 +252,9 @@ public class UserController {
             
             List<Authority> auths = new ArrayList<>();
             Authority auth = new Authority();
-            auth.setIdAuthority(new Long(privileges));
+            UUID uuid = UUID.fromString(privileges);
+            
+            auth.setIdAuthority(uuid);
             auths.add(auth);
             
             user.setAuthorities(auths);
@@ -219,9 +280,10 @@ public class UserController {
 	
 	@RequestMapping(value = "/users/{id}", method = RequestMethod.DELETE)
 	@PreAuthorize("hasRole('USERDELETE')")
-    public ResponseEntity<User> deleteUser(@PathVariable("id") int id) {
+    public ResponseEntity<User> deleteUser(@PathVariable("id") String id) {
 		 
-         User user = userService.getUser(new Long(id));
+		 UUID uuid = UUID.fromString(id);
+         User user = userService.getUser(uuid);
          if (user == null) {
              return new ResponseEntity<User>(HttpStatus.NOT_FOUND);
          }
@@ -237,10 +299,11 @@ public class UserController {
 	
 	 @RequestMapping(value = "/users/{id}/{username}/{privileges}/{flag}", method = RequestMethod.PUT)
 	 @PreAuthorize("hasRole('MANAGESEARCH')")
-	    public ResponseEntity<User> actualizarUser( @RequestBody User user, @PathVariable("id") int id, @PathVariable("username") String username,  
+	    public ResponseEntity<User> actualizarUser( @RequestBody User user, @PathVariable("id") String id, @PathVariable("username") String username,  
 	    		@PathVariable("privileges") String privileges, @PathVariable("flag") Boolean flag) {
 	        
-	        User userFound = userService.getUser(new Long(id));
+		 	UUID uuid = UUID.fromString(id);
+	        User userFound = userService.getUser(uuid);
 	         
 	        if (userFound==null) {
 	            System.out.println("User with id " + id + " not found");
@@ -255,7 +318,9 @@ public class UserController {
 	        try {
 		        List<Authority> auths = new ArrayList<>();
                 Authority auth = new Authority();
-                auth.setIdAuthority(new Long(privileges));
+                UUID uuidP = UUID.fromString(privileges);
+                
+                auth.setIdAuthority(uuidP);
                 auths.add(auth);
 		        
 		        userFound.setAuthorities(auths);
@@ -267,7 +332,7 @@ public class UserController {
 		        userFound.setLastPasswordResetDate(new Date());
 		        userFound.setModifiedDate(new Date());
 		        userFound.setUserName(username);
-		        userFound.setIdUser(new Long(user.getIdUser()));
+		        userFound.setIdUser(user.getIdUser());
 		        userFound.setPassword(user.getPassword());
 		        
 		        userService.editUser(userFound);

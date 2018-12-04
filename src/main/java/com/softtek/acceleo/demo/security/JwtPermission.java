@@ -5,11 +5,8 @@ import com.fasterxml.jackson.annotation.JsonIgnore;
 public class JwtPermission {
 
 	@JsonIgnore
-	private Long id;
-//	private String id;
-	
-	private String code;
-	
+	private Long id;//	private String id;	
+	private String code;	
 	private String description;
 
 	public Long getId() {

@@ -1,20 +1,13 @@
 package com.softtek.acceleo.demo.security.service;
 
-import java.util.Iterator;
-import java.util.List;
-
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.stereotype.Service;
-import org.springframework.transaction.annotation.Transactional;
 
-import com.softtek.acceleo.demo.domain.Authority;
-import com.softtek.acceleo.demo.domain.Privilege;
 import com.softtek.acceleo.demo.domain.User;
 import com.softtek.acceleo.demo.security.JwtUserFactory;
 import com.softtek.acceleo.demo.security.repository.UserRepository;
@@ -33,11 +26,9 @@ public class JwtUserDetailsService implements UserDetailsService {
 
     	
     	logger.info("loadUSerByUsername"+username);
+    	User user = null;
     	
-        User user = userRepository.findByUsername(username);
-        
-       
-        
+    	user = userRepository.findByUsername(username);       
 
         if (user == null) {
         	logger.info("Throw UsernameNotFoundException");

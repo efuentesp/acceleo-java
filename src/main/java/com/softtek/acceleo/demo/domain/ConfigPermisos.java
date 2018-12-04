@@ -1,19 +1,20 @@
 package com.softtek.acceleo.demo.domain;
 
 import java.util.List;
+import java.util.UUID;
 
 public class ConfigPermisos {
-	private Long idGrupo;
+	private UUID idGrupo;
 	private String nombreGrupo;
-	private Long idPrivilege;
+	private UUID idPrivilege;
 	private String nombrePrivilege;
 	private List<ConfigAuthority> lstConfigAuthority;
-	private Long activeUser;
+	private UUID activeUser;
 		
-	public Long getIdGrupo() {
+	public UUID getIdGrupo() {
 		return idGrupo;
 	}
-	public void setIdGrupo(Long idGrupo) {
+	public void setIdGrupo(UUID idGrupo) {
 		this.idGrupo = idGrupo;
 	}
 	public String getNombreGrupo() {
@@ -22,10 +23,10 @@ public class ConfigPermisos {
 	public void setNombreGrupo(String nombreGrupo) {
 		this.nombreGrupo = nombreGrupo;
 	}
-	public Long getIdPrivilege() {
+	public UUID getIdPrivilege() {
 		return idPrivilege;
 	}
-	public void setIdPrivilege(Long idPrivilege) {
+	public void setIdPrivilege(UUID idPrivilege) {
 		this.idPrivilege = idPrivilege;
 	}
 	public String getNombrePrivilege() {
@@ -40,10 +41,10 @@ public class ConfigPermisos {
 	public void setLstConfigAuthority(List<ConfigAuthority> lstConfigAuthority) {
 		this.lstConfigAuthority = lstConfigAuthority;
 	}
-	public Long getActiveUser() {
+	public UUID getActiveUser() {
 		return activeUser;
 	}
-	public void setActiveUser(Long activeUser) {
+	public void setActiveUser(UUID activeUser) {
 		this.activeUser = activeUser;
 	}
 

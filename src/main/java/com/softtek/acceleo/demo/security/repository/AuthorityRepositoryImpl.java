@@ -1,6 +1,7 @@
 package com.softtek.acceleo.demo.security.repository;
 
 import java.util.List;
+import java.util.UUID;
 
 import org.apache.log4j.Logger;
 import org.hibernate.Criteria;
@@ -28,7 +29,7 @@ public class AuthorityRepositoryImpl implements AuthorityRepository{
 	
 	@Override
 	@Transactional(propagation = Propagation.REQUIRED, readOnly = true)
-	public Authority getAuthority(long authoritoryId) {
+	public Authority getAuthority(UUID authoritoryId) {
 		Authority authority = null;
 		
 		try {

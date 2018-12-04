@@ -1,6 +1,7 @@
 package com.softtek.acceleo.demo.service.impl;
 
 import java.util.List;
+import java.util.UUID;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -9,7 +10,6 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Propagation;
 import org.springframework.transaction.annotation.Transactional;
 
-import com.softtek.acceleo.demo.domain.AdminPermiso;
 import com.softtek.acceleo.demo.domain.Authority;
 import com.softtek.acceleo.demo.domain.AuthorityPrivilege;
 import com.softtek.acceleo.demo.domain.ConfigAuthority;
@@ -56,8 +56,8 @@ public class AdminPermisoServiceImpl implements AdminPermisoService{
 	@Transactional(propagation = Propagation.REQUIRED, readOnly = false)
 	public void updateAuthorityPrivilege(ConfigPermisos configPermisos) {
 		AuthorityPrivilege authorityPrivilege = new AuthorityPrivilege();
-		Long authorityID = null;
-		Long privilegeID = null; 
+		UUID authorityID = null;
+		UUID privilegeID = null; 
 		Boolean flag = Boolean.FALSE;
 		
 		if( configPermisos.getLstConfigAuthority() == null || configPermisos.getLstConfigAuthority().isEmpty() ) {
@@ -66,7 +66,7 @@ public class AdminPermisoServiceImpl implements AdminPermisoService{
 			List<ConfigAuthority> lstConfigAuthority = configPermisos.getLstConfigAuthority();
 			
 			for(ConfigAuthority configAuth : lstConfigAuthority) {
-				if( configAuth.getIdAuthority().longValue() == configPermisos.getActiveUser().longValue() ) {
+				if( configAuth.getIdAuthority().toString() == configPermisos.getActiveUser().toString() ) {
 					authorityID = configAuth.getIdAuthority();
 					privilegeID = configAuth.getIdPrivilege() == null ? configPermisos.getIdPrivilege() : configAuth.getIdPrivilege();
 					flag = configAuth.getEnabled();

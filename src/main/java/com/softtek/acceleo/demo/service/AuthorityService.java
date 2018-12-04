@@ -2,6 +2,7 @@ package com.softtek.acceleo.demo.service;
 
 import com.softtek.acceleo.demo.domain.Authority;
 import java.util.List;
+import java.util.UUID;
 
 public interface AuthorityService {
 
@@ -13,7 +14,7 @@ public interface AuthorityService {
 	
 	public List<Authority> listAuthoritys();
 
-	public Authority getAuthority(Long empid);
+	public Authority getAuthority(UUID empid);
 
 	public void deleteAuthority(Authority authority);
 	

@@ -1,20 +1,22 @@
 package com.softtek.acceleo.demo.domain;
 
+import java.util.UUID;
+
 /**
  * Clase para almacenar la configuracion de los authority.
  * @author javier.perezb
  *
  */
 public class ConfigAuthority {
-	private Long idAuthority;
+	private UUID idAuthority;
 	private String nameAuthority;
-	private Long idPrivilege;
+	private UUID idPrivilege;
 	private Boolean enabled;
 	
-	public Long getIdAuthority() {
+	public UUID getIdAuthority() {
 		return idAuthority;
 	}
-	public void setIdAuthority(Long idAuthority) {
+	public void setIdAuthority(UUID idAuthority) {
 		this.idAuthority = idAuthority;
 	}
 	public String getNameAuthority() {
@@ -23,10 +25,10 @@ public class ConfigAuthority {
 	public void setNameAuthority(String nameAuthority) {
 		this.nameAuthority = nameAuthority;
 	}	
-	public Long getIdPrivilege() {
+	public UUID getIdPrivilege() {
 		return idPrivilege;
 	}
-	public void setIdPrivilege(Long idPrivilege) {
+	public void setIdPrivilege(UUID idPrivilege) {
 		this.idPrivilege = idPrivilege;
 	}
 	public Boolean getEnabled() {

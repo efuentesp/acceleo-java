@@ -3,6 +3,7 @@
 package com.softtek.acceleo.demo.service.impl;
 
 import java.util.List;
+import java.util.UUID;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -85,7 +86,7 @@ public class AuthorityServiceImpl implements AuthorityService {
 	}
 
 	@Override
-	public Authority getAuthority(Long empid) {
+	public Authority getAuthority(UUID empid) {
 		return authorityRepository.getAuthority(empid);
 	}
 

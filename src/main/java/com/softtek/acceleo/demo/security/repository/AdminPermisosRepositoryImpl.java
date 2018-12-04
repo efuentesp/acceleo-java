@@ -2,6 +2,7 @@ package com.softtek.acceleo.demo.security.repository;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.UUID;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
@@ -151,7 +152,7 @@ public class AdminPermisosRepositoryImpl implements AdminPermisosRepository {
 					
 					for(Object[] rowAuthorityPrivilege : lstAuthorityPrivilege ) {
 						if( rowGrupPriv[2].toString().equals(rowAuthorityPrivilege[1].toString()) && rowAuthority[0].toString().equals(rowAuthorityPrivilege[0].toString()) ) {
-							configAuthority.setIdPrivilege(Long.parseLong(rowAuthorityPrivilege[1].toString()));						
+							configAuthority.setIdPrivilege(UUID.fromString(rowAuthorityPrivilege[1].toString()));						
 							configAuthority.setEnabled(rowAuthorityPrivilege[2] == null ? Boolean.FALSE : "1".equals(rowAuthorityPrivilege[2].toString()) ? Boolean.TRUE : Boolean.FALSE);
 							eureka = true;
 							break;
@@ -163,15 +164,15 @@ public class AdminPermisosRepositoryImpl implements AdminPermisosRepository {
 						configAuthority.setEnabled(Boolean.FALSE);
 					}				
 	
-					configAuthority.setIdAuthority(Long.parseLong(rowAuthority[0].toString()));				
+					configAuthority.setIdAuthority(UUID.fromString(rowAuthority[0].toString()));				
 					configAuthority.setNameAuthority((String) rowAuthority[1]);
 					
 					lstConfigAuthority.add(configAuthority);
 				}
 				
-				configPermisos.setIdGrupo(rowGrupPriv[0] == null ? null : Long.parseLong(rowGrupPriv[0].toString()));
+				configPermisos.setIdGrupo(rowGrupPriv[0] == null ? null : UUID.fromString(rowGrupPriv[0].toString()));
 				configPermisos.setNombreGrupo((String) rowGrupPriv[1]);
-				configPermisos.setIdPrivilege(rowGrupPriv[2] == null ? null : Long.parseLong(rowGrupPriv[2].toString()));
+				configPermisos.setIdPrivilege(rowGrupPriv[2] == null ? null : UUID.fromString(rowGrupPriv[2].toString()));
 				configPermisos.setNombrePrivilege((String) rowGrupPriv[3]);
 				configPermisos.setLstConfigAuthority(lstConfigAuthority);
 				
