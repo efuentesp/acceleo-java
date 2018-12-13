@@ -19,6 +19,11 @@
 -- Table structure for table `afiliado`
 --
 
+
+CREATE DATABASE demoacceleo;
+
+USE demoacceleo;
+
 DROP TABLE IF EXISTS `afiliado`;
 /*!40101 SET @saved_cs_client     = @@character_set_client */;
 /*!40101 SET character_set_client = utf8 */;
