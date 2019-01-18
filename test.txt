@@ -1,7 +1,7 @@
-﻿Archivo para generar pruebas de git - bat
--Agregando línea 1
--Se agrega linea 2
--Se agrega linea 3
--Se agrega linea 4
--Se agrega linea 5
--Se agrega linea 6
+﻿module test {
+    entity test {
+        field campo1 : Text
+        field campo2 : Date
+        field campo3 : Decimal
+    }
+}
