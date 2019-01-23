@@ -43,7 +43,7 @@ public class UserAuthority {
 	@Type(type="uuid-char")
 	private UUID idUserAuthority;
 		
-    @Column(name = "ENABLED")
+    @Column(name = "enabled")
     private Boolean enabled;
     
 	//@OneToOne(cascade = CascadeType.ALL)

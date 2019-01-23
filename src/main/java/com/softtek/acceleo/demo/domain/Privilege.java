@@ -54,30 +54,30 @@ public class Privilege {
 	@Type(type="uuid-char")
 	private UUID idPrivilege;	
 
-    @Column(name = "NAME", length = 50, unique = true)
+    @Column(name = "name", length = 50, unique = true)
     @NotNull
     @Size(min = 4, max = 50)
     private String name;
 
-    @Column(name = "ENABLED", length = 100)
+    @Column(name = "enabled", length = 100)
     @NotNull
     @Size(min = 4, max = 100)
     private Boolean enabled;
 
-    @Column(name = "CREATIONDATE", nullable=false)
+    @Column(name = "creationdate", nullable=false)
     @Temporal(TemporalType.TIMESTAMP)
     //@NotNull
     //@Size(min = 4, max = 50)
     private Date creationdate;
 
-    @Column(name = "MODIFIEDDATE", nullable=true)
+    @Column(name = "modifieddate", nullable=true)
     @Temporal(TemporalType.TIMESTAMP)
     //@NotNull
     //@Size(min = 4, max = 50)
     private Date modifieddate;
 
     @OneToOne(cascade = CascadeType.ALL)
-    @JoinColumn(name = "ID_GRUPO")
+    @JoinColumn(name = "id_grupo")
     private Grupo grupo;
     
     @ManyToMany(fetch = FetchType.LAZY, mappedBy = "privileges")
@@ -86,9 +86,9 @@ public class Privilege {
     
 	@ManyToMany(fetch = FetchType.LAZY, cascade = CascadeType.ALL)
 	@JoinTable(name = "authority_privilege", joinColumns = { 
-			@JoinColumn(name = "ID_PRIVILEGE", nullable = false, updatable = false) }, 
-			inverseJoinColumns = { @JoinColumn(name = "ID_AUTHORITY", nullable = false, updatable = false) })
-	@WhereJoinTable(clause = "ENABLED = '1'") 
+			@JoinColumn(name = "id_privilege", nullable = false, updatable = false) }, 
+			inverseJoinColumns = { @JoinColumn(name = "id_authority", nullable = false, updatable = false) })
+	@WhereJoinTable(clause = "enabled = '1'") 
 	//@JsonIgnore
 	private List<Authority> authorities;
     

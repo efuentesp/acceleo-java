@@ -47,20 +47,20 @@ public class Authority {
 	@Type(type="uuid-char")
 	private UUID idAuthority;	
 
-    @Column(name = "NAME", length = 50)
+    @Column(name = "name", length = 50)
     @NotNull
     @OrderBy("name ASC")
     private String name;
     
-    @Column(name = "ENABLED")
+    @Column(name = "enabled")
     @NotNull
     private Boolean enabled;
         
-    @Column(name = "CREATIONDATE", nullable=false)
+    @Column(name = "creationdate", nullable=false)
     @Temporal(TemporalType.TIMESTAMP)
     private Date creationDate;
 
-    @Column(name = "MODIFIEDDATE", nullable=true)
+    @Column(name = "modifieddate", nullable=true)
     @Temporal(TemporalType.TIMESTAMP)
     private Date modifiedDate;
     
@@ -68,18 +68,18 @@ public class Authority {
 	@ManyToMany(fetch = FetchType.LAZY, cascade = CascadeType.ALL)
 	@JoinTable(
 			name = "authority_privilege", 
-			joinColumns = {@JoinColumn(name = "ID_AUTHORITY", nullable = false, updatable = false) }, 
-			inverseJoinColumns = { @JoinColumn(name = "ID_PRIVILEGE", nullable = false, updatable = false) })
-	@WhereJoinTable(clause = "ENABLED = '1'") 
+			joinColumns = {@JoinColumn(name = "id_authority", nullable = false, updatable = false) }, 
+			inverseJoinColumns = { @JoinColumn(name = "id_privilege", nullable = false, updatable = false) })
+	@WhereJoinTable(clause = "enabled = '1'") 
 	@JsonIgnore
 	private List<Privilege> privileges;
 	
 
 	@ManyToMany(fetch = FetchType.LAZY, cascade = CascadeType.ALL)
 	@JoinTable(name = "user_authority", joinColumns = { 
-			@JoinColumn(name = "ID_AUTHORITY", nullable = false, updatable = false) }, 
-			inverseJoinColumns = { @JoinColumn(name = "ID_USER", nullable = false, updatable = false) })
-	//@WhereJoinTable(clause = "ENABLED = '1'")
+			@JoinColumn(name = "id_authority", nullable = false, updatable = false) }, 
+			inverseJoinColumns = { @JoinColumn(name = "id_user", nullable = false, updatable = false) })
+	//@WhereJoinTable(clause = "enabled = '1'")
 	@JsonIgnore 
 	private List<User> user;
 

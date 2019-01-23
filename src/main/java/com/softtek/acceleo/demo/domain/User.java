@@ -55,56 +55,56 @@ public class User {
 	@Type(type="uuid-char")
     private UUID idUser;
 
-    @Column(name = "USERNAME", length = 50, unique = true)
+    @Column(name = "username", length = 50, unique = true)
     @NotNull
     @Size(min = 4, max = 50)
     private String userName;
 
-    @Column(name = "PASSWORD", length = 100)
+    @Column(name = "password", length = 100)
     @NotNull
     @Size(min = 4, max = 100)
     private String password;
 
-    @Column(name = "FIRSTNAME", length = 50)
+    @Column(name = "firstname", length = 50)
     @NotNull
     @Size(min = 4, max = 50)
     private String firstname;
 
-    @Column(name = "LASTNAME", length = 50)
+    @Column(name = "lastname", length = 50)
     @NotNull
     @Size(min = 4, max = 50)
     private String lastname;
 
-    @Column(name = "EMAIL", length = 50)
+    @Column(name = "email", length = 50)
     @NotNull
     @Size(min = 4, max = 50)
     private String email;
 
-    @Column(name = "ENABLED")
+    @Column(name = "enabled")
     private Boolean enabled;
 
-    @Column(name = "ATTEMPS")
+    @Column(name = "attemps")
     private Long attemps;
     
-	@Column(name = "LASTPASSWORDRESETDATE", nullable = true)
+	@Column(name = "lastpasswordresetdate", nullable = true)
     @Temporal(TemporalType.TIMESTAMP)
     private Date lastPasswordResetDate;
 
-    @Column(name = "CREATIONDATE")
+    @Column(name = "creationdate")
     @Temporal(TemporalType.TIMESTAMP)
     @NotNull
     private Date creationDate;
     
-    @Column(name = "MODIFIEDDATE", nullable = true)
+    @Column(name = "modifieddate", nullable = true)
     @Temporal(TemporalType.TIMESTAMP)
     private Date modifiedDate;
     
     @ManyToMany(fetch = FetchType.EAGER)
     @JoinTable(
-            name = "USER_AUTHORITY",
-            joinColumns = {@JoinColumn(name = "ID_USER", referencedColumnName = "ID_USER")},
-            inverseJoinColumns = {@JoinColumn(name = "ID_AUTHORITY", referencedColumnName = "ID_AUTHORITY")})
-	//@WhereJoinTable(clause = "ENABLED = '1'")     
+            name = "user_authority",
+            joinColumns = {@JoinColumn(name = "id_user", referencedColumnName = "id_user")},
+            inverseJoinColumns = {@JoinColumn(name = "id_authority", referencedColumnName = "id_authority")})
+	//@WhereJoinTable(clause = "enabled = '1'")     
     private List<Authority> authorities;
 
 	public String getUserName() {

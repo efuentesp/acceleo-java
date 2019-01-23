@@ -36,7 +36,7 @@ public class AuthorityPrivilege {
 	@Type(type="uuid-char")
 	private UUID idAutorityPrivilege;	
     
-    @Column(name = "ENABLED")    
+    @Column(name = "enabled")    
     private Boolean enabled;
     
 //	@Column(name = "ID_PRIVILEGE")
