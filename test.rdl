@@ -1,7 +1,8 @@
-﻿module test {
+module test {
     entity test {
         field campo1 : Text
         field campo2 : Date
         field campo3 : Decimal
+        field campo4 : Email
     }
 }
