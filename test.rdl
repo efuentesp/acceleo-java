@@ -4,5 +4,6 @@ module test {
         field campo2 : Date
         field campo3 : Decimal
         field campo4 : Email
+        field campo6 : Date
     }
 }
