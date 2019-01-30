@@ -4,6 +4,6 @@ module pruebas {
         field campo2 : Date 
         field campo3 : Decimal
         field campo4 : Decimal
-        
+        field campo5 : Image
     }
 }
