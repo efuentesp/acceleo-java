@@ -1,8 +1,0 @@
-module pruebas {
-    entity prueba {
-        field campo1 : Currency
-        field campo2 : Date 
-        field campo3 : Decimal
-        field campo4 : Decimal
-    }
-}
