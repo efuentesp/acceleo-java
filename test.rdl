@@ -3,5 +3,6 @@ module pruebas {
         field campo1 : Date
         field campo2 : Decimal
         field campo3 : Email
+        field campo4 : File
     }
 }
