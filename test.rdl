@@ -6,6 +6,6 @@ module pruebas {
         field campo4 : File
         field campo5 : Decimal
         field campo6 : Currency
-        field campo7 : Image
+        field campo7 : Images
     }
 }
