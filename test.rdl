@@ -1,5 +1,0 @@
-module pruebas {
-    entity prueba {
-        field campo1 : Currency
-    }
-}
