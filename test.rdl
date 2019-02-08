@@ -8,6 +8,6 @@ module pruebas {
         field campo6 : Currency
         field campo7 : Currency
         field campo8 : Dateee
-		field campo9 : Date
+		field campo9 : Dateaa
     }
 }
