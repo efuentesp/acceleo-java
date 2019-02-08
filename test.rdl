@@ -7,7 +7,7 @@ module pruebas {
         field campo5 : File
         field campo6 : Currency
         field campo7 : Currency
-        field campo8 : Dateaa
+        field campo8 : Dateaaee
 		field campo9 : Dateee
     }
 }
