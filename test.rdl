@@ -4,9 +4,10 @@ module pruebas {
         field campo2 : Date
         field campo3 : Text
         field campo4 : File
-        field campo5 : File
+        field campo5 : Binary
         field campo6 : Currency
         field campo7 : Currency
         field campo8 : Date
+		field campo9 : Double
     }
 }
