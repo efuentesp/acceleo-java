@@ -10,5 +10,6 @@ module pruebas {
         field campo8 : Date
 		field campo9 : Currency
 		field campo10 : Date
+		field campo11 : Decimal
     }
 }
