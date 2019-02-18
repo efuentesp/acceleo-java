@@ -11,6 +11,6 @@ module pruebas {
 		field campo9 : Currency
 		field campo10 : Date
 		field campo11 : Decimal
-		field campo12 : Text
+		field campo12 : Currency
     }
 }
