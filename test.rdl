@@ -14,5 +14,6 @@ module pruebas {
 		field campo12 : Currency
 		field campo13 : Currency
 		field campo14 : Currency
+		field campo15 : Currency
     }
 }
