@@ -16,6 +16,6 @@ module pruebas {
 		field campo14 : Currency
 		field campo15 : Currency
 		field campo16 : Currency
-		field campo17 : Integer
+		field campo17 : LongText
     }
 }
