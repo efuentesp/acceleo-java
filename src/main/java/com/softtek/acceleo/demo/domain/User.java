@@ -101,7 +101,7 @@ public class User {
     
     @ManyToMany(fetch = FetchType.EAGER)
     @JoinTable(
-            name = "USER_AUTHORITY",
+            name = "user_authority",
             joinColumns = {@JoinColumn(name = "ID_USER", referencedColumnName = "ID_USER")},
             inverseJoinColumns = {@JoinColumn(name = "ID_AUTHORITY", referencedColumnName = "ID_AUTHORITY")})
 	//@WhereJoinTable(clause = "ENABLED = '1'")     

@@ -27,7 +27,7 @@ import org.hibernate.annotations.WhereJoinTable;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 
 @Entity
-@Table(name = "AUTHORITY")
+@Table(name = "authority")
 public class Authority {
 
 	@Id
