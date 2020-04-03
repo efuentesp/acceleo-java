@@ -51,6 +51,7 @@ public class AuthorityController {
 	@RequestMapping(value = "/auth/roles", method = RequestMethod.GET, produces = "application/json")
 	@PreAuthorize("hasRole('ROLE_PERMISSION:READ')")
 	public @ResponseBody  List<Map<String, Object>> getAuthoritys(@RequestParam Map<String,String> requestParams, HttpServletRequest request, HttpServletResponse response) {
+
 		String query=requestParams.get("q");
 		int _page= requestParams.get("_page")==null?0:new Integer(requestParams.get("_page")).intValue();
 		long rows = 0;
@@ -72,8 +73,6 @@ public class AuthorityController {
 		List<Map<String, Object>> lstRoles = new ArrayList();
 		for( Authority authority : listAuthority ) {
 			Map<String, Object> authorityMAP = new HashMap<>();
-			
-			authorityMAP.put("id", authority.getIdAuthority());//Esta linea es la que se debe poner
 			authorityMAP.put("name", authority.getName());
 			authorityMAP.put("description", authority.getName());
 			authorityMAP.put("enabled", authority.getEnabled());

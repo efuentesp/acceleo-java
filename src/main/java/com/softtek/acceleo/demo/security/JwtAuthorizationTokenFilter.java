@@ -39,7 +39,7 @@ public class JwtAuthorizationTokenFilter extends OncePerRequestFilter {
 		final String requestHeader = request.getHeader(this.tokenHeader);
 		String username = null;
 		String authToken = null;
-		logger.info("SI SE ESTA EJECUTANDO ::::::::::::::::::::::::::::::::::::::");
+
 		logger.info("Processing Authentication for '{}'", request.getRequestURL());
 		logger.info("Processing Request method:", request.getMethod());
 		logger.info("Processing Request" + request.toString());

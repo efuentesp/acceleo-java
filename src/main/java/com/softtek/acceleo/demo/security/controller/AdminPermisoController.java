@@ -147,6 +147,7 @@ public class AdminPermisoController {
 		 */
 		List<Map<String, String>> lstPrivileges = new ArrayList<>();
 		
+		
 		Authority authority = new Authority();
 		UUID uuid = UUID.fromString(idRole);
 		authority.setIdAuthority(uuid);
