@@ -1,0 +1,21 @@
+module pruebas {
+    entity prueba {
+        field campo1 : Currency
+        field campo2 : Date
+        field campo3 : Text
+        field campo4 : File
+        field campo5 : Currency
+        field campo6 : Currency
+        field campo7 : Currency
+        field campo8 : Date
+		field campo9 : Currency
+		field campo10 : Date
+		field campo11 : Decimal
+		field campo12 : Currency
+		field campo13 : Currency
+		field campo14 : Currency
+		field campo15 : Currency
+		field campo16 : Currency
+		field campo17 : LongText
+    }
+}
