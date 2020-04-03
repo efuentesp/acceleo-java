@@ -194,6 +194,7 @@ public class RolController {
 			/*rolFound.setActivo(rol.getActivo());*/
 			rolMAP.put("activo", rol.getActivo());
 			
+			System.out.println("id: " + rol.getRolId() + "\t Clave: " + rol.getClave() + "\t Nombre: " + rol.getNombre() + "\t Activo: " + rol.getActivo());
 			listRolMAP.add(rolMAP);
 		}
 		
