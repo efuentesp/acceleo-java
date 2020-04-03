@@ -14,6 +14,8 @@ import java.util.UUID;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+
+import org.apache.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
@@ -33,7 +35,7 @@ import org.springframework.security.access.prepost.PreAuthorize;
 
 import org.springframework.web.bind.annotation.RestController;
 import com.softtek.acceleo.demo.exception.GenericException;
-
+import com.softtek.acceleo.demo.security.JwtUserFactory;
 import com.softtek.acceleo.demo.catalogo.bean.RolBean;
 import com.softtek.acceleo.demo.domain.Rol;
 import com.softtek.acceleo.demo.service.RolService;
@@ -45,7 +47,8 @@ import com.softtek.acceleo.demo.service.RolService;
  */
 @RestController
 public class RolController {
-
+	private static final Logger logger = Logger.getLogger(RolController.class);
+	
 	@Autowired
 	private RolService rolService;
 	
@@ -165,8 +168,8 @@ public class RolController {
 	@RequestMapping(value = "/srp/rol", method = RequestMethod.GET, produces = "application/json")
 	@PreAuthorize("hasRole('ROLE_ROL:READ')")
 	public @ResponseBody  List<Map<String, Object>> getRols(@RequestParam Map<String,String> requestParams, HttpServletRequest request, HttpServletResponse response) {
-		
-		       	String query=requestParams.get("q");
+
+		String query=requestParams.get("q");
 		int _page= requestParams.get("_page")==null?0:new Integer(requestParams.get("_page")).intValue();
 		long rows = 0;
 		
@@ -194,7 +197,7 @@ public class RolController {
 			/*rolFound.setActivo(rol.getActivo());*/
 			rolMAP.put("activo", rol.getActivo());
 			
-			System.out.println("id: " + rol.getRolId() + "\t Clave: " + rol.getClave() + "\t Nombre: " + rol.getNombre() + "\t Activo: " + rol.getActivo());
+			logger.debug("================JPB================>>>> id: " + rol.getRolId() + "\t Clave: " + rol.getClave() + "\t Nombre: " + rol.getNombre() + "\t Activo: " + rol.getActivo());
 			listRolMAP.add(rolMAP);
 		}
 		
