@@ -73,6 +73,7 @@ public class AuthorityController {
 		List<Map<String, Object>> lstRoles = new ArrayList();
 		for( Authority authority : listAuthority ) {
 			Map<String, Object> authorityMAP = new HashMap<>();
+			authorityMAP.put("id", authority.getIdAuthority());
 			authorityMAP.put("name", authority.getName());
 			authorityMAP.put("description", authority.getName());
 			authorityMAP.put("enabled", authority.getEnabled());
