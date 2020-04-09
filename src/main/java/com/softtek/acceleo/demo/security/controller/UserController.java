@@ -67,6 +67,7 @@ public class UserController {
        	for( User user : users ) {
        		Map<String, String> usrMAP = new HashMap<>();
 
+       		usrMAP.put("id", user.getIdUser().toString());
        		usrMAP.put("username", user.getUserName());
        		usrMAP.put("display_name", user.getFirstname() + " " + user.getLastname());
        		usrMAP.put("email", user.getEmail());
@@ -121,6 +122,8 @@ public class UserController {
     	HttpHeaders headers = new HttpHeaders();
     	
         try {
+        	System.out.println("*********************************************** enabled: " + userMAP.get("enabled"));
+        	//userMAP.put("enabled", true);
         	User user = new User();
         	user.setUserName((String) userMAP.get("username"));
         	user.setPassword(passwordEncoder.encode((String) userMAP.get("password")));
