@@ -186,7 +186,7 @@ public class AdminPermisoController {
 			permissionMAP.put("scope", "own");
 			permissionMAP.put("description", privil.getName());
 			
-			logger.info("privilege: " + privil.getName());
+			//logger.info("privilege: " + privil.getName());
 			List<Map<String, String>> roles = new ArrayList<>();
 			for( Authority authority : lstAuthority ) {
 				Map<String, String> authorithyMAP = new HashMap<>();
@@ -197,7 +197,7 @@ public class AdminPermisoController {
 				boolean authPrivilege = Boolean.FALSE;
 				
 				for( AuthorityPrivilege autPriv : lstAuth ) {
-					logger.info("\t\t authority: " + authority.getIdAuthority().toString() + " ---->> " + autPriv.getIdAuthority().getIdAuthority().toString());
+					//logger.info("\t\t authority: " + authority.getIdAuthority().toString() + " ---->> " + autPriv.getIdAuthority().getIdAuthority().toString());
 					//if( authority.getIdAuthority().toString() == autPriv.getIdAuthority().getIdAuthority().toString() ) {
 					if( authority.getIdAuthority().toString().equals(autPriv.getIdAuthority().getIdAuthority().toString()) ) {
 						authPrivilege = Boolean.TRUE;
@@ -211,7 +211,7 @@ public class AdminPermisoController {
 					authorithyMAP.put("assigned", "false");
 				}
 				
-				logger.info("\t id: " + authorithyMAP.get("id") + "\t name: " + authorithyMAP.get("name") + "\t descripcion: " + authorithyMAP.get("descripcion") + "\t assigned: " + authorithyMAP.get("assigned"));
+				//logger.info("\t id: " + authorithyMAP.get("id") + "\t name: " + authorithyMAP.get("name") + "\t descripcion: " + authorithyMAP.get("descripcion") + "\t assigned: " + authorithyMAP.get("assigned"));
 				
 				roles.add(authorithyMAP);
 			}
@@ -219,6 +219,7 @@ public class AdminPermisoController {
 			privilegeMAP.put("permission", permissionMAP);
 			privilegeMAP.put("roles", roles);
 			
+			logger.info(permissionMAP.get("name") + " ---->> " + roles);
 			lstPrivilegeRes.add(privilegeMAP);
 		}
 		
