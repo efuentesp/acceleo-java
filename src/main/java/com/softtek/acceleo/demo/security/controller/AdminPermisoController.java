@@ -223,13 +223,19 @@ public class AdminPermisoController {
 	
 	@RequestMapping(value = "/auth/assign_role_permission", method = RequestMethod.POST)
 	@PreAuthorize("hasRole('ROLE_PERMISSION:CREATE') and hasRole('ROLE_PERMISSION:UPDATE')")
-	public ResponseEntity<?> assignRolePermission(@RequestBody HashMap<String, String> authorityPrivilegeBean, UriComponentsBuilder ucBuilder) {	
+	public ResponseEntity<?> assignRolePermission(@RequestBody HashMap<String, String> authorityPrivilegeBean, UriComponentsBuilder ucBuilder, HttpServletRequest request) {	
 		try {
+	    	logger.info("User REST :"+tokenHeader);
+	        String token = request.getHeader(tokenHeader).substring(7);
+	        UUID uuidRolUserAuteticado = UUID.fromString(jwtTokenUtil.getIdRoleFromToken(token));
+	        logger.info("uuidRolUserAuteticado :"+uuidRolUserAuteticado);
+			
 			UUID uuidRol = UUID.fromString(authorityPrivilegeBean.get("roleId"));
 			UUID uuidPermission = UUID.fromString(authorityPrivilegeBean.get("permissionId"));
 			
 			logger.info("roleId: " + authorityPrivilegeBean.get("roleId") + "\tpermissionId: " + authorityPrivilegeBean.get("permissionId"));
-			AuthorityPrivilege authorityPrivilegeFound = authorityPrivilegeRepository.getAuthorityPrivilege(uuidRol, uuidPermission);
+			//AuthorityPrivilege authorityPrivilegeFound = authorityPrivilegeRepository.getAuthorityPrivilege(uuidRol, uuidPermission);
+			AuthorityPrivilege authorityPrivilegeFound = authorityPrivilegeRepository.getAuthorityPrivilege(uuidRolUserAuteticado, uuidPermission);
 			
 			if( authorityPrivilegeFound != null ) {
 				
@@ -266,23 +272,21 @@ public class AdminPermisoController {
 	
 	@RequestMapping(value = "/auth/remove_role_permission", method = RequestMethod.POST)
 	@PreAuthorize("hasRole('ROLE_PERMISSION:UPDATE')")
-	public ResponseEntity<?> removeRolePermission(@RequestBody HashMap<String, String> authorityPrivilegeBean, UriComponentsBuilder ucBuilder) {	
+	public ResponseEntity<?> removeRolePermission(@RequestBody HashMap<String, String> authorityPrivilegeBean, UriComponentsBuilder ucBuilder, HttpServletRequest request) {	
 		logger.info("Esto es una prueba...");
 		try {
-			//------------------------------------------------------
-//	        String token = authorityPrivilegeBean;//.getHeader(tokenHeader).substring(7);
-//	        String username = jwtTokenUtil.getUsernameFromToken(token);
-//	        System.out.println("************************************************" + jwtTokenUtil.getRoleFromToken(token));
-//	        String temp = jwtTokenUtil.getIdRoleFromToken(token);
-			
-			//------------------------------------------------------
-			
+	    	logger.info("User REST :"+tokenHeader);
+	        String token = request.getHeader(tokenHeader).substring(7);
+	        UUID uuidRolUserAuteticado = UUID.fromString(jwtTokenUtil.getIdRoleFromToken(token));
+	        logger.info("uuidRolUserAuteticado :"+uuidRolUserAuteticado);
+
 			UUID uuidRol = UUID.fromString(authorityPrivilegeBean.get("roleId"));
 			UUID uuidPermission = UUID.fromString(authorityPrivilegeBean.get("permissionId"));
 			
 			logger.info("roleId: " + authorityPrivilegeBean.get("roleId") + "\tpermissionId: " + authorityPrivilegeBean.get("permissionId"));
 			
-			AuthorityPrivilege authorityPrivilegeFound = authorityPrivilegeRepository.getAuthorityPrivilege(uuidRol, uuidPermission);
+			//AuthorityPrivilege authorityPrivilegeFound = authorityPrivilegeRepository.getAuthorityPrivilege(uuidRol, uuidPermission);
+			AuthorityPrivilege authorityPrivilegeFound = authorityPrivilegeRepository.getAuthorityPrivilege(uuidRolUserAuteticado, uuidPermission);
 			
 			if( authorityPrivilegeFound != null ) {
 				
