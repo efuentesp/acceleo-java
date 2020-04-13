@@ -340,10 +340,8 @@ public class AdminPermisoController {
 
 			// Se verifica que el usuario autenticado tenga los permisos necesarios para
 			// remover permisos.
-			// AuthorityPrivilege authorityPrivilegeFound =
-			// authorityPrivilegeRepository.getAuthorityPrivilege(uuidRol, uuidPermission);
-			AuthorityPrivilege authorityPrivilegeFound = authorityPrivilegeRepository
-					.getAuthorityPrivilege(uuidRolUserAuteticado, uuidPermission);
+			AuthorityPrivilege authorityPrivilegeFound = authorityPrivilegeRepository.getAuthorityPrivilege(uuidRol, uuidPermission);
+			//AuthorityPrivilege authorityPrivilegeFound = authorityPrivilegeRepository.getAuthorityPrivilege(uuidRolUserAuteticado, uuidPermission);
 
 			if (authorityPrivilegeFound != null) {
 				// Se remueven permisos para el rol indicado (No es el mismo que esta
