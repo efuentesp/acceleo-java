@@ -225,7 +225,8 @@ public class AdminPermisoController {
 					if (authority.getIdAuthority().toString()
 							.equals(autPriv.getIdAuthority().getIdAuthority().toString())) {
 //>>>>>>> 760130f0dfc203ff3817b90f050848a12b79684e
-						authPrivilege = Boolean.TRUE;
+						////////authPrivilege = Boolean.TRUE;
+						authPrivilege = autPriv.getEnabled();
 						break;
 					}
 				}
