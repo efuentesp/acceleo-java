@@ -186,7 +186,7 @@ public class AdminPermisoController {
 			permissionMAP.put("scope", "own");
 			permissionMAP.put("description", privil.getName());
 			
-			
+			logger.info("privilege: " + privil.getName());
 			List<Map<String, String>> roles = new ArrayList<>();
 			for( Authority authority : lstAuthority ) {
 				Map<String, String> authorithyMAP = new HashMap<>();
@@ -197,7 +197,9 @@ public class AdminPermisoController {
 				boolean authPrivilege = Boolean.FALSE;
 				
 				for( AuthorityPrivilege autPriv : lstAuth ) {
-					if( authority.getIdAuthority().toString() == autPriv.getIdAuthority().getIdAuthority().toString() ) {
+					logger.info("\t\t authority: " + authority.getIdAuthority().toString() + " ---->> " + autPriv.getIdAuthority().getIdAuthority().toString());
+					//if( authority.getIdAuthority().toString() == autPriv.getIdAuthority().getIdAuthority().toString() ) {
+					if( authority.getIdAuthority().toString().equals(autPriv.getIdAuthority().getIdAuthority().toString()) ) {
 						authPrivilege = Boolean.TRUE;
 						break;
 					}
@@ -208,6 +210,8 @@ public class AdminPermisoController {
 				}else {
 					authorithyMAP.put("assigned", "false");
 				}
+				
+				logger.info("\t id: " + authorithyMAP.get("id") + "\t name: " + authorithyMAP.get("name") + "\t descripcion: " + authorithyMAP.get("descripcion") + "\t assigned: " + authorithyMAP.get("assigned"));
 				
 				roles.add(authorithyMAP);
 			}
@@ -285,13 +289,18 @@ public class AdminPermisoController {
 			
 			logger.info("roleId: " + authorityPrivilegeBean.get("roleId") + "\tpermissionId: " + authorityPrivilegeBean.get("permissionId"));
 			
+			//Se verifica que el usuario autenticado tenga los permisos necesarios para remover permisos.
 			//AuthorityPrivilege authorityPrivilegeFound = authorityPrivilegeRepository.getAuthorityPrivilege(uuidRol, uuidPermission);
 			AuthorityPrivilege authorityPrivilegeFound = authorityPrivilegeRepository.getAuthorityPrivilege(uuidRolUserAuteticado, uuidPermission);
 			
 			if( authorityPrivilegeFound != null ) {
+				//Se remueven permisos para el rol indicado (No es el mismo que esta autenticado en la aplicacion, )
+				//AuthorityPrivilege authorityPrivilegeFoundToModify = authorityPrivilegeRepository.getAuthorityPrivilege(uuidRol, uuidPermission);
 				
 				authorityPrivilegeFound.setEnabled(Boolean.FALSE);
 				authorityPrivilegeRepository.updateRolePermission(authorityPrivilegeFound);
+				//authorityPrivilegeFoundToModify.setEnabled(Boolean.FALSE);
+				//authorityPrivilegeRepository.updateRolePermission(authorityPrivilegeFoundToModify);
 				
 				return new ResponseEntity(new JwtAuthenticationError("Permiso desasignado al Rol", 201), HttpStatus.OK);				
 			}else {
