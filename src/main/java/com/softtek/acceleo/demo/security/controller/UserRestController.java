@@ -67,6 +67,9 @@ public class UserRestController {
     	logger.info("User REST :"+tokenHeader);
         String token = request.getHeader(tokenHeader).substring(7);
         String username = jwtTokenUtil.getUsernameFromToken(token);
+        System.out.println("************************************************" + jwtTokenUtil.getRoleFromToken(token));
+        String temp = jwtTokenUtil.getIdRoleFromToken(token);
+        System.out.println("++++++++++++++++++++++++++++++++++++++++++++++++" + temp);
         JwtUser user = (JwtUser) userDetailsService.loadUserByUsername(username);
         
         return user;

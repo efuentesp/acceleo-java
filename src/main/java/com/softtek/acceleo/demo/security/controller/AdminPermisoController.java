@@ -12,6 +12,7 @@ import javax.servlet.http.HttpServletResponse;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
@@ -65,6 +66,8 @@ public class AdminPermisoController {
 	@Autowired
 	private JwtTokenUtil jwtTokenUtil;
 	
+    @Value("${jwt.header}")
+    private String tokenHeader;	
 	
 	AdminPermiso adminPermiso = new AdminPermiso();
 	
@@ -78,7 +81,6 @@ public class AdminPermisoController {
 	@RequestMapping(value = "/adminPermiso", method = RequestMethod.GET, produces = "application/json")
 	@PreAuthorize("hasRole('MANAGESEARCH')")
 	public @ResponseBody  List<ConfigPermisos> getAdminPermisos(@RequestParam Map<String,String> requestParams, HttpServletRequest request, HttpServletResponse response) {
-
 
 		List<ConfigPermisos> listAdminPermiso = null;
 
@@ -267,10 +269,19 @@ public class AdminPermisoController {
 	public ResponseEntity<?> removeRolePermission(@RequestBody HashMap<String, String> authorityPrivilegeBean, UriComponentsBuilder ucBuilder) {	
 		logger.info("Esto es una prueba...");
 		try {
+			//------------------------------------------------------
+//	        String token = authorityPrivilegeBean;//.getHeader(tokenHeader).substring(7);
+//	        String username = jwtTokenUtil.getUsernameFromToken(token);
+//	        System.out.println("************************************************" + jwtTokenUtil.getRoleFromToken(token));
+//	        String temp = jwtTokenUtil.getIdRoleFromToken(token);
+			
+			//------------------------------------------------------
+			
 			UUID uuidRol = UUID.fromString(authorityPrivilegeBean.get("roleId"));
 			UUID uuidPermission = UUID.fromString(authorityPrivilegeBean.get("permissionId"));
 			
 			logger.info("roleId: " + authorityPrivilegeBean.get("roleId") + "\tpermissionId: " + authorityPrivilegeBean.get("permissionId"));
+			
 			AuthorityPrivilege authorityPrivilegeFound = authorityPrivilegeRepository.getAuthorityPrivilege(uuidRol, uuidPermission);
 			
 			if( authorityPrivilegeFound != null ) {

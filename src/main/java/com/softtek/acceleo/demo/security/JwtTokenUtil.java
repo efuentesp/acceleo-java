@@ -60,6 +60,16 @@ public class JwtTokenUtil implements Serializable {
 		
 		return role.toString();
 	}
+	
+	public String getIdRoleFromToken(String token) {
+		Claims claims = getAllClaimsFromToken(token);
+		System.out.println("token: " + token);
+		System.out.println("claims: " + claims);
+		Object role = claims.get("id_role");//JPB
+		
+		return role.toString();
+	}
+	
 
 	public <T> T getClaimFromToken(String token, Function<Claims, T> claimsResolver) {
 		final Claims claims = getAllClaimsFromToken(token);
@@ -101,7 +111,8 @@ public class JwtTokenUtil implements Serializable {
 			logger.info("El user no tiene asociado roles (authority's)");
 		}else {
 			Authority authority = user.getAuthorities().get(CERO);
-
+			
+			claims.put("id_role", authority.getIdAuthority());//JPB
 			claims.put("role", authority.getName());
 			claims.put("role_enabled", authority.getEnabled());			
 		}	
