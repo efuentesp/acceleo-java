@@ -190,42 +190,17 @@ public class AdminPermisoController {
 			permissionMAP.put("action", privil.getName());
 			permissionMAP.put("scope", "own");
 			permissionMAP.put("description", privil.getName());
-//<<<<<<< HEAD
-//			
-//			//logger.info("privilege: " + privil.getName());
-//			List<Map<String, String>> roles = new ArrayList<>();
-//			for( Authority authority : lstAuthority ) {
-//				Map<String, String> authorithyMAP = new HashMap<>();
-//				
-//=======
 
-			logger.info("privilege: " + privil.getName());
 			List<Map<String, Object>> roles = new ArrayList<>();
 			for (Authority authority : lstAuthority) {
 				Map<String, Object> authorithyMAP = new HashMap<>();
-
-//>>>>>>> 760130f0dfc203ff3817b90f050848a12b79684e
 				authorithyMAP.put("id", authority.getIdAuthority().toString());
 				authorithyMAP.put("name", authority.getName());
 				authorithyMAP.put("description", authority.getName());
 				boolean authPrivilege = Boolean.FALSE;
-//<<<<<<< HEAD
-//				
-//				for( AuthorityPrivilege autPriv : lstAuth ) {
-//					//logger.info("\t\t authority: " + authority.getIdAuthority().toString() + " ---->> " + autPriv.getIdAuthority().getIdAuthority().toString());
-//					//if( authority.getIdAuthority().toString() == autPriv.getIdAuthority().getIdAuthority().toString() ) {
-//					if( authority.getIdAuthority().toString().equals(autPriv.getIdAuthority().getIdAuthority().toString()) ) {
-//=======
 
 				for (AuthorityPrivilege autPriv : lstAuth) {
-					logger.info("\t\t authority: " + authority.getIdAuthority().toString() + " ---->> "
-							+ autPriv.getIdAuthority().getIdAuthority().toString());
-					// if( authority.getIdAuthority().toString() ==
-					// autPriv.getIdAuthority().getIdAuthority().toString() ) {
-					if (authority.getIdAuthority().toString()
-							.equals(autPriv.getIdAuthority().getIdAuthority().toString())) {
-//>>>>>>> 760130f0dfc203ff3817b90f050848a12b79684e
-						////////authPrivilege = Boolean.TRUE;
+					if (authority.getIdAuthority().toString().equals(autPriv.getIdAuthority().getIdAuthority().toString())) {
 						authPrivilege = autPriv.getEnabled();
 						break;
 					}
@@ -236,28 +211,13 @@ public class AdminPermisoController {
 				} else {
 					authorithyMAP.put("assigned", false);
 				}
-//<<<<<<< HEAD
-//				
-//				//logger.info("\t id: " + authorithyMAP.get("id") + "\t name: " + authorithyMAP.get("name") + "\t descripcion: " + authorithyMAP.get("descripcion") + "\t assigned: " + authorithyMAP.get("assigned"));
-//				
-//=======
 
-				logger.info("\t id: " + authorithyMAP.get("id") + "\t name: " + authorithyMAP.get("name")
-						+ "\t descripcion: " + authorithyMAP.get("descripcion") + "\t assigned: "
-						+ authorithyMAP.get("assigned"));
-
-//>>>>>>> 760130f0dfc203ff3817b90f050848a12b79684e
 				roles.add(authorithyMAP);
 			}
 
 			privilegeMAP.put("permission", permissionMAP);
 			privilegeMAP.put("roles", roles);
-//<<<<<<< HEAD
-//			
-//			logger.info(permissionMAP.get("name") + " ---->> " + roles);
-//=======
 
-//>>>>>>> 760130f0dfc203ff3817b90f050848a12b79684e
 			lstPrivilegeRes.add(privilegeMAP);
 		}
 

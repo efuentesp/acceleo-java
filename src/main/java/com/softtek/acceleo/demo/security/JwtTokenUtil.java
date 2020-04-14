@@ -65,7 +65,7 @@ public class JwtTokenUtil implements Serializable {
 		Claims claims = getAllClaimsFromToken(token);
 		System.out.println("token: " + token);
 		System.out.println("claims: " + claims);
-		Object role = claims.get("id_role");//JPB
+		Object role = claims.get("id_role");
 		
 		return role.toString();
 	}
@@ -112,7 +112,7 @@ public class JwtTokenUtil implements Serializable {
 		}else {
 			Authority authority = user.getAuthorities().get(CERO);
 			
-			claims.put("id_role", authority.getIdAuthority());//JPB
+			claims.put("id_role", authority.getIdAuthority());
 			claims.put("role", authority.getName());
 			claims.put("role_enabled", authority.getEnabled());			
 		}	

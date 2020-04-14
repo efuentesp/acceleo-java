@@ -51,6 +51,20 @@ public class UserAuthorityRepositoryImpl implements UserAuthorityRepository{
 	}
 
 	
+	@Override
+	public void updateUserAuthority(UserAuthority userAuthority) {
+		try {
+			Session session = sessionFactory.getCurrentSession();
+			session.clear();
+			session.flush();
+			session.saveOrUpdate(userAuthority);
+		} catch (HibernateException e) {
+			e.printStackTrace();
+		} catch (Exception e) {
+			e.printStackTrace();
+		}		
+	}
+	
 /**
  * 	@Override
 	@Transactional(propagation = Propagation.REQUIRED, readOnly = false)

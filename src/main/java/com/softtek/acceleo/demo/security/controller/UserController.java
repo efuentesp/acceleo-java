@@ -192,6 +192,16 @@ public class UserController {
 		   userFound.setUserName((String) userMAP.get("username"));
 		   userFound.setEmail((String) userMAP.get("email"));
 		   userFound.setEnabled((Boolean) userMAP.get("enabled"));
+		   
+		   Authority authority = authorityService.getAuthority(UUID.fromString((String) userMAP.get("roleId")));
+		   //List<Authority> lstTemp = userFound.getAuthorities();
+		   //lstTemp.set(0, authority);
+		   //userFound.setAuthorities(lstTemp);		   
+//		   Authority newAuthority = new Authority();
+//		   newAuthority.setIdAuthority(UUID.fromString((String) userMAP.get("roleId")));
+//		   List<Authority> lstTemp = userFound.getAuthorities();
+//		   lstTemp.set(0, newAuthority);
+//		   userFound.setAuthorities(lstTemp);
 		   userFound.setModifiedDate(new Date());
 		   
 		   	String[] name = ((String) userMAP.get("display_name")).split(" ");
@@ -205,6 +215,12 @@ public class UserController {
 		   
 		   		
 		   userService.editUser(userFound);
+		   
+		   List<UserAuthority> lstUserAuthority = userAuthorityRepository.findByUsername(userFound);
+		   UserAuthority userAuthority = lstUserAuthority.get(0);
+		   userAuthority.setIdAuthority(authority);
+		   
+		   userAuthorityRepository.updateUserAuthority(userAuthority);
 			
 		   HttpHeaders headers = new HttpHeaders();
 		   return new ResponseEntity<User>(userFound, headers, HttpStatus.OK);
